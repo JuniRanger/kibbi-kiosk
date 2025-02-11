@@ -79,7 +79,7 @@ flutter_icons:
   image_path: 'assets/images/png/app_logo.png'
 
   msix_config:
-    display_name: Foodyman POS App
+    display_name: foodyman POS App
     publisher_display_name: Githubit
     identity_name: org.foodyman.kiosk
     msix_version: 1.0.0.0

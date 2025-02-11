@@ -32,7 +32,7 @@ class Assets {
   static const String svgEmpty = 'assets/svg/empty.svg';
   static const String svgFilePdf = 'assets/svg/filePdf.svg';
   static const String svgFilter = 'assets/svg/filter.svg';
-  static const String svgFoodyman = 'assets/svg/foodyman.svg';
+  static const String svgfoodyman = 'assets/svg/foodyman.svg';
   static const String svgHalal = 'assets/svg/halal.svg';
   static const String svgHome = 'assets/svg/home.svg';
   static const String svgHomeSvg = 'assets/svg/homeSvg.svg';

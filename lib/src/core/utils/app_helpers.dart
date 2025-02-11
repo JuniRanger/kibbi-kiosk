@@ -73,14 +73,14 @@ class AppHelpers {
   }
 
   static String? getAppName() {
-    final List<SettingsData> settings = LocalStorage.getSettingsList();
-    for (final setting in settings) {
+    // final List<SettingsData> settings = LocalStorage.getSettingsList();
+    // for (final setting in settings) {
 
-      if (setting.key == 'title') {
-        return setting.value;
-      }
-    }
-    return '';
+    //   if (setting.key == 'title') {
+    //     return setting.value;
+    //   }
+    // }
+    return 'Kibbi Kiosk';
   }
 
   static bool getAutoPrint() {

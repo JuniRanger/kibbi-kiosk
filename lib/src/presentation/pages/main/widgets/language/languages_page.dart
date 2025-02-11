@@ -65,7 +65,7 @@ class _LanguagesPageState extends ConsumerState<LanguagesPage> {
                             12.horizontalSpace,
                             Expanded(
                               child: AutoSizeText(
-                                AppHelpers.getAppName() ?? "foodyman",
+                                "Kibbi Kiosk",
                                 style: GoogleFonts.inter(
                                     fontSize: 32.sp,
                                     color: Style.black,

@@ -426,7 +426,7 @@
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = XM5Z6KRSFY;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Foodyman POS";
+				INFOPLIST_KEY_CFBundleDisplayName = "foodyman POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -563,7 +563,7 @@
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = XM5Z6KRSFY;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Foodyman POS";
+				INFOPLIST_KEY_CFBundleDisplayName = "foodyman POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -594,7 +594,7 @@
 				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = XM5Z6KRSFY;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Foodyman POS";
+				INFOPLIST_KEY_CFBundleDisplayName = "foodyman POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
