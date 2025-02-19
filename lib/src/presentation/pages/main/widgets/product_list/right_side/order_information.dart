@@ -60,7 +60,7 @@ class OrderInformation extends ConsumerWidget {
                   const Spacer(),
                   IconButton(
                     onPressed: () {
-                      context.popRoute();
+                      context.router.maybePop();
                     },
                     icon: const Icon(FlutterRemix.close_line),
                   )

@@ -73,7 +73,7 @@ class _PromoCodeDialogState extends ConsumerState<PromoCodeDialog> {
                   ref
                       .read(rightSideProvider.notifier)
                       .setCoupon(controller.text, context);
-                  context.popRoute();
+                  context.router.maybePop();
                 }
               })
         ],

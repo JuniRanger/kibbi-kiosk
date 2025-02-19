@@ -302,7 +302,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                               rightSideState.selectedBagIndex,
                               rightSideNotifier,
                             );
-                            context.popRoute();
+                            context.router.maybePop();
                           },
                         ),
                       ),
@@ -366,7 +366,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
               backgroundColor: Style.transparent,
               iconData: FlutterRemix.close_circle_line,
               iconColor: Style.black,
-              onTap: context.popRoute,
+              onTap: () => context.router.maybePop(),
             ),
           ),
 

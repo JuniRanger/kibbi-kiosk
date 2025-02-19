@@ -66,7 +66,7 @@ class _NoteDialogState extends ConsumerState<NoteDialog> {
             title: AppHelpers.getTranslation(TrKeys.save),
             onPressed: () {
               ref.read(rightSideProvider.notifier).setNote(controller.text);
-              context.popRoute();
+              context.router.maybePop();
             },
           )
         ],

@@ -57,7 +57,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.foodyman.kiosk"
+        applicationId "com.mtech.kibbi"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()

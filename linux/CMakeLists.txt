@@ -9,7 +9,7 @@ set(PDFIUM_VERSION "4929" CACHE STRING "" FORCE)
 set(PDFIUM_ARCH "x64" CACHE STRING "" FORCE)
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "org.foodyman.kiosk")
+set(APPLICATION_ID "com.mtech.kibbi")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

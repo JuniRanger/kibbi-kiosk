@@ -1,4 +1,4 @@
-package org.foodyman.kiosk
+package com.mtech.kibbi
 
 import io.flutter.embedding.android.FlutterActivity
 

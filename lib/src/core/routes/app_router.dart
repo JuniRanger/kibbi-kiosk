@@ -1,19 +1,20 @@
-
 import 'package:kiosk/src/presentation/pages/pages.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 part 'app_router.gr.dart';
 
-
 @AutoRouterConfig()
-class AppRouter extends _$AppRouter {
+class AppRouter extends RootStackRouter {
+  AppRouter({super.navigatorKey});
+
   @override
   List<AutoRoute> get routes => [
-        MaterialRoute(path: '/', page: SplashRoute.page),
-        MaterialRoute(path: '/login', page: LoginRoute.page),
-        MaterialRoute(path: '/main', page: MainRoute.page),
-        MaterialRoute(path: '/lang', page: LanguagesRoute.page),
-        MaterialRoute(path: '/help', page: HelpRoute.page),
-        MaterialRoute(path: '/web-view', page: WebViewRoute.page),
+        AutoRoute(path: '/', page: SplashRoute.page),
+        AutoRoute(path: '/login', page: LoginRoute.page),
+        AutoRoute(path: '/main', page: MainRoute.page),
+        AutoRoute(path: '/lang', page: LanguagesRoute.page),
+        AutoRoute(path: '/help', page: HelpRoute.page),
+        AutoRoute(path: '/web-view', page: WebViewRoute.page),
       ];
 }
