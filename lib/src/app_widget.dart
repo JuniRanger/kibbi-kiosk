@@ -60,14 +60,14 @@ class _AppWidgetState extends State<AppWidget> {
     if (connect.contains(ConnectivityResult.wifi) ||
         connect.contains(ConnectivityResult.mobile)) {
       settingsRepository.getGlobalSettings();
-      await settingsRepository.getLanguages();
+      // await settingsRepository.getLanguages();
       await settingsRepository.getTranslations();
     }
   }
 
   Future fetchSettingNoAwait() async {
     settingsRepository.getGlobalSettings();
-    settingsRepository.getLanguages();
+    // settingsRepository.getLanguages();
     settingsRepository.getTranslations();
   }
 
