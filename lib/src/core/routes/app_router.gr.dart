@@ -27,22 +27,6 @@ class HelpRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [LanguagesPage]
-class LanguagesRoute extends PageRouteInfo<void> {
-  const LanguagesRoute({List<PageRouteInfo>? children})
-    : super(LanguagesRoute.name, initialChildren: children);
-
-  static const String name = 'LanguagesRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const LanguagesPage();
-    },
-  );
-}
-
-/// generated route for
 /// [LoginPage]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})

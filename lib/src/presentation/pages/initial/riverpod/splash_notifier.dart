@@ -25,7 +25,7 @@ class SplashNotifier extends StateNotifier<SplashState> {
                 context.replaceRoute(const LoginRoute());
               },
               goMain: () {
-                context.replaceRoute(const LanguagesRoute());
+                context.replaceRoute(const MainRoute());
               },
             );
           },
@@ -36,7 +36,7 @@ class SplashNotifier extends StateNotifier<SplashState> {
                 context.replaceRoute(const LoginRoute());
               },
               goMain: () {
-                context.replaceRoute(const LanguagesRoute());
+                context.replaceRoute(const MainRoute());
               },
             );
           },
@@ -53,36 +53,36 @@ class SplashNotifier extends StateNotifier<SplashState> {
           context.replaceRoute(const LoginRoute());
         },
         goMain: () {
-          context.replaceRoute(const LanguagesRoute());
+          context.replaceRoute(const MainRoute());
         },
       );
     }
   }
 
   Future<void> getTranslations({
-  VoidCallback? goMain,
-  VoidCallback? goLogin,
-}) async {
-  // Obtenemos las traducciones siempre para inglés
-  final response = await _settingsRepository.getMobileTranslations(lang: 'en');
-  response.when(
-    success: (data) async {
-      await LocalStorage.setTranslations(data.data);
-      if (LocalStorage.getToken().isEmpty) {
-        goLogin?.call();
-      } else {
-        goMain?.call();
-      }
-    },
-    failure: (failure, status) {
-      debugPrint('==> error with fetching translations $failure');
-      if (LocalStorage.getToken().isEmpty) {
-        goLogin?.call();
-      } else {
-        goMain?.call();
-      }
-    },
-  );
-}
-
+    VoidCallback? goMain,
+    VoidCallback? goLogin,
+  }) async {
+    // Obtenemos las traducciones siempre para inglés
+    final response =
+        await _settingsRepository.getMobileTranslations(lang: 'en');
+    response.when(
+      success: (data) async {
+        await LocalStorage.setTranslations(data.data);
+        if (LocalStorage.getToken().isEmpty) {
+          goLogin?.call();
+        } else {
+          goMain?.call();
+        }
+      },
+      failure: (failure, status) {
+        debugPrint('==> error with fetching translations $failure');
+        if (LocalStorage.getToken().isEmpty) {
+          goLogin?.call();
+        } else {
+          goMain?.call();
+        }
+      },
+    );
+  }
 }
