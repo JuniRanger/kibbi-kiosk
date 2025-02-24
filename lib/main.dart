@@ -9,7 +9,7 @@ import 'src/core/di/dependency_manager.dart';
 import 'src/core/utils/utils.dart';
 import 'dart:io' show Platform;
 
-void main() async {                                   
+void main() async {
   await MyApp.init();
   runApp(const MyApp());
 }
@@ -32,7 +32,8 @@ class MyApp extends StatelessWidget {
           appId: "1:748500030400:ios:87044cf040f76776a3ae25",
         ),
       );
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
     }
     setUpDependencies();
 
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
     await LocalStorage.init();
 
     // Configuración de orientación de pantalla
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   }
 
   @override
