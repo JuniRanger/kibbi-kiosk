@@ -15,7 +15,7 @@ dependencies:
   intl: ^0.20.2
   get_it: ^7.2.0
   shimmer: ^3.0.0
-  auto_route: ^7.8.4
+  auto_route: ^9.3.0+1
   google_fonts: ^6.2.1
   flutter_remix: ^0.0.3
   bitsdojo_window: ^0.1.5
@@ -45,7 +45,7 @@ dependencies:
   multi_dropdown: ^3.0.1
   flutter_advanced_switch: ^3.0.1
   dotted_border: ^2.1.0
-  file_picker: ^8.3.1
+  file_picker: ^9.0.0
   auto_size_text: ^3.0.0
   flutter_isolate: ^2.0.4
   provider: ^6.0.5
@@ -66,7 +66,7 @@ dev_dependencies:
   freezed: ^2.4.9
   build_runner: ^2.4.11
   flutter_lints: ^5.0.0
-  auto_route_generator: ^7.3.2
+  auto_route_generator: ^9.3.1
   flutter_launcher_icons: ^0.14.3
 
 
@@ -81,7 +81,7 @@ flutter_icons:
   msix_config:
     display_name: foodyman POS App
     publisher_display_name: Githubit
-    identity_name: org.foodyman.kiosk
+    identity_name: com.mtech.kibbi
     msix_version: 1.0.0.0
     logo_path: D:\post_app_foodyman-main\post_app_foodyman\assets\images\png\app_logo.png
 

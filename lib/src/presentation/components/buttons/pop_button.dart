@@ -18,7 +18,7 @@ class PopButton extends ConsumerWidget {
       child: Hero(
         tag: heroTag,
         child: GestureDetector(
-          onTap: onTap ?? context.popRoute,
+          onTap: onTap ?? context.router.maybePop,
           child: Container(
             width: 48.r,
             height: 48.r,

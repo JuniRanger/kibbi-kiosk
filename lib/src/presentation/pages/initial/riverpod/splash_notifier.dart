@@ -25,7 +25,7 @@ class SplashNotifier extends StateNotifier<SplashState> {
                 context.replaceRoute(const LoginRoute());
               },
               goMain: () {
-                context.replaceRoute(const LanguagesRoute());
+                context.replaceRoute(const MainRoute());
               },
             );
           },
@@ -36,7 +36,7 @@ class SplashNotifier extends StateNotifier<SplashState> {
                 context.replaceRoute(const LoginRoute());
               },
               goMain: () {
-                context.replaceRoute(const LanguagesRoute());
+                context.replaceRoute(const MainRoute());
               },
             );
           },
@@ -53,7 +53,7 @@ class SplashNotifier extends StateNotifier<SplashState> {
           context.replaceRoute(const LoginRoute());
         },
         goMain: () {
-          context.replaceRoute(const LanguagesRoute());
+          context.replaceRoute(const MainRoute());
         },
       );
     }
@@ -63,7 +63,9 @@ class SplashNotifier extends StateNotifier<SplashState> {
     VoidCallback? goMain,
     VoidCallback? goLogin,
   }) async {
-    final response = await _settingsRepository.getTranslations();
+    // Obtenemos las traducciones siempre para inglés
+    final response =
+        await _settingsRepository.getMobileTranslations(lang: 'en');
     response.when(
       success: (data) async {
         await LocalStorage.setTranslations(data.data);

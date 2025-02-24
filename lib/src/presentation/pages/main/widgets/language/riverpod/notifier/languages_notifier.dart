@@ -12,69 +12,48 @@ class LanguagesNotifier extends StateNotifier<LanguagesState> {
   LanguagesNotifier(this._settingsRepository) : super(const LanguagesState());
 
   Future<void> checkLanguage() async {
-    if (LocalStorage.getLanguage()?.locale != null) {
-      state = state.copyWith(isSelectLanguage: false, isLoading: false);
-    } else {
-      final response = await _settingsRepository.getLanguages();
-      response.when(
-        success: (data) {
-          final List<LanguageData> languages = data.data ?? [];
-          for (final language in languages) {
-            if (language.isDefault ?? false) {
-              LocalStorage.setSystemLanguage(language);
-            }
-          }
-          state = state.copyWith(
-            languages: languages,
-            isSelectLanguage: true,
-            isLoading: false,
-          );
-        },
-        failure: (failure,status)  {
-          state = state.copyWith(isSelectLanguage: false, isLoading: false);
-        },
-      );
-    }
+    // Aquí no necesitamos verificar si el idioma está en LocalStorage,
+    // ya que solo soportamos inglés, puedes configurar eso de forma predeterminada.
+    state = state.copyWith(isSelectLanguage: false, isLoading: false);
+    // Establecemos el idioma por defecto a inglés
+    final language = LanguageData(
+      id: 1, // Asegúrate de usar un id válido para el inglés
+      title: 'English',
+      locale: 'en',
+      backward: false,
+      isDefault: true,
+      active: true,
+      img: 'path_to_english_flag', // O la imagen que prefieras
+    );
+    LocalStorage.setSystemLanguage(language);
   }
 
   Future<void> getLanguages(BuildContext context) async {
-    final connect = await AppConnectivity.connectivity();
-    if (connect) {
-      state = state.copyWith(isLoading: true, isSelectLanguage: false);
-      final response = await _settingsRepository.getLanguages();
-      response.when(
-        success: (data) {
-          final List<LanguageData> languages = data.data ?? [];
-          final lang = LocalStorage.getLanguage();
+    // Como no necesitamos verificar la conectividad para obtener idiomas,
+    // podemos omitir la lógica relacionada con la conexión y solo hacer la asignación.
+    state = state.copyWith(isLoading: true, isSelectLanguage: false);
+    
+    // Configuramos el idioma por defecto (inglés)
+    final language = LanguageData(
+      id: 1, // Asegúrate de usar un id válido para el inglés
+      title: 'English',
+      locale: 'en',
+      backward: false,
+      isDefault: true,
+      active: true,
+      img: 'path_to_english_flag', // O la imagen que prefieras
+    );
 
-          int index = 0;
-          for (int i = 0; i < languages.length; i++) {
-            if (languages[i].id == lang?.id) {
-              index = i;
-              break;
-            }
-          }
-          state = state.copyWith(
-            isLoading: false,
-            languages: data.data?.reversed.toList() ?? [],
-            index: index,
-          );
-        },
-        failure: (failure,status)  {
-          state = state.copyWith(isLoading: false);
-          AppHelpers.showSnackBar(
-            context,
-             failure.toString(),
-          );
-        },
-      );
-    } else {
-      if (!context.mounted) return;
-      AppHelpers.showSnackBar(context, AppHelpers.getTranslation(TrKeys.successfullyEdited));
-    }
+    // Actualizamos el estado con el idioma en inglés y eliminamos la lista de idiomas.
+    state = state.copyWith(
+      isLoading: false,
+      languages: [language], // Solo agregamos inglés a la lista
+      index: 0, // Asignamos el índice 0, ya que solo hay un idioma
+    );
   }
 
   Future<void> change(int index, {VoidCallback? afterUpdate}) async {
+    // Asumimos que siempre se selecciona el idioma en inglés, por lo que no necesitamos cambiarlo
     state = state.copyWith(index: index);
     await LocalStorage.setLanguageData(state.languages[index]);
     await LocalStorage.setLangLtr(state.languages[index].backward);
