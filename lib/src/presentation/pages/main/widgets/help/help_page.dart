@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'riverpod/help_provider.dart';
 
-@RoutePage()
+// @RoutePage()
 class HelpPage extends ConsumerStatefulWidget {
   const HelpPage({super.key});
 
