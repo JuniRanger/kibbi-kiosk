@@ -117,7 +117,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 );
                               },
                               goToMain: () {
-                                context.replaceRoute(const LanguagesRoute());
+                                context.replaceRoute(const MainRoute());
                               },
                             ),
                           ),
@@ -174,7 +174,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 );
                               },
                               goToMain: () {
-                                context.replaceRoute(const LanguagesRoute());
+                                context.replaceRoute(const MainRoute());
                               },
                             ),
                           ),
@@ -198,7 +198,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 );
                               },
                               goToMain: () {
-                                context.replaceRoute(const LanguagesRoute());
+                                context.replaceRoute(const MainRoute());
                               },
                             ),
                           ),

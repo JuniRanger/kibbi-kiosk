@@ -252,7 +252,7 @@ class _GenerateCheckPageState extends State<GenerateCheckPage> {
                 bgColor: Style.greyColor,
                 onPressed: () async {
                   context.router.popUntilRoot();
-                  context.replaceRoute(const LanguagesRoute());
+                  context.replaceRoute(const MainRoute());
                 }),
           ],
         ),

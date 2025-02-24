@@ -8,12 +8,12 @@ abstract class SettingsFacade {
 
   Future<ApiResult<TranslationsResponse>> getTranslations();
 
-   Future<ApiResult<LanguagesResponse>> getLanguages();
+  // Elimina el método getLanguages, ya que no lo necesitamos
+  // Future<ApiResult<LanguagesResponse>> getLanguages();
 
   Future<ApiResult<MobileTranslationsResponse>> getMobileTranslations({String? lang});
 
   Future<ApiResult<HelpModel>> getFaq();
 
   Future<ApiResult<CurrenciesResponse>> getCurrencies();
-
 }

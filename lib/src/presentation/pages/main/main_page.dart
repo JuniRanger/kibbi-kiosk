@@ -111,7 +111,7 @@ class _MainPageState extends ConsumerState<MainPage>
               SvgPicture.asset(Assets.svgLogo),
               12.horizontalSpace,
               Text(
-                AppHelpers.getAppName() ?? "",
+                AppHelpers.getAppName() ?? "Kibbi Kiosk",
                 style: GoogleFonts.inter(
                     color: Style.black, fontWeight: FontWeight.bold),
               ),
@@ -162,22 +162,7 @@ class _MainPageState extends ConsumerState<MainPage>
                 ),
               ),
               const VerticalDivider(),
-              SizedBox(width: 120.w, child: const CustomClock()),
               const VerticalDivider(),
-              IconButton(
-                  onPressed: () async {
-                    context.pushRoute(const HelpRoute());
-                    // await launch(
-                    //   "${SecretVars.webUrl}/help",
-                    //   forceSafariVC: true,
-                    //   forceWebView: true,
-                    //   enableJavaScript: true,
-                    // );
-                  },
-                  icon: const Icon(
-                    FlutterRemix.question_line,
-                    color: Style.black,
-                  )),
               GestureDetector(
                   onDoubleTap: () {
                     AppHelpers.showCustomDialog(
@@ -193,51 +178,6 @@ class _MainPageState extends ConsumerState<MainPage>
                       color: Style.black,
                     ),
                   )),
-              IconButton(
-                onPressed: () {
-                  ref.read(languagesProvider.notifier).getLanguages(context);
-                  showDialog(
-                      context: context,
-                      builder: (_) => Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Dialog(
-                                alignment: Alignment.topRight,
-                                child: SizedBox(
-                                  width: MediaQuery.sizeOf(context).width / 4,
-                                  child: LanguagesModal(
-                                    afterUpdate: () {
-                                      controller.toggle();
-                                      controller.toggle();
-                                      if (ref.watch(mainProvider).selectIndex ==
-                                          0) {
-                                        ref
-                                            .read(mainProvider.notifier)
-                                            .fetchShops(
-                                                context: context,
-                                                isRefresh: true);
-                                      } else {
-                                        ref.read(shopProvider.notifier)
-                                          ..fetchProducts(
-                                              context: context, isRefresh: true)
-                                          ..fetchCategories(context: context);
-                                        ref
-                                            .read(rightSideProvider.notifier)
-                                            .fetchCarts(context: context);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ));
-                },
-                icon: const Icon(
-                  FlutterRemix.global_line,
-                  color: Style.black,
-                ),
-              ),
             ],
           );
         }),

@@ -4,12 +4,12 @@ class LanguagesResponse {
     String? timestamp,
     bool? status,
     String? message,
-    List<LanguageData>? data,
+    List<LanguageData>? data, // Agregamos el campo 'data'
   }) {
     _timestamp = timestamp;
     _status = status;
     _message = message;
-    _data = data;
+    _data = data ?? []; // Si no se pasa, se asigna una lista vacía
   }
 
   LanguagesResponse.fromJson(dynamic json) {
@@ -17,17 +17,16 @@ class LanguagesResponse {
     _status = json['status'];
     _message = json['message'];
     if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(LanguageData.fromJson(v));
-      });
+      _data = (json['data'] as List).map((e) => LanguageData.fromJson(e)).toList();
     }
   }
 
   String? _timestamp;
   bool? _status;
   String? _message;
-  List<LanguageData>? _data;
+  List<LanguageData> _data = []; // Lista de LanguageData
+
+  List<LanguageData> get data => _data; // Getter para acceder a la lista de idiomas
 
   LanguagesResponse copyWith({
     String? timestamp,
@@ -48,21 +47,18 @@ class LanguagesResponse {
 
   String? get message => _message;
 
-  List<LanguageData>? get data => _data;
-
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['timestamp'] = _timestamp;
     map['status'] = _status;
     map['message'] = _message;
-    if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
-    }
+    map['data'] = _data.map((e) => e.toJson()).toList(); // Convertimos los objetos LanguageData a JSON
     return map;
   }
 }
 
-class  LanguageData {
+
+ class LanguageData {
   LanguageData({
     int? id,
     String? title,
@@ -74,20 +70,20 @@ class  LanguageData {
   }) {
     _id = id;
     _title = title;
-    _locale = locale;
+    _locale = locale ?? 'en'; // El idioma por defecto será 'en'
     _backward = backward;
-    _default = isDefault;
-    _active = active;
+    _default = isDefault ?? true; // Forzar que el idioma por defecto sea inglés
+    _active = active ?? true; // El idioma debe estar activo
     _img = img;
   }
 
   LanguageData.fromJson(dynamic json) {
     _id = json['id'];
     _title = json['title'];
-    _locale = json['locale'];
-    _backward = json['backward'].toString().toBool();
-    _default = json['default'].toString().toBool();
-    _active = json['active'].toString().toBool();
+    _locale = json['locale'] ?? 'en'; // Si no se especifica, es inglés
+    _backward = json['backward']?.toString().toBool();
+    _default = json['default']?.toString().toBool() ?? true;
+    _active = json['active']?.toString().toBool() ?? true;
     _img = json['img'];
   }
 
@@ -111,7 +107,7 @@ class  LanguageData {
       LanguageData(
         id: id ?? _id,
         title: title ?? _title,
-        locale: locale ?? _locale,
+        locale: locale ?? 'en', // El idioma siempre será inglés
         backward: backward ?? _backward,
         isDefault: isDefault ?? _default,
         active: active ?? _active,
@@ -144,4 +140,3 @@ class  LanguageData {
     return map;
   }
 }
-
