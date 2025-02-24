@@ -11,38 +11,6 @@
 part of 'app_router.dart';
 
 /// generated route for
-/// [HelpPage]
-class HelpRoute extends PageRouteInfo<void> {
-  const HelpRoute({List<PageRouteInfo>? children})
-    : super(HelpRoute.name, initialChildren: children);
-
-  static const String name = 'HelpRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const HelpPage();
-    },
-  );
-}
-
-/// generated route for
-/// [LanguagesPage]
-class LanguagesRoute extends PageRouteInfo<void> {
-  const LanguagesRoute({List<PageRouteInfo>? children})
-    : super(LanguagesRoute.name, initialChildren: children);
-
-  static const String name = 'LanguagesRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const LanguagesPage();
-    },
-  );
-}
-
-/// generated route for
 /// [LoginPage]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})

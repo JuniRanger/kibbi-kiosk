@@ -1,7 +1,6 @@
 import 'package:kiosk/src/core/di/dependency_manager.dart';
 import 'package:kiosk/src/models/data/help_data.dart';
 import 'package:flutter/material.dart';
-
 import 'package:kiosk/src/core/handlers/handlers.dart';
 import '../../core/utils/utils.dart';
 import 'package:kiosk/src/models/models.dart';
@@ -27,7 +26,8 @@ class SettingsRepository extends SettingsFacade {
   @override
   Future<ApiResult<MobileTranslationsResponse>> getMobileTranslations(
       {String? lang}) async {
-    final data = {'lang': lang ?? LocalStorage.getLanguage()?.locale ?? 'en'};
+    // Usamos siempre inglés para las traducciones
+    final data = {'lang': 'en'};
     try {
       final dioHttp = HttpService();
       final client = dioHttp.client(requireAuth: false);
@@ -37,7 +37,7 @@ class SettingsRepository extends SettingsFacade {
       );
       await LocalStorage.setTranslations(
           MobileTranslationsResponse.fromJson(response.data).data);
-      return  ApiResult.success(data: MobileTranslationsResponse.fromJson(response.data));
+      return ApiResult.success(data: MobileTranslationsResponse.fromJson(response.data));
     } catch (e) {
       debugPrint('==> get translations failure: $e');
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
@@ -46,9 +46,8 @@ class SettingsRepository extends SettingsFacade {
 
   @override
   Future<ApiResult<TranslationsResponse>> getTranslations() async {
-    final data = {
-      'lang': LocalStorage.getLanguage()?.locale ?? 'en'
-    };
+    // Usamos siempre inglés para las traducciones
+    final data = {'lang': 'en'};
     try {
       final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
@@ -64,41 +63,33 @@ class SettingsRepository extends SettingsFacade {
     }
   }
 
-
   @override
   Future<ApiResult<LanguagesResponse>> getLanguages() async {
-    try {
-      final dioHttp = HttpService();
-      final client = dioHttp.client(requireAuth: false);
-      final response = await client.get('/api/v1/rest/languages/active');
-      if (LocalStorage.getLanguage() == null ||
-          !(LanguagesResponse.fromJson(response.data)
-              .data
-              ?.map((e) => e.id)
-              .contains(LocalStorage.getLanguage()?.id) ??
-              true)) {
-        LanguagesResponse.fromJson(response.data).data?.forEach((element) {
-          if (element.isDefault ?? false) {
-            LocalStorage.setLanguageData(element);
-            LocalStorage.setLangLtr(element.backward);
-          }
-        });
-      }
-      return ApiResult.success(
-        data: LanguagesResponse.fromJson(response.data),
-      );
-    } catch (e) {
-      debugPrint('==> get languages failure: $e');
-      return ApiResult.failure(error: AppHelpers.errorHandler(e));
-    }
+    // Como solo usamos inglés, no necesitamos obtener los idiomas
+    final language = LanguageData(
+      id: 1, // Usamos el id correspondiente al inglés
+      title: 'English',
+      locale: 'en',
+      backward: false,
+      isDefault: true,
+      active: true,
+      img: 'path_to_english_flag', // Ruta de la imagen de la bandera
+    );
+    LocalStorage.setLanguageData(language);
+    LocalStorage.setLangLtr(language.backward);
+    
+    // Retornamos un ApiResult con el idioma predeterminado
+    return ApiResult.success(
+      data: LanguagesResponse(data: [language]),
+    );
   }
 
   @override
   Future<ApiResult<HelpModel>> getFaq() async {
     try {
       final client = dioHttp.client(requireAuth: true);
-      final response = await client.get('/api/v1/rest/faqs/paginate',queryParameters: {
-        'lang':LocalStorage.getLanguage()?.locale
+      final response = await client.get('/api/v1/rest/faqs/paginate', queryParameters: {
+        'lang': 'en' // Usamos siempre inglés
       });
       return ApiResult.success(
         data: HelpModel.fromJson(response.data),

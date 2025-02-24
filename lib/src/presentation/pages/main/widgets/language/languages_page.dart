@@ -17,7 +17,7 @@ import 'package:kiosk/src/presentation/theme/theme/theme_warpper.dart';
 import 'riverpod/provider/languages_provider.dart';
 import 'widgets/language_item.dart';
 
-@RoutePage()
+// @RoutePage()
 class LanguagesPage extends ConsumerStatefulWidget {
   const LanguagesPage({super.key});
 

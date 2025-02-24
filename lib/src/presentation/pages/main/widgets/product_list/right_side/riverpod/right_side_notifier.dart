@@ -521,15 +521,14 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
             builder: (context) {
               return LayoutBuilder(builder: (context, constraints) {
                 return AlertDialog(
-
                   content: SizedBox(
                     // height: constraints.maxHeight
-                        // *
-                        // ((o?.details?.length ?? 0) > 3
-                        //     ? 0.95
-                        //     : (o?.details?.length ?? 0) > 2
-                        //         ? 0.84
-                        //         : 0.75)
+                    // *
+                    // ((o?.details?.length ?? 0) > 3
+                    //     ? 0.95
+                    //     : (o?.details?.length ?? 0) > 2
+                    //         ? 0.84
+                    //         : 0.75)
                     // ,
                     width: 300.r,
                     child: GenerateCheckPage(orderData: o),
@@ -538,7 +537,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
               });
             }).whenComplete(() {
           context.router.popUntilRoot();
-          context.replaceRoute(const LanguagesRoute());
+          context.replaceRoute(const MainRoute());
           invalidateState.call();
         });
       });

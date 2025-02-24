@@ -70,6 +70,7 @@ class OrderInformation extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(
+                    flex: 999,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -94,40 +95,39 @@ class OrderInformation extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  16.horizontalSpace,
                   Expanded(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      IntlPhoneField(
-                        onChanged: (phoneNum) {
-                          notifier.setPhone(phoneNum.completeNumber);
-                        },
-                        disableLengthCheck:
-                            !AppConstants.isNumberLengthAlwaysSame,
-                        validator: (s) {
-                          if (AppConstants.isNumberLengthAlwaysSame &&
-                              (AppValidators.isValidPhone(s?.completeNumber))) {
-                            return AppHelpers.getTranslation(
-                                TrKeys.phoneNumberIsNotValid);
-                          }
-                          return null;
-                        },
-                        showCountryFlag: AppConstants.showFlag,
-                        showDropdownIcon: AppConstants.showArrowIcon,
-                        keyboardType: TextInputType.phone,
-                        initialCountryCode: AppConstants.countryCodeISO,
-                        invalidNumberMessage: AppHelpers.getTranslation(
-                            TrKeys.phoneNumberIsNotValid),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        autovalidateMode: AppConstants.isNumberLengthAlwaysSame
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: const InputDecoration(counterText: ''),
-                      ),
+                      // IntlPhoneField(
+                      //   onChanged: (phoneNum) {
+                      //     notifier.setPhone(phoneNum.completeNumber);
+                      //   },
+                      //   disableLengthCheck:
+                      //       !AppConstants.isNumberLengthAlwaysSame,
+                      //   validator: (s) {
+                      //     if (AppConstants.isNumberLengthAlwaysSame &&
+                      //         (AppValidators.isValidPhone(s?.completeNumber))) {
+                      //       return AppHelpers.getTranslation(
+                      //           TrKeys.phoneNumberIsNotValid);
+                      //     }
+                      //     return null;
+                      //   },
+                      //   showCountryFlag: AppConstants.showFlag,
+                      //   showDropdownIcon: AppConstants.showArrowIcon,
+                      //   keyboardType: TextInputType.phone,
+                      //   initialCountryCode: AppConstants.countryCodeISO,
+                      //   invalidNumberMessage: AppHelpers.getTranslation(
+                      //       TrKeys.phoneNumberIsNotValid),
+                      //   inputFormatters: [
+                      //     FilteringTextInputFormatter.digitsOnly
+                      //   ],
+                      //   autovalidateMode: AppConstants.isNumberLengthAlwaysSame
+                      //       ? AutovalidateMode.onUserInteraction
+                      //       : AutovalidateMode.disabled,
+                      //   textAlignVertical: TextAlignVertical.center,
+                      //   decoration: const InputDecoration(counterText: ''),
+                      // ),
                       Visibility(
                         visible: state.selectPhoneError != null,
                         child: Padding(
