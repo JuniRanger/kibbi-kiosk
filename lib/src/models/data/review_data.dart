@@ -1,4 +1,4 @@
-import 'user_data.dart';
+import 'kiosk_data.dart';
 
 class ReviewData {
   ReviewData({
@@ -10,7 +10,7 @@ class ReviewData {
     String? createdAt,
     String? updatedAt,
     List<Galleries>? galleries,
-    UserData? user,
+    KioskData? user,
   }) {
     _id = id;
     _reviewableId = reviewableId;
@@ -37,7 +37,7 @@ class ReviewData {
         _galleries?.add(Galleries.fromJson(v));
       });
     }
-    _user = json['user'] != null ? UserData.fromJson(json['user']) : null;
+    _user = json['user'] != null ? KioskData.fromJson(json['user']) : null;
   }
 
   int? _id;
@@ -48,7 +48,7 @@ class ReviewData {
   String? _createdAt;
   String? _updatedAt;
   List<Galleries>? _galleries;
-  UserData? _user;
+  KioskData? _user;
 
   ReviewData copyWith({
     int? id,
@@ -59,7 +59,7 @@ class ReviewData {
     String? createdAt,
     String? updatedAt,
     List<Galleries>? galleries,
-    UserData? user,
+    KioskData? user,
   }) =>
       ReviewData(
         id: id ?? _id,
@@ -89,7 +89,7 @@ class ReviewData {
 
   List<Galleries>? get galleries => _galleries;
 
-  UserData? get user => _user;
+  KioskData? get user => _user;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

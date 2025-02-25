@@ -44,7 +44,7 @@ mixin _$RightSideState {
   String? get selectSectionError => throw _privateConstructorUsedError;
   String? get selectTableError => throw _privateConstructorUsedError;
   String? get coupon => throw _privateConstructorUsedError;
-  UserData? get selectedUser => throw _privateConstructorUsedError;
+  KioskData? get selectedUser => throw _privateConstructorUsedError;
   AddressData? get selectedAddress => throw _privateConstructorUsedError;
   CurrencyData? get selectedCurrency => throw _privateConstructorUsedError;
   ShopSection? get selectedSection => throw _privateConstructorUsedError;
@@ -94,7 +94,7 @@ abstract class $RightSideStateCopyWith<$Res> {
       String? selectSectionError,
       String? selectTableError,
       String? coupon,
-      UserData? selectedUser,
+      KioskData? selectedUser,
       AddressData? selectedAddress,
       CurrencyData? selectedCurrency,
       ShopSection? selectedSection,
@@ -270,7 +270,7 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
       selectedUser: freezed == selectedUser
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
-              as UserData?,
+              as KioskData?,
       selectedAddress: freezed == selectedAddress
           ? _value.selectedAddress
           : selectedAddress // ignore: cast_nullable_to_non_nullable
@@ -336,7 +336,7 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       String? selectSectionError,
       String? selectTableError,
       String? coupon,
-      UserData? selectedUser,
+      KioskData? selectedUser,
       AddressData? selectedAddress,
       CurrencyData? selectedCurrency,
       ShopSection? selectedSection,
@@ -510,7 +510,7 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
       selectedUser: freezed == selectedUser
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
-              as UserData?,
+              as KioskData?,
       selectedAddress: freezed == selectedAddress
           ? _value.selectedAddress
           : selectedAddress // ignore: cast_nullable_to_non_nullable
@@ -701,7 +701,7 @@ class _$RightSideStateImpl extends _RightSideState {
   final String? coupon;
   @override
   @JsonKey()
-  final UserData? selectedUser;
+  final KioskData? selectedUser;
   @override
   final AddressData? selectedAddress;
   @override
@@ -872,7 +872,7 @@ abstract class _RightSideState extends RightSideState {
       final String? selectSectionError,
       final String? selectTableError,
       final String? coupon,
-      final UserData? selectedUser,
+      final KioskData? selectedUser,
       final AddressData? selectedAddress,
       final CurrencyData? selectedCurrency,
       final ShopSection? selectedSection,
@@ -938,7 +938,7 @@ abstract class _RightSideState extends RightSideState {
   @override
   String? get coupon;
   @override
-  UserData? get selectedUser;
+  KioskData? get selectedUser;
   @override
   AddressData? get selectedAddress;
   @override

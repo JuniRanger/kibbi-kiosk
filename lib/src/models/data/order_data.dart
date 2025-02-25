@@ -32,10 +32,10 @@ class OrderData {
   bool? paidBySplit;
   DateTime? createdAt;
   DateTime? updatedAt;
-  UserData? deliveryman;
+  KioskData? deliveryman;
   ShopData? shop;
   CurrencyData? currency;
-  UserData? user;
+  KioskData? user;
   List<OrderDetail>? details;
   Transaction? transaction;
   dynamic review;
@@ -119,10 +119,10 @@ class OrderData {
     bool? paidBySplit,
     DateTime? createdAt,
     DateTime? updatedAt,
-    UserData? deliveryman,
+    KioskData? deliveryman,
     ShopData? shop,
     CurrencyData? currency,
-    UserData? user,
+    KioskData? user,
     List<OrderDetail>? details,
     Transaction? transaction,
     dynamic review,
@@ -205,10 +205,10 @@ class OrderData {
     paidBySplit: json["paid_by_split"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    deliveryman: json["deliveryman"] == null ? null : UserData.fromJson(json["deliveryman"]),
+    deliveryman: json["deliveryman"] == null ? null : KioskData.fromJson(json["deliveryman"]),
     shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
     currency: json["currency"] == null ? null : CurrencyData.fromJson(json["currency"]),
-    user: json["user"] == null ? null : UserData.fromJson(json["user"]),
+    user: json["user"] == null ? null : KioskData.fromJson(json["user"]),
     details: json["details"] == null ? [] : List<OrderDetail>.from(json["details"]!.map((x) => OrderDetail.fromJson(x))),
     transaction: json["transaction"] == null ? null : Transaction.fromJson(json["transaction"]),
     review: json["review"],

@@ -37,7 +37,7 @@ class RightSideState with _$RightSideState {
     @Default(null) String? selectSectionError,
     @Default(null) String? selectTableError,
     @Default(null) String? coupon,
-    @Default(null) UserData? selectedUser,
+    @Default(null) KioskData? selectedUser,
     AddressData? selectedAddress,
     CurrencyData? selectedCurrency,
     ShopSection? selectedSection,

@@ -1,6 +1,6 @@
 
 
-import 'package:kiosk/src/models/data/user_data.dart';
+import 'package:kiosk/src/models/data/kiosk_data.dart';
 
 class SaleHistoryResponse {
   List<SaleHistoryModel>? list;
@@ -31,7 +31,7 @@ class SaleHistoryModel {
   num? totalPrice;
   DateTime? createdAt;
   String? note;
-  UserData? user;
+  KioskData? user;
   List<Transaction>? transactions;
 
   SaleHistoryModel({
@@ -50,7 +50,7 @@ class SaleHistoryModel {
     double? totalPrice,
     DateTime? createdAt,
     String? note,
-    UserData? user,
+    KioskData? user,
     List<Transaction>? transactions,
   }) =>
       SaleHistoryModel(
@@ -69,7 +69,7 @@ class SaleHistoryModel {
     totalPrice: json["total_price"]?.toDouble(),
     createdAt: json["created_at"] == null ? null : DateTime.tryParse(json["created_at"])?.toLocal(),
     note: json["note"],
-    user: json["user"] == null ? null : UserData.fromJson(json["user"]),
+    user: json["user"] == null ? null : KioskData.fromJson(json["user"]),
     transactions: json["transactions"] == null ? [] : List<Transaction>.from(json["transactions"]!.map((x) => Transaction.fromJson(x))),
   );
 

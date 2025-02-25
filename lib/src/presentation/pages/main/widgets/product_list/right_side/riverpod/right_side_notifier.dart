@@ -501,7 +501,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
     if (active) {
       state =
-          state.copyWith(selectedUser: UserData(name: _name, phone: _phone));
+          state.copyWith(selectedUser: KioskData(name: _name, phone: _phone));
       createOrder(
           context,
           OrderBodyData(

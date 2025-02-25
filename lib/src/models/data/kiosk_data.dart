@@ -1,40 +1,40 @@
 import 'package:kiosk/src/models/data/shop_data.dart';
 
-class UserData {
+class KioskData {
   String? name;
-  String? email;
+  String? serial;
   String? phone;
   ShopData? shop;
 
-  UserData({
+  KioskData({
     this.name,
     this.phone,
     this.shop,
-    this.email,
+    this.serial,
   });
 
-  UserData copyWith({
+  KioskData copyWith({
     String? name,
     String? phone,
-    String? email,
+    String? serial,
   }) =>
-      UserData(
+      KioskData(
         name: name ?? this.name,
         phone: phone ?? this.phone,
-        email: email ?? this.email,
+        serial: serial ?? this.serial,
       );
 
-  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+  factory KioskData.fromJson(Map<String, dynamic> json) => KioskData(
         name: json["name"],
         shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
         phone: json["phone"],
-        email: json["email"],
+        serial: json["serial"],
       );
 
   Map<String, dynamic> toJson() => {
         "name": name,
         "phone": phone,
-        "email": email,
+        "serial": serial,
         "shop": shop?.toJson(),
       };
 }

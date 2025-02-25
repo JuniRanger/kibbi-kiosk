@@ -11,7 +11,7 @@ class LoginState with _$LoginState {
     @Default(false) bool isLoginError,
     @Default(false) bool isEmailNotValid,
     @Default(false) bool isPasswordNotValid,
-    @Default('') String email,
+    @Default('') String serial,
     @Default('') String password,
   }) = _LoginState;
 

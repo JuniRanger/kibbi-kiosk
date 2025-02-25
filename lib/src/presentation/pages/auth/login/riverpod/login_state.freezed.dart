@@ -22,7 +22,7 @@ mixin _$LoginState {
   bool get isLoginError => throw _privateConstructorUsedError;
   bool get isEmailNotValid => throw _privateConstructorUsedError;
   bool get isPasswordNotValid => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
+  String get serial => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
 
   /// Create a copy of LoginState
@@ -45,7 +45,7 @@ abstract class $LoginStateCopyWith<$Res> {
       bool isLoginError,
       bool isEmailNotValid,
       bool isPasswordNotValid,
-      String email,
+      String serial,
       String password});
 }
 
@@ -70,7 +70,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? isLoginError = null,
     Object? isEmailNotValid = null,
     Object? isPasswordNotValid = null,
-    Object? email = null,
+    Object? serial = null,
     Object? password = null,
   }) {
     return _then(_value.copyWith(
@@ -98,9 +98,9 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
           ? _value.isPasswordNotValid
           : isPasswordNotValid // ignore: cast_nullable_to_non_nullable
               as bool,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      serial: null == serial
+          ? _value.serial
+          : serial // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -125,7 +125,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
       bool isLoginError,
       bool isEmailNotValid,
       bool isPasswordNotValid,
-      String email,
+      String serial,
       String password});
 }
 
@@ -148,7 +148,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     Object? isLoginError = null,
     Object? isEmailNotValid = null,
     Object? isPasswordNotValid = null,
-    Object? email = null,
+    Object? serial = null,
     Object? password = null,
   }) {
     return _then(_$LoginStateImpl(
@@ -176,9 +176,9 @@ class __$$LoginStateImplCopyWithImpl<$Res>
           ? _value.isPasswordNotValid
           : isPasswordNotValid // ignore: cast_nullable_to_non_nullable
               as bool,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      serial: null == serial
+          ? _value.serial
+          : serial // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -198,7 +198,7 @@ class _$LoginStateImpl extends _LoginState {
       this.isLoginError = false,
       this.isEmailNotValid = false,
       this.isPasswordNotValid = false,
-      this.email = '',
+      this.serial = '',
       this.password = ''})
       : super._();
 
@@ -222,14 +222,14 @@ class _$LoginStateImpl extends _LoginState {
   final bool isPasswordNotValid;
   @override
   @JsonKey()
-  final String email;
+  final String serial;
   @override
   @JsonKey()
   final String password;
 
   @override
   String toString() {
-    return 'LoginState(isLoading: $isLoading, showPassword: $showPassword, isCurrenciesLoading: $isCurrenciesLoading, isLoginError: $isLoginError, isEmailNotValid: $isEmailNotValid, isPasswordNotValid: $isPasswordNotValid, email: $email, password: $password)';
+    return 'LoginState(isLoading: $isLoading, showPassword: $showPassword, isCurrenciesLoading: $isCurrenciesLoading, isLoginError: $isLoginError, isEmailNotValid: $isEmailNotValid, isPasswordNotValid: $isPasswordNotValid, serial: $serial, password: $password)';
   }
 
   @override
@@ -249,7 +249,7 @@ class _$LoginStateImpl extends _LoginState {
                 other.isEmailNotValid == isEmailNotValid) &&
             (identical(other.isPasswordNotValid, isPasswordNotValid) ||
                 other.isPasswordNotValid == isPasswordNotValid) &&
-            (identical(other.email, email) || other.email == email) &&
+            (identical(other.serial, serial) || other.serial == serial) &&
             (identical(other.password, password) ||
                 other.password == password));
   }
@@ -263,7 +263,7 @@ class _$LoginStateImpl extends _LoginState {
       isLoginError,
       isEmailNotValid,
       isPasswordNotValid,
-      email,
+      serial,
       password);
 
   /// Create a copy of LoginState
@@ -283,7 +283,7 @@ abstract class _LoginState extends LoginState {
       final bool isLoginError,
       final bool isEmailNotValid,
       final bool isPasswordNotValid,
-      final String email,
+      final String serial,
       final String password}) = _$LoginStateImpl;
   const _LoginState._() : super._();
 
@@ -300,7 +300,7 @@ abstract class _LoginState extends LoginState {
   @override
   bool get isPasswordNotValid;
   @override
-  String get email;
+  String get serial;
   @override
   String get password;
 

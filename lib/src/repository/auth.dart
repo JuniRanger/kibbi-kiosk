@@ -3,7 +3,7 @@ import '../models/models.dart';
 
 abstract class AuthFacade {
   Future<ApiResult<LoginResponse>> login({
-    required String email,
+    required String serial,
     required String password,
   });
 

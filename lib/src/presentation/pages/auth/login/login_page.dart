@@ -60,7 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               12.horizontalSpace,
                               Expanded(
                                 child: Text(
-                                  AppHelpers.getAppName() ?? "foodyman",
+                                  AppHelpers.getAppName() ?? "Kibbi Kiosk",
                                   style: GoogleFonts.inter(
                                       fontSize: 32.sp,
                                       color: Style.black,
@@ -88,7 +88,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           CustomTextField(
                             hintText:
                                 AppHelpers.getTranslation(TrKeys.typeSomething),
-                            onChanged: notifier.setEmail,
+                            onChanged: notifier.setSerial,
                             textController: login,
                             inputType: TextInputType.emailAddress,
                             textCapitalization: TextCapitalization.none,
@@ -207,7 +207,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             onTap: () {
                               login.text = AppConstants.demoSellerLogin;
                               password.text = AppConstants.demoSellerPassword;
-                              notifier.setEmail(AppConstants.demoSellerLogin);
+                              notifier.setSerial(AppConstants.demoSellerLogin);
                               notifier
                                   .setPassword(AppConstants.demoSellerPassword);
                             },

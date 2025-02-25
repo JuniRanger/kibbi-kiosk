@@ -25,14 +25,14 @@ abstract class LocalStorage {
 
   static void deleteToken() => _preferences?.remove(StorageKeys.keyToken);
 
-  static Future<void> setUser(UserData? user) async {
+  static Future<void> setUser(KioskData? user) async {
     if (_preferences != null) {
       final String userString = user != null ? jsonEncode(user.toJson()) : '';
       await _preferences!.setString(StorageKeys.keyUser, userString);
     }
   }
 
-  static UserData? getUser() {
+  static KioskData? getUser() {
     final savedString = _preferences?.getString(StorageKeys.keyUser);
     if (savedString == null) {
       return null;
@@ -41,7 +41,7 @@ abstract class LocalStorage {
     if (map == null) {
       return null;
     }
-    return UserData.fromJson(map);
+    return KioskData.fromJson(map);
   }
 
   static void deleteUser() => _preferences?.remove(StorageKeys.keyUser);
@@ -208,7 +208,7 @@ abstract class LocalStorage {
 
   static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyBags);
 
-  static Future<void> setShop(UserData? user) async {
+  static Future<void> setShop(KioskData? user) async {
     if (_preferences != null) {
       final String userString = user != null ? jsonEncode(user.toJson()) : '';
       await _preferences!.setString(StorageKeys.keyShop, userString);

@@ -1,6 +1,6 @@
 import 'address_data.dart';
 import 'table_data.dart';
-import 'user_data.dart';
+import 'kiosk_data.dart';
 import 'currency_data.dart';
 
 import '../response/payments_response.dart';
@@ -9,7 +9,7 @@ class BagData {
   BagData({
     int? index,
     int? shopId,
-    UserData? selectedUser,
+    KioskData? selectedUser,
     TableData? selectedTable,
     ShopSection? selectedSection,
     AddressData? selectedAddress,
@@ -32,7 +32,7 @@ class BagData {
     _index = json['index'];
     _shopId = json['shop_id'];
     _selectedUser = json['selected_user'] != null
-        ? UserData.fromJson(json['selected_user'])
+        ? KioskData.fromJson(json['selected_user'])
         : null;
     _selectedTable = json['selected_table'] != null
         ? TableData.fromJson(json['selected_table'])
@@ -59,7 +59,7 @@ class BagData {
 
   int? _index;
   int? _shopId;
-  UserData? _selectedUser;
+  KioskData? _selectedUser;
   TableData? _selectedTable;
   ShopSection? _selectedSection;
   AddressData? _selectedAddress;
@@ -70,7 +70,7 @@ class BagData {
   BagData copyWith({
     int? index,
     int? shopId,
-    UserData? selectedUser,
+    KioskData? selectedUser,
     ShopSection? selectedSection,
     TableData? selectedTable,
     AddressData? selectedAddress,
@@ -94,7 +94,7 @@ class BagData {
 
   int? get shopId => _shopId;
 
-  UserData? get selectedUser => _selectedUser;
+  KioskData? get selectedUser => _selectedUser;
 
   TableData? get selectedTable => _selectedTable;
 

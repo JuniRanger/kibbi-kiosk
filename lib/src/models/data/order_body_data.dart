@@ -1,7 +1,7 @@
 import 'package:kiosk/src/core/utils/local_storage.dart';
 import 'package:kiosk/src/models/data/bag_data.dart';
 
-import 'user_data.dart';
+import 'kiosk_data.dart';
 
 class OrderBodyData {
   final String? note;
@@ -9,7 +9,7 @@ class OrderBodyData {
   final int? tableId;
   final num? rate;
   final String deliveryType;
-  final UserData? user;
+  final KioskData? user;
   final String? coupon;
   final BagData bagData;
 

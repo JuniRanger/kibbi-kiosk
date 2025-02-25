@@ -20,9 +20,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
     );
   }
 
-  void setEmail(String text) {
+  void setSerial(String text) {
     state = state.copyWith(
-      email: text.trim(),
+      serial: text.trim(),
       isLoginError: false,
       isEmailNotValid: false,
       isPasswordNotValid: false,
@@ -40,19 +40,19 @@ class LoginNotifier extends StateNotifier<LoginState> {
   }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
-      if (!AppValidators.isValidEmail(state.email)) {
-        state = state.copyWith(isEmailNotValid: true);
-        return;
-      }
+      // if (!AppValidators.isValidEmail(state.serial)) {
+      //   state = state.copyWith(isEmailNotValid: true);
+      //   return;
+      // }
       state = state.copyWith(isLoading: true);
       final response = await _authRepository.login(
-        email: state.email,
+        serial: state.serial,
         password: state.password,
       );
       response.when(
         success: (data) async {
           await LocalStorage.setToken(data.data?.accessToken ?? '');
-           LocalStorage.setUser(data.data?.user);
+          LocalStorage.setUser(data.data?.user);
 
           final res = await _usersRepository.getProfileDetails();
           res.when(

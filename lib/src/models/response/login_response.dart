@@ -1,4 +1,4 @@
-import '../data/user_data.dart';
+import '../data/kiosk_data.dart';
 
 class LoginResponse {
   LoginResponse({
@@ -64,7 +64,7 @@ class User {
   User({
     String? accessToken,
     String? tokenType,
-    UserData? user,
+    KioskData? user,
   }) {
     _accessToken = accessToken;
     _tokenType = tokenType;
@@ -74,17 +74,17 @@ class User {
   User.fromJson(dynamic json) {
     _accessToken = json['access_token'];
     _tokenType = json['token_type'];
-    _user = json['user'] != null ? UserData.fromJson(json['user']) : null;
+    _user = json['user'] != null ? KioskData.fromJson(json['user']) : null;
   }
 
   String? _accessToken;
   String? _tokenType;
-  UserData? _user;
+  KioskData? _user;
 
   User copyWith({
     String? accessToken,
     String? tokenType,
-    UserData? user,
+    KioskData? user,
   }) =>
       User(
         accessToken: accessToken ?? _accessToken,
@@ -96,7 +96,7 @@ class User {
 
   String? get tokenType => _tokenType;
 
-  UserData? get user => _user;
+  KioskData? get user => _user;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

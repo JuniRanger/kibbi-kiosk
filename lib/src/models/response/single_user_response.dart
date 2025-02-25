@@ -1,11 +1,11 @@
-import '../data/user_data.dart';
+import '../data/kiosk_data.dart';
 
 class SingleUserResponse {
   SingleUserResponse({
     String? timestamp,
     bool? status,
     String? message,
-    UserData? data,
+    KioskData? data,
   }) {
     _timestamp = timestamp;
     _status = status;
@@ -17,19 +17,19 @@ class SingleUserResponse {
     _timestamp = json['timestamp'];
     _status = json['status'];
     _message = json['message'];
-    _data = json['data'] != null ? UserData.fromJson(json['data']) : null;
+    _data = json['data'] != null ? KioskData.fromJson(json['data']) : null;
   }
 
   String? _timestamp;
   bool? _status;
   String? _message;
-  UserData? _data;
+  KioskData? _data;
 
   SingleUserResponse copyWith({
     String? timestamp,
     bool? status,
     String? message,
-    UserData? data,
+    KioskData? data,
   }) =>
       SingleUserResponse(
         timestamp: timestamp ?? _timestamp,
@@ -44,7 +44,7 @@ class SingleUserResponse {
 
   String? get message => _message;
 
-  UserData? get data => _data;
+  KioskData? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

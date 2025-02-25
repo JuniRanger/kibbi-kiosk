@@ -17,7 +17,7 @@ export 'response/categories_paginate_response.dart';
 export 'response/brands_paginate_response.dart';
 export 'data/brand_data.dart';
 export 'response/users_paginate_response.dart';
-export 'data/user_data.dart';
+export 'data/kiosk_data.dart';
 export 'data/address_data.dart';
 export 'response/single_user_response.dart';
 export 'response/payments_response.dart';

@@ -381,7 +381,7 @@ class TrKeys {
   static const String privacyPolicy = 'privacy_policy';
   static const String smsDidntSend = 'sms_didnt_send';
   static const String loginCredentialsAreNotValid =
-      'login_credentials_are_not_valid';
+      'login_credentials_are_not_valid';  
   static const String shops = 'shops';
   static const String itemsInCart = 'items_in_cart';
   static const String notFound = 'not_found';

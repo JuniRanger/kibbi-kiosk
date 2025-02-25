@@ -9,10 +9,10 @@ import '../repository.dart';
 class AuthRepository extends AuthFacade {
   @override
   Future<ApiResult<LoginResponse>> login({
-    required String email,
+    required String serial,
     required String password,
   }) async {
-    final data = {'email': email, 'password': password};
+    final data = {'serial': serial, 'password': password};
     try {
       final client = dioHttp.client(requireAuth: false);
       final response = await client.post(

@@ -1,20 +1,20 @@
-import '../data/user_data.dart';
+import '../data/kiosk_data.dart';
 
 class ProfileResponse {
-  ProfileResponse({UserData? data}) {
+  ProfileResponse({KioskData? data}) {
     _data = data;
   }
 
   ProfileResponse.fromJson(dynamic json) {
-    _data = json['data'] != null ? UserData.fromJson(json['data']) : null;
+    _data = json['data'] != null ? KioskData.fromJson(json['data']) : null;
   }
 
-  UserData? _data;
+  KioskData? _data;
 
-  ProfileResponse copyWith({UserData? data}) =>
+  ProfileResponse copyWith({KioskData? data}) =>
       ProfileResponse(data: data ?? _data);
 
-  UserData? get data => _data;
+  KioskData? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
