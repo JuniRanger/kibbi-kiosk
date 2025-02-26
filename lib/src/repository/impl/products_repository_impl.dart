@@ -14,7 +14,7 @@ class ProductsRepository extends ProductsFacade {
     String? query,
     int? categoryId,
     int? brandId,
-    int? shopId,
+    String? shopId,
     required int page,
   }) async {
     final data = {

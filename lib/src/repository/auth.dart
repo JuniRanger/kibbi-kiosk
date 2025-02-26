@@ -7,5 +7,5 @@ abstract class AuthFacade {
     required String password,
   });
 
-  Future<ApiResult<void>> updateFirebaseToken(String? token);
+  // Future<ApiResult<void>> updateJwtToken(String? token);
 }

@@ -18,5 +18,4 @@ abstract class UsersRepository {
   });
 
   Future<ApiResult<ProfileResponse>> getProfileDetails();
-
 }

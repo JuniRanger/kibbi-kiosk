@@ -5,11 +5,10 @@ abstract class AppConstants {
 
   static const bool devMode = true;
 
-  static const String baseUrl = "https://orderandout.onrender.com/api/"; //reemplazarlo con el link de order and out 
-  static const String webUrl = "https://foodyman.org";
+  static const String baseUrl = "https://orderandout-refactor.onrender.com"; //reemplazarlo con el link de order and out 
 
-  static const String demoSellerLogin = 'sellers@githubit.com';
-  static const String demoSellerPassword = 'seller';
+  static const String demoKioskLogin = '67be699b87adde1e28443f86';
+  static const String demoKioskPassword = '12345678';
 
 
   static const Duration refreshTime = Duration(seconds: 30);

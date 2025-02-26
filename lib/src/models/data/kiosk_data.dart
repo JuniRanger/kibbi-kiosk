@@ -1,8 +1,8 @@
-import 'package:kiosk/src/models/data/shop_data.dart';
+import 'shop_data.dart';
 
 class KioskData {
   String? name;
-  String? serial;
+  String? id;
   String? phone;
   ShopData? shop;
 
@@ -10,31 +10,36 @@ class KioskData {
     this.name,
     this.phone,
     this.shop,
-    this.serial,
+    this.id,
   });
 
   KioskData copyWith({
     String? name,
     String? phone,
-    String? serial,
+    String? id,
+    ShopData? shop,
   }) =>
       KioskData(
         name: name ?? this.name,
         phone: phone ?? this.phone,
-        serial: serial ?? this.serial,
+        id: id ?? this.id,
+        shop: shop ?? this.shop,
       );
 
   factory KioskData.fromJson(Map<String, dynamic> json) => KioskData(
         name: json["name"],
         shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
         phone: json["phone"],
-        serial: json["serial"],
+        id: json["id"],
       );
 
   Map<String, dynamic> toJson() => {
         "name": name,
         "phone": phone,
-        "serial": serial,
+        "id": id,
         "shop": shop?.toJson(),
       };
+
+  String? get kioskId => id;
+  String? get restaurantId => shop?.id;
 }

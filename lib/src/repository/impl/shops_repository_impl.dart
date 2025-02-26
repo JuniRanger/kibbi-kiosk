@@ -56,7 +56,7 @@ class ShopsRepositoryImpl extends ShopsRepository {
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
-        '/api/v1/dashboard/seller/categories',
+        '/api/v1/dashboard/Kiosk/categories',
         queryParameters: data,
       );
       return ApiResult.success(
@@ -77,7 +77,7 @@ class ShopsRepositoryImpl extends ShopsRepository {
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
-        '/api/v1/dashboard/seller/shop-tags/paginate',
+        '/api/v1/dashboard/Kiosk/shop-tags/paginate',
         queryParameters: data,
       );
       return ApiResult.success(
@@ -95,7 +95,7 @@ class ShopsRepositoryImpl extends ShopsRepository {
     required int page,
     int? categoryId,
     String? query,
-     bool? isOpen,
+    bool? isOpen,
     bool? verify,
   }) async {
     final data = ShopRequest(

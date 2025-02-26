@@ -167,7 +167,7 @@ class _MainPageState extends ConsumerState<MainPage>
                   onDoubleTap: () {
                     AppHelpers.showCustomDialog(
                       context: context,
-                      title: TrKeys.sellerOptions,
+                      title: TrKeys.KioskOptions,
                       child: const Menu(),
                     );
                   },

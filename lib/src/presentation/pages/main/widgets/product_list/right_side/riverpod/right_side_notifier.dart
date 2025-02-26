@@ -471,7 +471,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
   Future<void> placeOrder(
       {required BuildContext context,
-      int? shopId,
+      String? shopId,
       required VoidCallback invalidateState}) async {
     bool active = true;
     // if (_name?.isEmpty ?? true) {

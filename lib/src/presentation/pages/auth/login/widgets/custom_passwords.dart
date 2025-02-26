@@ -22,12 +22,12 @@ class CustomPasswords extends StatelessWidget {
             children: [
               RichText(
                 text: TextSpan(
-                  text: '${AppHelpers.getTranslation(TrKeys.sellerLogin)}:',
+                  text: '${AppHelpers.getTranslation(TrKeys.kioskLogin)}:',
                   style: GoogleFonts.inter(
                       fontSize: 14.sp, letterSpacing: -0.3, color: Style.black),
                   children: [
                     TextSpan(
-                      text: ' ${AppConstants.demoSellerLogin}',
+                      text: ' ${AppConstants.demoKioskLogin}',
                       style: GoogleFonts.inter(
                           letterSpacing: -0.3,
                           fontSize: 14.sp,
@@ -45,7 +45,7 @@ class CustomPasswords extends StatelessWidget {
                       letterSpacing: -0.3, color: Style.black, fontSize: 14.sp),
                   children: [
                     TextSpan(
-                      text: ' ${AppConstants.demoSellerPassword}',
+                      text: ' ${AppConstants.demoKioskPassword}',
                       style: GoogleFonts.inter(
                           letterSpacing: -0.3,
                           fontSize: 14.sp,

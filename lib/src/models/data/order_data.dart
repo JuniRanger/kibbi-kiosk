@@ -8,7 +8,7 @@ class OrderData {
   int? userId;
   num? totalPrice;
   num? originPrice;
-  num? sellerFee;
+  num? KioskFee;
   num? rate;
   num? tax;
   num? commissionFee;
@@ -51,7 +51,7 @@ class OrderData {
     this.userId,
     this.totalPrice,
     this.originPrice,
-    this.sellerFee,
+    this.KioskFee,
     this.rate,
     this.tax,
     this.tips,
@@ -95,7 +95,7 @@ class OrderData {
     int? userId,
     num? totalPrice,
     num? originPrice,
-    num? sellerFee,
+    num? KioskFee,
     num? tips,
     num? rate,
     num? tax,
@@ -140,7 +140,7 @@ class OrderData {
         location: location ?? this.location,
         totalPrice: totalPrice ?? this.totalPrice,
         originPrice: originPrice ?? this.originPrice,
-        sellerFee: sellerFee ?? this.sellerFee,
+        KioskFee: KioskFee ?? this.KioskFee,
         deliveryFee: deliveryFee ?? this.deliveryFee,
         totalDiscount: totalDiscount ?? this.totalDiscount,
         rate: rate ?? this.rate,
@@ -178,94 +178,130 @@ class OrderData {
       );
 
   factory OrderData.fromJson(Map<String, dynamic> json) => OrderData(
-    id: json["id"],
-    userId: json["user_id"],
-    note: json["note"],
-    totalPrice: json["total_price"],
-    originPrice: json["origin_price"],
-    sellerFee: json["seller_fee"],
-    rate: json["rate"],
-    tips: json["tips"],
-    tax: json["tax"],
-    phone: json["phone"],
-    username: json["username"],
-    commissionFee: json["commission_fee"],
-    deliveryFee: json["delivery_fee"],
-    totalDiscount: json["total_discount"],
-    serviceFee: json["service_fee"],
-    status: json["status"],
-    orderAddress: json["address"] == null ? null : OrderAddress.fromJson(json["address"]),
-    location: json["location"] == null ? null : LocationData.fromJson(json["location"]),
-    deliveryType: json["delivery_type"],
-    deliveryDate: json["delivery_date"] == null ? null : DateTime.parse(json["delivery_date"]),
-    deliveryTime: json["delivery_time"],
-    deliveryDateTime: json["delivery_date_time"] == null ? null : DateTime.parse(json["delivery_date_time"]),
-    current: json["current"],
-    split: json["split"],
-    paidBySplit: json["paid_by_split"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    deliveryman: json["deliveryman"] == null ? null : KioskData.fromJson(json["deliveryman"]),
-    shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
-    currency: json["currency"] == null ? null : CurrencyData.fromJson(json["currency"]),
-    user: json["user"] == null ? null : KioskData.fromJson(json["user"]),
-    details: json["details"] == null ? [] : List<OrderDetail>.from(json["details"]!.map((x) => OrderDetail.fromJson(x))),
-    transaction: json["transaction"] == null ? null : Transaction.fromJson(json["transaction"]),
-    review: json["review"],
-    pointHistories: json["point_histories"] == null ? [] : List<dynamic>.from(json["point_histories"]!.map((x) => x)),
-    orderRefunds: json["order_refunds"] == null ? [] : List<dynamic>.from(json["order_refunds"]!.map((x) => x)),
-    coupon: json["coupon"],
-    galleries: json["galleries"] == null ? [] : List<Galleries>.from(json["galleries"]!.map((x) => Galleries.fromJson(x))),
-    myAddress: json["my_address"],
-    couponPrice: json["coupon_price"],
-    table: json["table"] == null ? null : TableData.fromJson(json["table"]),
-  );
+        id: json["id"],
+        userId: json["user_id"],
+        note: json["note"],
+        totalPrice: json["total_price"],
+        originPrice: json["origin_price"],
+        KioskFee: json["Kiosk_fee"],
+        rate: json["rate"],
+        tips: json["tips"],
+        tax: json["tax"],
+        phone: json["phone"],
+        username: json["username"],
+        commissionFee: json["commission_fee"],
+        deliveryFee: json["delivery_fee"],
+        totalDiscount: json["total_discount"],
+        serviceFee: json["service_fee"],
+        status: json["status"],
+        orderAddress: json["address"] == null
+            ? null
+            : OrderAddress.fromJson(json["address"]),
+        location: json["location"] == null
+            ? null
+            : LocationData.fromJson(json["location"]),
+        deliveryType: json["delivery_type"],
+        deliveryDate: json["delivery_date"] == null
+            ? null
+            : DateTime.parse(json["delivery_date"]),
+        deliveryTime: json["delivery_time"],
+        deliveryDateTime: json["delivery_date_time"] == null
+            ? null
+            : DateTime.parse(json["delivery_date_time"]),
+        current: json["current"],
+        split: json["split"],
+        paidBySplit: json["paid_by_split"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        deliveryman: json["deliveryman"] == null
+            ? null
+            : KioskData.fromJson(json["deliveryman"]),
+        shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
+        currency: json["currency"] == null
+            ? null
+            : CurrencyData.fromJson(json["currency"]),
+        user: json["user"] == null ? null : KioskData.fromJson(json["user"]),
+        details: json["details"] == null
+            ? []
+            : List<OrderDetail>.from(
+                json["details"]!.map((x) => OrderDetail.fromJson(x))),
+        transaction: json["transaction"] == null
+            ? null
+            : Transaction.fromJson(json["transaction"]),
+        review: json["review"],
+        pointHistories: json["point_histories"] == null
+            ? []
+            : List<dynamic>.from(json["point_histories"]!.map((x) => x)),
+        orderRefunds: json["order_refunds"] == null
+            ? []
+            : List<dynamic>.from(json["order_refunds"]!.map((x) => x)),
+        coupon: json["coupon"],
+        galleries: json["galleries"] == null
+            ? []
+            : List<Galleries>.from(
+                json["galleries"]!.map((x) => Galleries.fromJson(x))),
+        myAddress: json["my_address"],
+        couponPrice: json["coupon_price"],
+        table: json["table"] == null ? null : TableData.fromJson(json["table"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "phone": phone,
-    "tips": tips,
-    "coupon_price": couponPrice,
-    "note": note,
-    "username": username,
-    "total_price": totalPrice,
-    "origin_price": originPrice,
-    "seller_fee": sellerFee,
-    "delivery_fee": deliveryFee,
-    "total_discount": totalDiscount,
-    "rate": rate,
-    "tax": tax,
-    "commission_fee": commissionFee,
-    "service_fee": serviceFee,
-    "status": status,
-    "location": location?.toJson(),
-    "address": orderAddress?.toJson(),
-    "delivery_type": deliveryType,
-    "delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
-    "delivery_time": deliveryTime,
-    "delivery_date_time": deliveryDateTime?.toIso8601String(),
-    "current": current,
-    "split": split,
-    "paid_by_split": paidBySplit,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "deliveryman": deliveryman?.toJson(),
-    "shop": shop?.toJson(),
-    "currency": currency?.toJson(),
-    "user": user?.toJson(),
-    "details": details == null ? [] : List<dynamic>.from(details!.map((x) => x.toJson())),
-    "transaction": transaction,
-    "review": review,
-    "point_histories": pointHistories == null ? [] : List<dynamic>.from(pointHistories!.map((x) => x)),
-    "order_refunds": orderRefunds == null ? [] : List<dynamic>.from(orderRefunds!.map((x) => x)),
-    "coupon": coupon,
-    "galleries": galleries == null ? [] : List<dynamic>.from(galleries!.map((x) => x)),
-    "my_address": myAddress,
-    "table": table?.toJson(),
-  };
+        "id": id,
+        "user_id": userId,
+        "phone": phone,
+        "tips": tips,
+        "coupon_price": couponPrice,
+        "note": note,
+        "username": username,
+        "total_price": totalPrice,
+        "origin_price": originPrice,
+        "Kiosk_fee": KioskFee,
+        "delivery_fee": deliveryFee,
+        "total_discount": totalDiscount,
+        "rate": rate,
+        "tax": tax,
+        "commission_fee": commissionFee,
+        "service_fee": serviceFee,
+        "status": status,
+        "location": location?.toJson(),
+        "address": orderAddress?.toJson(),
+        "delivery_type": deliveryType,
+        "delivery_date":
+            "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
+        "delivery_time": deliveryTime,
+        "delivery_date_time": deliveryDateTime?.toIso8601String(),
+        "current": current,
+        "split": split,
+        "paid_by_split": paidBySplit,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "deliveryman": deliveryman?.toJson(),
+        "shop": shop?.toJson(),
+        "currency": currency?.toJson(),
+        "user": user?.toJson(),
+        "details": details == null
+            ? []
+            : List<dynamic>.from(details!.map((x) => x.toJson())),
+        "transaction": transaction,
+        "review": review,
+        "point_histories": pointHistories == null
+            ? []
+            : List<dynamic>.from(pointHistories!.map((x) => x)),
+        "order_refunds": orderRefunds == null
+            ? []
+            : List<dynamic>.from(orderRefunds!.map((x) => x)),
+        "coupon": coupon,
+        "galleries": galleries == null
+            ? []
+            : List<dynamic>.from(galleries!.map((x) => x)),
+        "my_address": myAddress,
+        "table": table?.toJson(),
+      };
 }
-
 
 class OrderDetail {
   OrderDetail({

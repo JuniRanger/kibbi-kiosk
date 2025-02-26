@@ -7,7 +7,7 @@ class TrKeys {
   static const String area = 'area';
   static const String restart = 'restart';
   static const String developerOptions = 'developer.options';
-  static const String sellerOptions = 'seller.options';
+  static const String KioskOptions = 'Kiosk.options';
   static const String table = 'table';
   static const String help = 'help';
   static const String copy = 'copy';
@@ -25,7 +25,7 @@ class TrKeys {
   static const String noRestaurant = 'no.restaurant';
   static const String allRestaurants = 'all.restaurants';
   static const String noBooking = 'no_booking';
-  static const String seller = 'seller';
+  static const String Kiosk = 'Kiosk';
   static const String under = 'under';
   static const String cooker = 'cook';
   static const String waiter = 'waiter';
@@ -187,18 +187,19 @@ class TrKeys {
   static const String savedLocations = 'saved_locations';
   static const String orderHistory = 'order_history';
   static const String chat = 'chat';
-  static const String becomeSeller = 'become_seller';
+  static const String becomeKiosk = 'become_Kiosk';
   static const String logout = 'logout';
   static const String noWallet = 'no_wallet';
   static const String systemSettings = 'system_settings';
   static const String selectLanguage = 'select_language';
-  static const String startSelectLanguage = 'select.a.language.to.begin.your.purchase';
+  static const String startSelectLanguage =
+      'select.a.language.to.begin.your.purchase';
   static const String next = 'next';
   static const String skip = 'skip';
   static const String login = 'login';
-  static const String sellerLogin = 'seller_login';
+  static const String kioskLogin = 'Kiosk_login';
   static const String cookerLogin = 'cooker_login';
-  static const String email = 'email';
+  static const String serial = 'serial';
   static const String enterName = 'enter_name';
   static const String enterLastName = 'enter_last_name';
   static const String enterEmail = 'enter_email';
@@ -381,7 +382,7 @@ class TrKeys {
   static const String privacyPolicy = 'privacy_policy';
   static const String smsDidntSend = 'sms_didnt_send';
   static const String loginCredentialsAreNotValid =
-      'login_credentials_are_not_valid';  
+      'login_credentials_are_not_valid';
   static const String shops = 'shops';
   static const String itemsInCart = 'items_in_cart';
   static const String notFound = 'not_found';
@@ -396,7 +397,7 @@ class TrKeys {
       'wallet_amount_is_not_enough_for_order_creating';
   static const String errorOccurredWithPayingViaStripe =
       'error_occurred_with_paying_via_stripe';
-  static const String emailIsNotValid = 'email_is_not_valid';
+  static const String serialIsNotValid = 'serial_is_not_valid';
   static const String passwordShouldContainMinimum8Characters =
       'password_should_contain_minimum_8_characters';
   static const String phoneNumberIsNotValid = 'phone_number_is_not_valid';

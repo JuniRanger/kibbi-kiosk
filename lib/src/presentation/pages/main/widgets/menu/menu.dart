@@ -74,8 +74,7 @@ class Menu extends StatelessWidget {
                         isLoading: state.isLoading,
                         onPressed: () {
                           if (state.password.isEmpty) return;
-                          notifier
-                              .setSerial(LocalStorage.getUser()?.serial ?? '');
+                          notifier.setSerial(LocalStorage.getUser()?.id ?? '');
                           notifier.login(goToMain: () {
                             context.replaceRoute(const LoginRoute());
                             LocalStorage.clearStore();

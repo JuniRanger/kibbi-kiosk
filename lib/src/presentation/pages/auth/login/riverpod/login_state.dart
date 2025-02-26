@@ -9,7 +9,7 @@ class LoginState with _$LoginState {
     @Default(false) bool showPassword,
     @Default(false) bool isCurrenciesLoading,
     @Default(false) bool isLoginError,
-    @Default(false) bool isEmailNotValid,
+    @Default(false) bool isSerialNotValid,
     @Default(false) bool isPasswordNotValid,
     @Default('') String serial,
     @Default('') String password,

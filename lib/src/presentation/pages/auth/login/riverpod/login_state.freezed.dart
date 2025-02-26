@@ -20,7 +20,7 @@ mixin _$LoginState {
   bool get showPassword => throw _privateConstructorUsedError;
   bool get isCurrenciesLoading => throw _privateConstructorUsedError;
   bool get isLoginError => throw _privateConstructorUsedError;
-  bool get isEmailNotValid => throw _privateConstructorUsedError;
+  bool get isSerialNotValid => throw _privateConstructorUsedError;
   bool get isPasswordNotValid => throw _privateConstructorUsedError;
   String get serial => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $LoginStateCopyWith<$Res> {
       bool showPassword,
       bool isCurrenciesLoading,
       bool isLoginError,
-      bool isEmailNotValid,
+      bool isSerialNotValid,
       bool isPasswordNotValid,
       String serial,
       String password});
@@ -68,7 +68,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? showPassword = null,
     Object? isCurrenciesLoading = null,
     Object? isLoginError = null,
-    Object? isEmailNotValid = null,
+    Object? isSerialNotValid = null,
     Object? isPasswordNotValid = null,
     Object? serial = null,
     Object? password = null,
@@ -90,9 +90,9 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
           ? _value.isLoginError
           : isLoginError // ignore: cast_nullable_to_non_nullable
               as bool,
-      isEmailNotValid: null == isEmailNotValid
-          ? _value.isEmailNotValid
-          : isEmailNotValid // ignore: cast_nullable_to_non_nullable
+      isSerialNotValid: null == isSerialNotValid
+          ? _value.isSerialNotValid
+          : isSerialNotValid // ignore: cast_nullable_to_non_nullable
               as bool,
       isPasswordNotValid: null == isPasswordNotValid
           ? _value.isPasswordNotValid
@@ -123,7 +123,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
       bool showPassword,
       bool isCurrenciesLoading,
       bool isLoginError,
-      bool isEmailNotValid,
+      bool isSerialNotValid,
       bool isPasswordNotValid,
       String serial,
       String password});
@@ -146,7 +146,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     Object? showPassword = null,
     Object? isCurrenciesLoading = null,
     Object? isLoginError = null,
-    Object? isEmailNotValid = null,
+    Object? isSerialNotValid = null,
     Object? isPasswordNotValid = null,
     Object? serial = null,
     Object? password = null,
@@ -168,9 +168,9 @@ class __$$LoginStateImplCopyWithImpl<$Res>
           ? _value.isLoginError
           : isLoginError // ignore: cast_nullable_to_non_nullable
               as bool,
-      isEmailNotValid: null == isEmailNotValid
-          ? _value.isEmailNotValid
-          : isEmailNotValid // ignore: cast_nullable_to_non_nullable
+      isSerialNotValid: null == isSerialNotValid
+          ? _value.isSerialNotValid
+          : isSerialNotValid // ignore: cast_nullable_to_non_nullable
               as bool,
       isPasswordNotValid: null == isPasswordNotValid
           ? _value.isPasswordNotValid
@@ -196,7 +196,7 @@ class _$LoginStateImpl extends _LoginState {
       this.showPassword = false,
       this.isCurrenciesLoading = false,
       this.isLoginError = false,
-      this.isEmailNotValid = false,
+      this.isSerialNotValid = false,
       this.isPasswordNotValid = false,
       this.serial = '',
       this.password = ''})
@@ -216,7 +216,7 @@ class _$LoginStateImpl extends _LoginState {
   final bool isLoginError;
   @override
   @JsonKey()
-  final bool isEmailNotValid;
+  final bool isSerialNotValid;
   @override
   @JsonKey()
   final bool isPasswordNotValid;
@@ -229,7 +229,7 @@ class _$LoginStateImpl extends _LoginState {
 
   @override
   String toString() {
-    return 'LoginState(isLoading: $isLoading, showPassword: $showPassword, isCurrenciesLoading: $isCurrenciesLoading, isLoginError: $isLoginError, isEmailNotValid: $isEmailNotValid, isPasswordNotValid: $isPasswordNotValid, serial: $serial, password: $password)';
+    return 'LoginState(isLoading: $isLoading, showPassword: $showPassword, isCurrenciesLoading: $isCurrenciesLoading, isLoginError: $isLoginError, isSerialNotValid: $isSerialNotValid, isPasswordNotValid: $isPasswordNotValid, serial: $serial, password: $password)';
   }
 
   @override
@@ -245,8 +245,8 @@ class _$LoginStateImpl extends _LoginState {
                 other.isCurrenciesLoading == isCurrenciesLoading) &&
             (identical(other.isLoginError, isLoginError) ||
                 other.isLoginError == isLoginError) &&
-            (identical(other.isEmailNotValid, isEmailNotValid) ||
-                other.isEmailNotValid == isEmailNotValid) &&
+            (identical(other.isSerialNotValid, isSerialNotValid) ||
+                other.isSerialNotValid == isSerialNotValid) &&
             (identical(other.isPasswordNotValid, isPasswordNotValid) ||
                 other.isPasswordNotValid == isPasswordNotValid) &&
             (identical(other.serial, serial) || other.serial == serial) &&
@@ -261,7 +261,7 @@ class _$LoginStateImpl extends _LoginState {
       showPassword,
       isCurrenciesLoading,
       isLoginError,
-      isEmailNotValid,
+      isSerialNotValid,
       isPasswordNotValid,
       serial,
       password);
@@ -281,7 +281,7 @@ abstract class _LoginState extends LoginState {
       final bool showPassword,
       final bool isCurrenciesLoading,
       final bool isLoginError,
-      final bool isEmailNotValid,
+      final bool isSerialNotValid,
       final bool isPasswordNotValid,
       final String serial,
       final String password}) = _$LoginStateImpl;
@@ -296,7 +296,7 @@ abstract class _LoginState extends LoginState {
   @override
   bool get isLoginError;
   @override
-  bool get isEmailNotValid;
+  bool get isSerialNotValid;
   @override
   bool get isPasswordNotValid;
   @override

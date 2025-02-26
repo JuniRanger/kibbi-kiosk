@@ -15,7 +15,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     state = state.copyWith(
       password: text.trim(),
       isLoginError: false,
-      isEmailNotValid: false,
+      isSerialNotValid: false,
       isPasswordNotValid: false,
     );
   }
@@ -24,7 +24,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     state = state.copyWith(
       serial: text.trim(),
       isLoginError: false,
-      isEmailNotValid: false,
+      isSerialNotValid: false,
       isPasswordNotValid: false,
     );
   }
@@ -40,8 +40,8 @@ class LoginNotifier extends StateNotifier<LoginState> {
   }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
-      // if (!AppValidators.isValidEmail(state.serial)) {
-      //   state = state.copyWith(isEmailNotValid: true);
+      // if (!AppValidators.isValidEmail(state.id)) {
+      //   state = state.copyWith(isSerialNotValid: true);
       //   return;
       // }
       state = state.copyWith(isLoading: true);
@@ -51,8 +51,8 @@ class LoginNotifier extends StateNotifier<LoginState> {
       );
       response.when(
         success: (data) async {
-          await LocalStorage.setToken(data.data?.accessToken ?? '');
-          LocalStorage.setUser(data.data?.user);
+          await LocalStorage.setToken(data.token ?? '');
+          LocalStorage.setUser(data.kiosk);
 
           final res = await _usersRepository.getProfileDetails();
           res.when(

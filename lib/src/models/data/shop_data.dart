@@ -46,7 +46,7 @@ class ShopData {
     this.shopPayments,
   });
 
-  int? id;
+  String? id;
   int? userId;
   num? tax;
   num? deliveryRange;

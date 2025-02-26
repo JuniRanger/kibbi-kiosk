@@ -69,7 +69,7 @@ class UsersRepositoryImpl extends UsersRepository {
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.post(
-        '/api/v1/dashboard/seller/shops/invites/$id/status/change',
+        '/api/v1/dashboard/Kiosk/shops/invites/$id/status/change',
         data: data,
       );
       return ApiResult.success(data: response.data);

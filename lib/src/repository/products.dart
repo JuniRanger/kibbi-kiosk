@@ -8,7 +8,7 @@ abstract class ProductsFacade {
     String? query,
     int? categoryId,
     int? brandId,
-    int? shopId,
+    String? shopId,
     required int page,
   });
 

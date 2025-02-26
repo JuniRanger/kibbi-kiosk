@@ -69,7 +69,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ],
                           ),
-                          56.verticalSpace,
+                          56.verticalSpace, 
                           Text(
                             AppHelpers.getTranslation(TrKeys.login),
                             style: GoogleFonts.inter(
@@ -79,7 +79,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           36.verticalSpace,
                           Text(
-                            AppHelpers.getTranslation(TrKeys.email),
+                            AppHelpers.getTranslation(TrKeys.serial),
                             style: GoogleFonts.inter(
                                 fontSize: 10.sp,
                                 color: Style.black,
@@ -90,13 +90,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 AppHelpers.getTranslation(TrKeys.typeSomething),
                             onChanged: notifier.setSerial,
                             textController: login,
-                            inputType: TextInputType.emailAddress,
                             textCapitalization: TextCapitalization.none,
-                            isError:
-                                state.isLoginError || state.isEmailNotValid,
-                            descriptionText: state.isEmailNotValid
-                                ? AppHelpers.getTranslation(
-                                    TrKeys.emailIsNotValid)
+                            isError: state.isLoginError || state.isSerialNotValid,
+                            descriptionText: state.isSerialNotValid
+                                ? AppHelpers.getTranslation(TrKeys.serialIsNotValid)
                                 : (state.isLoginError
                                     ? AppHelpers.getTranslation(
                                         TrKeys.loginCredentialsAreNotValid)
@@ -205,11 +202,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const Spacer(),
                           CustomPasswords(
                             onTap: () {
-                              login.text = AppConstants.demoSellerLogin;
-                              password.text = AppConstants.demoSellerPassword;
-                              notifier.setSerial(AppConstants.demoSellerLogin);
+                              login.text = AppConstants.demoKioskLogin;
+                              password.text = AppConstants.demoKioskPassword;
+                              notifier.setSerial(AppConstants.demoKioskLogin);
                               notifier
-                                  .setPassword(AppConstants.demoSellerPassword);
+                                  .setPassword(AppConstants.demoKioskPassword);
                             },
                           ),
                           const Spacer(),
