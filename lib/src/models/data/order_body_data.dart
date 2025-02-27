@@ -6,7 +6,7 @@ import 'kiosk_data.dart';
 class OrderBodyData {
   final String? note;
   final int? currencyId;
-  final int? tableId;
+  final String? tableId;
   final num? rate;
   final String deliveryType;
   final KioskData? user;

@@ -5,7 +5,7 @@ import 'package:kiosk/src/core/utils/utils.dart';
 class SearchProductModel {
   final String text;
   final int page;
-  final int? shopId;
+  final String? shopId;
   SearchProductModel({
     required this.text,
     required this.page,

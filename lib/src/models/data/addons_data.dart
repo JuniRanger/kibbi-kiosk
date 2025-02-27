@@ -2,7 +2,6 @@ import 'package:kiosk/src/models/data/translation.dart';
 
 import 'product_data.dart';
 
-
 class Addons {
   Addons({
     required this.id,
@@ -15,7 +14,7 @@ class Addons {
     this.active,
   });
 
-  int? id;
+  String? id;
   int? stockId;
   int? addonId;
   int? quantity;
@@ -25,7 +24,6 @@ class Addons {
   Stocks? stocks;
 
   factory Addons.fromJson(Map<dynamic, dynamic>? json) {
-
     return Addons(
       id: json?["id"],
       stockId: json?["stock_id"],
@@ -74,9 +72,9 @@ class Product {
     this.reviews,
   });
 
-  int? id;
+  String? id;
   String? uuid;
-  int? shopId;
+  String? shopId;
   int? categoryId;
   int? brandId;
   num? tax;
@@ -111,8 +109,12 @@ class Product {
       minQty: json?["min_qty"],
       maxQty: json?["max_qty"],
       ratingPercent: json?["rating_percent"],
-      translation: json?["translation"] != null ? Translation.fromJson(json?["translation"]) : null,
-      locales: json?["locales"] != null ? List<String>.from(json?["locales"].map((x) => x)) : [],
+      translation: json?["translation"] != null
+          ? Translation.fromJson(json?["translation"])
+          : null,
+      locales: json?["locales"] != null
+          ? List<String>.from(json?["locales"].map((x) => x))
+          : [],
       stock: json?["stock"] == null ? null : Stocks.fromJson(json?["stock"]),
     );
   }

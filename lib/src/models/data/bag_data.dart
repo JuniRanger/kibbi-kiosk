@@ -8,7 +8,7 @@ import '../response/payments_response.dart';
 class BagData {
   BagData({
     int? index,
-    int? shopId,
+    String? shopId,
     KioskData? selectedUser,
     TableData? selectedTable,
     ShopSection? selectedSection,
@@ -58,7 +58,7 @@ class BagData {
   }
 
   int? _index;
-  int? _shopId;
+  String? _shopId;
   KioskData? _selectedUser;
   TableData? _selectedTable;
   ShopSection? _selectedSection;
@@ -69,7 +69,7 @@ class BagData {
 
   BagData copyWith({
     int? index,
-    int? shopId,
+    String? shopId,
     KioskData? selectedUser,
     ShopSection? selectedSection,
     TableData? selectedTable,
@@ -92,7 +92,7 @@ class BagData {
 
   int? get index => _index;
 
-  int? get shopId => _shopId;
+  String? get shopId => _shopId;
 
   KioskData? get selectedUser => _selectedUser;
 

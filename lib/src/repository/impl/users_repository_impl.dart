@@ -10,7 +10,8 @@ import '../repository.dart';
 
 class UsersRepositoryImpl extends UsersRepository {
   @override
-  Future<ApiResult<DeliveryZonePaginate>> getDeliveryZone(int? shopId) async {
+  Future<ApiResult<DeliveryZonePaginate>> getDeliveryZone(
+      String? shopId) async {
     final data = {
       'lang': LocalStorage.getLanguage()?.locale ?? 'en',
     };

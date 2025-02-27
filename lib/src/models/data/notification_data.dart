@@ -30,7 +30,7 @@ class NotificationResponse {
 }
 
 class NotificationModel {
-  int? id;
+  String? id;
   String? type;
   String? title;
   String? body;
@@ -42,46 +42,43 @@ class NotificationModel {
   Client? client;
   OrderData? orderData;
 
-  NotificationModel({
-    this.id,
-    this.type,
-    this.title,
-    this.body,
-    this.data,
-    this.userId,
-    this.createdAt,
-    this.updatedAt,
-    this.readAt,
-    this.client,
-    this.orderData
-  });
+  NotificationModel(
+      {this.id,
+      this.type,
+      this.title,
+      this.body,
+      this.data,
+      this.userId,
+      this.createdAt,
+      this.updatedAt,
+      this.readAt,
+      this.client,
+      this.orderData});
 
-  NotificationModel copyWith({
-    int? id,
-    String? type,
-    String? title,
-    String? body,
-    Data? data,
-    int? userId,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    DateTime? readAt,
-    Client? client,
-    OrderData? orderData
-  }) =>
+  NotificationModel copyWith(
+          {int? id,
+          String? type,
+          String? title,
+          String? body,
+          Data? data,
+          int? userId,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          DateTime? readAt,
+          Client? client,
+          OrderData? orderData}) =>
       NotificationModel(
-        id: id ?? this.id,
-        type: type ?? this.type,
-        title: title ?? this.title,
-        body: body ?? this.body,
-        data: data ?? this.data,
-        userId: userId ?? this.userId,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        readAt: readAt ?? this.readAt,
-        client: client ?? this.client,
-        orderData: orderData ?? this.orderData
-      );
+          id: id.toString(),
+          type: type ?? this.type,
+          title: title ?? this.title,
+          body: body ?? this.body,
+          data: data ?? this.data,
+          userId: userId ?? this.userId,
+          createdAt: createdAt ?? this.createdAt,
+          updatedAt: updatedAt ?? this.updatedAt,
+          readAt: readAt ?? this.readAt,
+          client: client ?? this.client,
+          orderData: orderData ?? this.orderData);
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
       NotificationModel(
@@ -97,10 +94,12 @@ class NotificationModel {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.tryParse(json["updated_at"])?.toLocal(),
-        readAt:
-            json["read_at"] == null ? null : DateTime.tryParse(json["read_at"])?.toLocal(),
+        readAt: json["read_at"] == null
+            ? null
+            : DateTime.tryParse(json["read_at"])?.toLocal(),
         client: json["client"] == null ? null : Client.fromJson(json["client"]),
-        orderData: json["order"] == null ? null : OrderData.fromJson(json["order"]),
+        orderData:
+            json["order"] == null ? null : OrderData.fromJson(json["order"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -119,7 +118,7 @@ class NotificationModel {
 }
 
 class Client {
-  int? id;
+  String? id;
   String? firstname;
   String? lastname;
   bool? emptyP;
@@ -147,7 +146,7 @@ class Client {
     String? img,
   }) =>
       Client(
-        id: id ?? this.id,
+        id: id.toString(),
         firstname: firstname ?? this.firstname,
         lastname: lastname ?? this.lastname,
         emptyP: emptyP ?? this.emptyP,
@@ -178,7 +177,7 @@ class Client {
 }
 
 class Data {
-  int? id;
+  String? id;
   String? type;
   String? status;
 
@@ -194,7 +193,7 @@ class Data {
     String? status,
   }) =>
       Data(
-        id: id ?? this.id,
+        id: id.toString(),
         type: type ?? this.type,
         status: status ?? this.status,
       );

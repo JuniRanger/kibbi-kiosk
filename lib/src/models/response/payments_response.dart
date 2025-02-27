@@ -32,7 +32,7 @@ class PaymentsResponse {
 
 class PaymentData {
   PaymentData({
-    int? id,
+    String? id,
     String? tag,
     int? input,
     bool? sandbox,
@@ -64,7 +64,7 @@ class PaymentData {
         : null;
   }
 
-  int? _id;
+  String? _id;
   String? _tag;
   int? _input;
   bool? _sandbox;
@@ -74,7 +74,7 @@ class PaymentData {
   Translation? _translation;
 
   PaymentData copyWith({
-    int? id,
+    String? id,
     String? tag,
     int? input,
     bool? sandbox,
@@ -94,7 +94,7 @@ class PaymentData {
         translation: translation ?? _translation,
       );
 
-  int? get id => _id;
+  String? get id => _id;
 
   String? get tag => _tag;
 

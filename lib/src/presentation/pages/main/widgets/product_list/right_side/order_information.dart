@@ -16,7 +16,6 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:kiosk/src/riverpod/provider/app_provider.dart';
 
 import 'riverpod/right_side_notifier.dart';
@@ -99,35 +98,6 @@ class OrderInformation extends ConsumerWidget {
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // IntlPhoneField(
-                      //   onChanged: (phoneNum) {
-                      //     notifier.setPhone(phoneNum.completeNumber);
-                      //   },
-                      //   disableLengthCheck:
-                      //       !AppConstants.isNumberLengthAlwaysSame,
-                      //   validator: (s) {
-                      //     if (AppConstants.isNumberLengthAlwaysSame &&
-                      //         (AppValidators.isValidPhone(s?.completeNumber))) {
-                      //       return AppHelpers.getTranslation(
-                      //           TrKeys.phoneNumberIsNotValid);
-                      //     }
-                      //     return null;
-                      //   },
-                      //   showCountryFlag: AppConstants.showFlag,
-                      //   showDropdownIcon: AppConstants.showArrowIcon,
-                      //   keyboardType: TextInputType.phone,
-                      //   initialCountryCode: AppConstants.countryCodeISO,
-                      //   invalidNumberMessage: AppHelpers.getTranslation(
-                      //       TrKeys.phoneNumberIsNotValid),
-                      //   inputFormatters: [
-                      //     FilteringTextInputFormatter.digitsOnly
-                      //   ],
-                      //   autovalidateMode: AppConstants.isNumberLengthAlwaysSame
-                      //       ? AutovalidateMode.onUserInteraction
-                      //       : AutovalidateMode.disabled,
-                      //   textAlignVertical: TextAlignVertical.center,
-                      //   decoration: const InputDecoration(counterText: ''),
-                      // ),
                       Visibility(
                         visible: state.selectPhoneError != null,
                         child: Padding(
@@ -296,11 +266,11 @@ class OrderInformation extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        PopupMenuButton<int>(
+                        PopupMenuButton<String>(
                           itemBuilder: (context) {
                             return state.payments
                                 .map(
-                                  (payment) => PopupMenuItem<int>(
+                                  (payment) => PopupMenuItem<String>(
                                     value: payment.id,
                                     child: Text(
                                       AppHelpers.getTranslation(

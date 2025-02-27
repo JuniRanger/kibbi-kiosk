@@ -47,7 +47,7 @@ class ProductsRepository extends ProductsFacade {
   Future<ApiResult<ProductCalculateResponse>> getAllCalculations(
     List<BagProductData> bagProducts,
     String type,
-    int? shopId, {
+    String? shopId, {
     String? coupon,
   }) async {
     final data = {
@@ -77,7 +77,7 @@ class ProductsRepository extends ProductsFacade {
       return ApiResult.success(
         data: ProductCalculateResponse.fromJson(response.data),
       );
-    } catch (e,s) {
+    } catch (e, s) {
       debugPrint('==> get all calculations failure: $e, $s');
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }

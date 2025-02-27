@@ -10,7 +10,7 @@ class CategoriesRepositoryImpl extends CategoriesRepository {
   @override
   Future<ApiResult<CategoriesPaginateResponse>> searchCategories(
     String? query,
-    int? shopId,
+    String? shopId,
   ) async {
     final data = {
       'lang': LocalStorage.getLanguage()?.locale ?? 'en',

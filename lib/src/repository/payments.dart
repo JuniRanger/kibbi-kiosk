@@ -5,7 +5,7 @@ abstract class PaymentsRepository {
   Future<ApiResult<PaymentsResponse>> getPayments();
 
   Future<ApiResult<TransactionsResponse>> createTransaction({
-    required int orderId,
-    required int paymentId,
+    required String? orderId,
+    required String? paymentId,
   });
 }

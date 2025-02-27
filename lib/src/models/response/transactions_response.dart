@@ -15,13 +15,13 @@ class TransactionsResponse {
     _timestamp = json['timestamp'];
     _status = json['status'];
     _message = json['message'];
-   if (json['data'] != null) {
+    if (json['data'] != null) {
       _data = [];
-      if(json['data'].runtimeType==List) {
+      if (json['data'].runtimeType == List) {
         json['data'].forEach((v) {
-        _data?.add(TransactionData.fromJson(v));
-      });
-      }else if (json['data'].runtimeType==Map){
+          _data?.add(TransactionData.fromJson(v));
+        });
+      } else if (json['data'].runtimeType == Map) {
         _data?.add(TransactionData.fromJson(json['data']));
       }
     }
@@ -30,13 +30,13 @@ class TransactionsResponse {
   String? _timestamp;
   bool? _status;
   String? _message;
-   List<TransactionData>? _data;
+  List<TransactionData>? _data;
 
   TransactionsResponse copyWith({
     String? timestamp,
     bool? status,
     String? message,
-     List <TransactionData>? data,
+    List<TransactionData>? data,
   }) =>
       TransactionsResponse(
         timestamp: timestamp ?? _timestamp,
@@ -51,14 +51,14 @@ class TransactionsResponse {
 
   String? get message => _message;
 
-   List<TransactionData>?  get data => _data;
+  List<TransactionData>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['timestamp'] = _timestamp;
     map['status'] = _status;
     map['message'] = _message;
-     if (_data != null) {
+    if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
     return map;
@@ -167,7 +167,7 @@ class TransactionData {
 class TransactionDetails {
   TransactionDetails({
     int? id,
-    int? shopId,
+    String? shopId,
     num? deliveryFee,
     num? price,
     num? tax,
@@ -203,7 +203,7 @@ class TransactionDetails {
   }
 
   int? _id;
-  int? _shopId;
+  String? _shopId;
   num? _deliveryFee;
   num? _price;
   num? _tax;
@@ -215,7 +215,7 @@ class TransactionDetails {
 
   TransactionDetails copyWith({
     int? id,
-    int? shopId,
+    String? shopId,
     num? deliveryFee,
     num? price,
     num? tax,
@@ -240,7 +240,7 @@ class TransactionDetails {
 
   int? get id => _id;
 
-  int? get shopId => _shopId;
+  String? get shopId => _shopId;
 
   num? get deliveryFee => _deliveryFee;
 
@@ -272,7 +272,4 @@ class TransactionDetails {
     map['updated_at'] = _updatedAt;
     return map;
   }
-  
 }
-
-

@@ -64,7 +64,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  Future<void> fetchBags(int? shopId) async {
+  Future<void> fetchBags(String? shopId) async {
     state = state.copyWith(isBagsLoading: true, bags: []);
     List<BagData> bags = [];
     final BagData firstBag = BagData(index: 0, bagProducts: [], shopId: shopId);
@@ -91,7 +91,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
       final response = await usersRepository.checkCoupon(
         coupon: promoCode ?? "",
-        shopId: state.bags[state.selectedBagIndex].shopId ?? 0,
+        shopId: state.bags[state.selectedBagIndex].shopId as int? ?? 0,
       );
       response.when(
         success: (data) {
@@ -271,7 +271,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  void setSelectedPayment(int? paymentId) {
+  void setSelectedPayment(String? paymentId) {
     final List<BagData> bags = List.from(LocalStorage.getBags());
     final user = bags[state.selectedBagIndex].selectedUser;
     final address = bags[state.selectedBagIndex].selectedAddress;
@@ -564,15 +564,15 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
           switch (data.bagData.selectedPayment?.tag) {
             case 'cash':
               paymentsRepository.createTransaction(
-                orderId: order.data?.id ?? 0,
-                paymentId: data.bagData.selectedPayment?.id ?? 0,
+                orderId: order.data!.id,
+                paymentId: data.bagData.selectedPayment?.id,
               );
               state = state.copyWith(isOrderLoading: false);
               onSuccess?.call(order.data);
               break;
             default:
               final res = await ordersRepository.process(
-                orderId: order.data?.id,
+                orderId: order.data!.id,
                 name: data.bagData.selectedPayment?.tag,
               );
               res.when(success: (url) async {

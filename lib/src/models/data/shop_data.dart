@@ -316,8 +316,8 @@ class ShopPayment {
     this.payment,
   });
 
-  int? id;
-  int? shopId;
+  String? id;
+  String? shopId;
   int? status;
   dynamic clientId;
   dynamic secretId;
@@ -353,7 +353,7 @@ class Payment {
     this.locales,
   });
 
-  int? id;
+  String? id;
   String? tag;
   bool? active;
   dynamic translation;
@@ -377,7 +377,7 @@ class Payment {
 }
 
 class TagsModel {
-  int? id;
+  String? id;
   String? img;
   Translation? translation;
   List<String>? locales;

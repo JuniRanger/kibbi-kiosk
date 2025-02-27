@@ -26,8 +26,8 @@ class PaymentsRepositoryImpl extends PaymentsRepository {
 
   @override
   Future<ApiResult<TransactionsResponse>> createTransaction({
-    required int orderId,
-    required int paymentId,
+    required String? orderId,
+    required String? paymentId,
   }) async {
     final data = {'payment_sys_id': paymentId};
     debugPrint('===> create transaction body: ${jsonEncode(data)}');

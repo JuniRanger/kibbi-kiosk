@@ -1,7 +1,7 @@
 import 'package:kiosk/src/core/utils/utils.dart';
 
 class ProductRequest {
-  final int? shopId;
+  final String? shopId;
   final int page;
   final int? categoryId;
   final List<int>? brands;

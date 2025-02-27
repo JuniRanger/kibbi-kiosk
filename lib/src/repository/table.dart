@@ -3,22 +3,20 @@ import 'package:kiosk/src/models/response/table_response.dart';
 
 import '../core/handlers/handlers.dart';
 
-
 abstract class TableRepository {
   Future<ApiResult<ShopSectionResponse>> getSection({
     int? page,
-    int? shopId,
+    String? shopId,
     String? query,
   });
 
   Future<ApiResult<TableResponse>> getTables({
     int? page,
-    int? shopId,
+    String? shopId,
     String? query,
-    int? shopSectionId,
+    String? shopSectionId,
     String? type,
     DateTime? from,
     DateTime? to,
   });
-
 }

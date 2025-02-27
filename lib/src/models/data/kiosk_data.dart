@@ -22,7 +22,7 @@ class KioskData {
       KioskData(
         name: name ?? this.name,
         phone: phone ?? this.phone,
-        id: id ?? this.id,
+        id: id.toString(),
         shop: shop ?? this.shop,
       );
 

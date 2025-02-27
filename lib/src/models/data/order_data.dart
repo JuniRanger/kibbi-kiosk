@@ -4,7 +4,7 @@ import 'location_data.dart';
 import 'table_data.dart';
 
 class OrderData {
-  int? id;
+  String id;
   int? userId;
   num? totalPrice;
   num? originPrice;
@@ -47,7 +47,7 @@ class OrderData {
   TableData? table;
 
   OrderData({
-    this.id,
+    required this.id,
     this.userId,
     this.totalPrice,
     this.originPrice,
@@ -134,7 +134,7 @@ class OrderData {
     TableData? table,
   }) =>
       OrderData(
-        id: id ?? this.id,
+        id: id.toString(),
         tips: tips ?? this.tips,
         userId: userId ?? this.userId,
         location: location ?? this.location,
@@ -656,9 +656,9 @@ class OrderAddress {
 }
 
 class KitchenModel {
-  int? id;
+  String? id;
   int? active;
-  int? shopId;
+  String? shopId;
   Translation? translation;
 
   KitchenModel({
@@ -671,11 +671,11 @@ class KitchenModel {
   KitchenModel copyWith({
     int? id,
     int? active,
-    int? shopId,
+    String? shopId,
     Translation? translation,
   }) =>
       KitchenModel(
-        id: id ?? this.id,
+        id: id.toString(),
         active: active ?? this.active,
         shopId: shopId ?? this.shopId,
         translation: translation ?? this.translation,

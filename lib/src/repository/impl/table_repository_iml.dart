@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:kiosk/src/core/di/dependency_manager.dart';
 import 'package:kiosk/src/core/utils/time_service.dart';
@@ -13,7 +12,7 @@ class TableRepositoryIml extends TableRepository {
   @override
   Future<ApiResult<ShopSectionResponse>> getSection({
     int? page,
-    int? shopId,
+    String? shopId,
     String? query,
   }) async {
     final data = {
@@ -39,13 +38,11 @@ class TableRepositoryIml extends TableRepository {
     }
   }
 
-
-
   @override
   Future<ApiResult<TableResponse>> getTables({
     int? page,
-    int? shopId,
-    int? shopSectionId,
+    String? shopId,
+    String? shopSectionId,
     String? type,
     String? query,
     DateTime? from,
@@ -63,7 +60,7 @@ class TableRepositoryIml extends TableRepository {
       if (shopSectionId != null) "shop_section_id": shopSectionId,
       if (type != null) "date_from": TimeService.dateFormatYMD(from),
       if (type != null) "date_to": TimeService.dateFormatYMD(to),
-      if (query != null) "search":query,
+      if (query != null) "search": query,
     };
     try {
       final client = dioHttp.client(requireAuth: true);
@@ -79,7 +76,4 @@ class TableRepositoryIml extends TableRepository {
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }
   }
-
-
-
 }

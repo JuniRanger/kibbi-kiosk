@@ -44,7 +44,7 @@ class TransactionListResponse {
 }
 
 class TransactionModel {
-  int? id;
+  String? id;
   int? payableId;
   double? price;
   dynamic paymentTrxId;
@@ -90,7 +90,7 @@ class TransactionModel {
     Payable? payable,
   }) =>
       TransactionModel(
-        id: id ?? this.id,
+        id: id.toString(),
         payableId: payableId ?? this.payableId,
         price: price ?? this.price,
         paymentTrxId: paymentTrxId ?? this.paymentTrxId,
@@ -149,7 +149,7 @@ class TransactionModel {
 }
 
 class Payable {
-  int? id;
+  String? id;
   int? userId;
   double? totalPrice;
   double? originPrice;
@@ -207,7 +207,7 @@ class Payable {
     double? deliveryFee,
   }) =>
       Payable(
-        id: id ?? this.id,
+        id: id.toString(),
         userId: userId ?? this.userId,
         totalPrice: totalPrice ?? this.totalPrice,
         originPrice: originPrice ?? this.originPrice,
@@ -348,7 +348,7 @@ class Location {
 }
 
 class PaymentSystem {
-  int? id;
+  String? id;
   String? tag;
   bool? active;
   DateTime? createdAt;
@@ -373,7 +373,7 @@ class PaymentSystem {
     int? input,
   }) =>
       PaymentSystem(
-        id: id ?? this.id,
+        id: id.toString(),
         tag: tag ?? this.tag,
         active: active ?? this.active,
         createdAt: createdAt ?? this.createdAt,
@@ -405,7 +405,7 @@ class PaymentSystem {
 }
 
 class User {
-  int? id;
+  String? id;
   String? uuid;
   String? firstname;
   String? lastname;
@@ -466,7 +466,7 @@ class User {
     String? img,
   }) =>
       User(
-        id: id ?? this.id,
+        id: id.toString(),
         uuid: uuid ?? this.uuid,
         firstname: firstname ?? this.firstname,
         lastname: lastname ?? this.lastname,

@@ -30,7 +30,7 @@ class Datum {
     this.locales,
   });
 
-  int? id;
+  String? id;
   String? uuid;
   String? type;
   bool? active;
@@ -71,12 +71,13 @@ class HelpTranslation {
     this.answer,
   });
 
-  int? id;
+  String? id;
   String? locale;
   String? question;
   String? answer;
 
-  factory HelpTranslation.fromJson(Map<String, dynamic> json) => HelpTranslation(
+  factory HelpTranslation.fromJson(Map<String, dynamic> json) =>
+      HelpTranslation(
         id: json["id"],
         locale: json["locale"],
         question: json["question"],
@@ -90,4 +91,3 @@ class HelpTranslation {
         "answer": answer,
       };
 }
-

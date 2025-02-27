@@ -9,7 +9,7 @@ class ProductData {
   ProductData({
     int? id,
     String? uuid,
-    int? shopId,
+    String? shopId,
     int? categoryId,
     String? keywords,
     int? brandId,
@@ -118,7 +118,7 @@ class ProductData {
       });
     }
     _category =
-    json['category'] != null ? Category.fromJson(json['category']) : null;
+        json['category'] != null ? Category.fromJson(json['category']) : null;
     _brand = json['brand'] != null ? Brand.fromJson(json['brand']) : null;
     _unit = json['unit'] != null ? Unit.fromJson(json['unit']) : null;
     if (json['reviews'] != null) {
@@ -138,7 +138,7 @@ class ProductData {
 
   int? _id;
   String? _uuid;
-  int? _shopId;
+  String? _shopId;
   int? _interval;
   int? _categoryId;
   String? _keywords;
@@ -172,7 +172,7 @@ class ProductData {
   ProductData copyWith({
     int? id,
     String? uuid,
-    int? shopId,
+    String? shopId,
     int? categoryId,
     String? keywords,
     int? brandId,
@@ -241,7 +241,7 @@ class ProductData {
 
   String? get uuid => _uuid;
 
-  int? get shopId => _shopId;
+  String? get shopId => _shopId;
 
   int? get categoryId => _categoryId;
 

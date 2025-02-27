@@ -1,8 +1,7 @@
-
 import 'package:kiosk/src/core/printer/printer_help.dart';
 
 class BluetoothPrinter {
-  int? id;
+  String? id;
   String? deviceName;
   String? address;
   String? port;

@@ -9,7 +9,7 @@ import 'package:kiosk/src/models/models.dart';
 
 class OrdersRepositoryImpl extends OrdersRepository {
   @override
-  Future<ApiResult<String>> process({int? orderId, String? name}) async {
+  Future<ApiResult<String>> process({String? orderId, String? name}) async {
     try {
       final client = dioHttp.client(requireAuth: false);
       var res = await client.get(

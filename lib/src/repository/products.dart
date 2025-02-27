@@ -13,6 +13,6 @@ abstract class ProductsFacade {
   });
 
   Future<ApiResult<ProductCalculateResponse>> getAllCalculations(
-      List<BagProductData> bagProducts, String type, int? shopId,
+      List<BagProductData> bagProducts, String type, String? shopId,
       {String? coupon});
 }
