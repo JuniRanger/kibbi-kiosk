@@ -4,7 +4,7 @@ class KioskData {
   String? name;
   String? id;
   String? phone;
-  ShopData? shop;
+  RestaurantData? shop;
 
   KioskData({
     this.name,
@@ -17,7 +17,7 @@ class KioskData {
     String? name,
     String? phone,
     String? id,
-    ShopData? shop,
+    RestaurantData? shop,
   }) =>
       KioskData(
         name: name ?? this.name,
@@ -28,7 +28,8 @@ class KioskData {
 
   factory KioskData.fromJson(Map<String, dynamic> json) => KioskData(
         name: json["name"],
-        shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
+        shop:
+            json["shop"] == null ? null : RestaurantData.fromJson(json["shop"]),
         phone: json["phone"],
         id: json["id"],
       );

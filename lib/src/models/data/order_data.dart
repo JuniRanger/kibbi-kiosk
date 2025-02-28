@@ -33,7 +33,7 @@ class OrderData {
   DateTime? createdAt;
   DateTime? updatedAt;
   KioskData? deliveryman;
-  ShopData? shop;
+  RestaurantData? shop;
   CurrencyData? currency;
   KioskData? user;
   List<OrderDetail>? details;
@@ -120,7 +120,7 @@ class OrderData {
     DateTime? createdAt,
     DateTime? updatedAt,
     KioskData? deliveryman,
-    ShopData? shop,
+    RestaurantData? shop,
     CurrencyData? currency,
     KioskData? user,
     List<OrderDetail>? details,
@@ -220,7 +220,8 @@ class OrderData {
         deliveryman: json["deliveryman"] == null
             ? null
             : KioskData.fromJson(json["deliveryman"]),
-        shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
+        shop:
+            json["shop"] == null ? null : RestaurantData.fromJson(json["shop"]),
         currency: json["currency"] == null
             ? null
             : CurrencyData.fromJson(json["currency"]),

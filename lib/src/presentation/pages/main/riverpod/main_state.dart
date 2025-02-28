@@ -10,7 +10,7 @@ class MainState with _$MainState {
     @Default(false) bool isShopsLoading,
     @Default(false) bool isMoreShopsLoading,
     @Default(true) bool hasMore,
-    @Default([]) List<ShopData> shops,
+    @Default([]) List<RestaurantData> shops,
     @Default('') String query,
     @Default(0) int selectIndex,
   }) = _MainState;

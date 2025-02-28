@@ -5,7 +5,7 @@ class SingleShopResponse {
     String? timestamp,
     bool? status,
     String? message,
-    ShopData? data,
+    RestaurantData? data,
   }) {
     _timestamp = timestamp;
     _status = status;
@@ -17,19 +17,19 @@ class SingleShopResponse {
     _timestamp = json['timestamp'];
     _status = json['status'];
     _message = json['message'];
-    _data = json['data'] != null ? ShopData.fromJson(json['data']) : null;
+    _data = json['data'] != null ? RestaurantData.fromJson(json['data']) : null;
   }
 
   String? _timestamp;
   bool? _status;
   String? _message;
-  ShopData? _data;
+  RestaurantData? _data;
 
   SingleShopResponse copyWith({
     String? timestamp,
     bool? status,
     String? message,
-    ShopData? data,
+    RestaurantData? data,
   }) =>
       SingleShopResponse(
         timestamp: timestamp ?? _timestamp,
@@ -44,7 +44,7 @@ class SingleShopResponse {
 
   String? get message => _message;
 
-  ShopData? get data => _data;
+  RestaurantData? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

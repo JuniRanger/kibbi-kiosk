@@ -11,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'two_bonus_discount.dart';
 
 class MarketTwoItem extends StatelessWidget {
-  final ShopData shop;
+  final RestaurantData shop;
   final VoidCallback onTap;
   final bool isSimpleShop;
   final bool isShop;

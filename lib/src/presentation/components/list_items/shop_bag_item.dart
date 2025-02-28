@@ -9,14 +9,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../theme/theme.dart';
 
 class ShopBagItem extends StatelessWidget {
-  final BagShopData bagShopData;
+  final BagRestaurantData bagRestaurantData;
   final Function(BagProductData) onDeleteProduct;
   final Function(BagProductData) onDecreaseProduct;
   final Function(BagProductData) onIncreaseProduct;
 
   const ShopBagItem({
     super.key,
-    required this.bagShopData,
+    required this.bagRestaurantData,
     required this.onDeleteProduct,
     required this.onDecreaseProduct,
     required this.onIncreaseProduct,
@@ -33,7 +33,7 @@ class ShopBagItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${bagShopData.shopData.translation?.title}',
+                '${bagRestaurantData.restaurantData.translation?.title}',
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w600,
                   fontSize: 14.sp,
@@ -42,7 +42,7 @@ class ShopBagItem extends StatelessWidget {
                 ),
               ),
               Text(
-                '${bagShopData.bagProducts.length} ${AppHelpers.getTranslation(
+                '${bagRestaurantData.bagProducts.length} ${AppHelpers.getTranslation(
                     TrKeys.products)}',
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w600,

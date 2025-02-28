@@ -46,7 +46,7 @@ class MainNotifier extends StateNotifier<MainState> {
               state = state.copyWith(hasMore: false);
             }
           },
-          failure: (failure,status)  {
+          failure: (failure, status) {
             state = state.copyWith(isShopsLoading: false);
             debugPrint('==> get shops failure: $failure');
           },
@@ -60,7 +60,7 @@ class MainNotifier extends StateNotifier<MainState> {
         );
         response.when(
           success: (data) async {
-            final List<ShopData> newList = List.from(state.shops);
+            final List<RestaurantData> newList = List.from(state.shops);
             newList.addAll(data.data ?? []);
             state = state.copyWith(
               shops: newList,
@@ -70,7 +70,7 @@ class MainNotifier extends StateNotifier<MainState> {
               state = state.copyWith(hasMore: false);
             }
           },
-          failure: (failure,status) {
+          failure: (failure, status) {
             state = state.copyWith(isMoreShopsLoading: false);
             debugPrint('==> get Shops more failure: $failure');
           },

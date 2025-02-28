@@ -1,5 +1,3 @@
-
-
 import 'package:kiosk/src/core/constants/constants.dart';
 import 'package:kiosk/src/core/utils/utils.dart';
 import 'package:kiosk/src/models/models.dart';
@@ -9,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecommendedTwoItem extends StatelessWidget {
-  final ShopData shop;
+  final RestaurantData shop;
 
   const RecommendedTwoItem({
     super.key,
@@ -64,12 +62,11 @@ class RecommendedTwoItem extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 4.h, horizontal: 12.w),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
                     decoration: BoxDecoration(
                         color: Style.black.withOpacity(0.8),
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(100.r))),
+                        borderRadius: BorderRadius.all(Radius.circular(100.r))),
                     child: Text(
                       "${shop.productsCount ?? 0}  ${AppHelpers.getTranslation(TrKeys.products)}",
                       style: Style.interNormal(

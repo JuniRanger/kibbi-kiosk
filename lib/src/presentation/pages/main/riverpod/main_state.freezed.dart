@@ -19,7 +19,7 @@ mixin _$MainState {
   bool get isShopsLoading => throw _privateConstructorUsedError;
   bool get isMoreShopsLoading => throw _privateConstructorUsedError;
   bool get hasMore => throw _privateConstructorUsedError;
-  List<ShopData> get shops => throw _privateConstructorUsedError;
+  List<RestaurantData> get shops => throw _privateConstructorUsedError;
   String get query => throw _privateConstructorUsedError;
   int get selectIndex => throw _privateConstructorUsedError;
 
@@ -39,7 +39,7 @@ abstract class $MainStateCopyWith<$Res> {
       {bool isShopsLoading,
       bool isMoreShopsLoading,
       bool hasMore,
-      List<ShopData> shops,
+      List<RestaurantData> shops,
       String query,
       int selectIndex});
 }
@@ -82,7 +82,7 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
       shops: null == shops
           ? _value.shops
           : shops // ignore: cast_nullable_to_non_nullable
-              as List<ShopData>,
+              as List<RestaurantData>,
       query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
@@ -107,7 +107,7 @@ abstract class _$$MainStateImplCopyWith<$Res>
       {bool isShopsLoading,
       bool isMoreShopsLoading,
       bool hasMore,
-      List<ShopData> shops,
+      List<RestaurantData> shops,
       String query,
       int selectIndex});
 }
@@ -148,7 +148,7 @@ class __$$MainStateImplCopyWithImpl<$Res>
       shops: null == shops
           ? _value._shops
           : shops // ignore: cast_nullable_to_non_nullable
-              as List<ShopData>,
+              as List<RestaurantData>,
       query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
@@ -168,7 +168,7 @@ class _$MainStateImpl extends _MainState {
       {this.isShopsLoading = false,
       this.isMoreShopsLoading = false,
       this.hasMore = true,
-      final List<ShopData> shops = const [],
+      final List<RestaurantData> shops = const [],
       this.query = '',
       this.selectIndex = 0})
       : _shops = shops,
@@ -183,10 +183,10 @@ class _$MainStateImpl extends _MainState {
   @override
   @JsonKey()
   final bool hasMore;
-  final List<ShopData> _shops;
+  final List<RestaurantData> _shops;
   @override
   @JsonKey()
-  List<ShopData> get shops {
+  List<RestaurantData> get shops {
     if (_shops is EqualUnmodifiableListView) return _shops;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_shops);
@@ -244,7 +244,7 @@ abstract class _MainState extends MainState {
       {final bool isShopsLoading,
       final bool isMoreShopsLoading,
       final bool hasMore,
-      final List<ShopData> shops,
+      final List<RestaurantData> shops,
       final String query,
       final int selectIndex}) = _$MainStateImpl;
   const _MainState._() : super._();
@@ -256,7 +256,7 @@ abstract class _MainState extends MainState {
   @override
   bool get hasMore;
   @override
-  List<ShopData> get shops;
+  List<RestaurantData> get shops;
   @override
   String get query;
   @override

@@ -1,9 +1,9 @@
 import 'bag_data.dart';
 import 'shop_data.dart';
 
-class BagShopData {
-  final ShopData shopData;
+class BagRestaurantData {
+  final RestaurantData restaurantData;
   final List<BagProductData> bagProducts;
 
-  BagShopData({required this.shopData, required this.bagProducts});
+  BagRestaurantData({required this.restaurantData, required this.bagProducts});
 }

@@ -20,7 +20,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
     state = state.copyWith(selectedOrder: order);
   }
 
-  setShop({required ShopData? shop, required BuildContext context}) {
+  setShop({required RestaurantData? shop, required BuildContext context}) {
     LocalStorage.deleteCartProducts();
     state = state.copyWith(selectedShop: shop);
     fetchProducts(context: context, isRefresh: true);
@@ -57,7 +57,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
               state = state.copyWith(hasMore: false);
             }
           },
-          failure: (failure,status)  {
+          failure: (failure, status) {
             state = state.copyWith(isProductsLoading: false);
             debugPrint('==> get products failure: $failure');
           },
@@ -83,7 +83,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
               state = state.copyWith(hasMore: false);
             }
           },
-          failure: (failure,status)  {
+          failure: (failure, status) {
             state = state.copyWith(isMoreProductsLoading: false);
             debugPrint('==> get products more failure: $failure');
             AppHelpers.showSnackBar(context, failure);
@@ -151,7 +151,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
             categories: categories,
           );
         },
-        failure: (failure,status)  {
+        failure: (failure, status) {
           state = state.copyWith(isCategoriesLoading: false);
         },
       );
@@ -233,7 +233,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
             dropDownBrands: dropdownBrands,
           );
         },
-        failure: (failure,status)  {
+        failure: (failure, status) {
           state = state.copyWith(isBrandsLoading: false);
           debugPrint('==> get brands failure: $failure');
         },

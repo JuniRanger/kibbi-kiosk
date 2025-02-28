@@ -58,7 +58,7 @@ class BranchModel {
   LocationData? location;
   DateTime? createdAt;
   DateTime? updatedAt;
-  ShopData? shop;
+  RestaurantData? shop;
   Translation? translation;
   List<String>? locales;
 
@@ -68,7 +68,7 @@ class BranchModel {
     LocationData? location,
     DateTime? createdAt,
     DateTime? updatedAt,
-    ShopData? shop,
+    RestaurantData? shop,
     Translation? translation,
     List<String>? locales,
   }) =>
@@ -96,7 +96,8 @@ class BranchModel {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.tryParse(json["updated_at"])?.toLocal(),
-        shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
+        shop:
+            json["shop"] == null ? null : RestaurantData.fromJson(json["shop"]),
         translation: json["translation"] == null
             ? null
             : Translation.fromJson(json["translation"]),

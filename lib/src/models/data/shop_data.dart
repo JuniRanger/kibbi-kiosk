@@ -5,16 +5,15 @@ import '../models.dart';
 import 'bonus_data.dart';
 import 'location_data.dart';
 
-ShopData shopDataFromJson(String str) => ShopData.fromJson(json.decode(str));
+RestaurantData restaurantDataFromJson(String str) =>
+    RestaurantData.fromJson(json.decode(str));
 
-String shopDataToJson(ShopData data) => json.encode(data.toJson());
+String restaurantDataToJson(RestaurantData data) => json.encode(data.toJson());
 
-class ShopData {
-  ShopData({
+class RestaurantData {
+  RestaurantData({
     this.id,
-    this.userId,
-    this.tax,
-    this.deliveryRange,
+    this.name,
     this.percentage,
     this.phone,
     this.visibility,
@@ -27,36 +26,31 @@ class ShopData {
     this.minAmount,
     this.status,
     this.type,
-    this.deliveryTime,
     this.createdAt,
     this.updatedAt,
     this.location,
     this.productsCount,
     this.translation,
     this.locales,
-    this.seller,
     this.bonus,
     this.avgRate,
     this.rateCount,
     this.shopWorkingDays,
     this.isRecommend,
-    this.isDiscount,
     this.tags,
     this.shopClosedDate,
     this.shopPayments,
   });
 
   String? id;
-  int? userId;
-  num? tax;
-  num? deliveryRange;
+  String? name;
   num? percentage;
   String? avgRate;
   String? rateCount;
   String? phone;
   bool? visibility;
   bool? isRecommend;
-  bool? isDiscount;
+
   bool? open;
   bool? verify;
   String? openTime;
@@ -80,13 +74,11 @@ class ShopData {
   List<ShopClosedDate>? shopClosedDate;
   List<ShopPayment?>? shopPayments;
 
-  factory ShopData.fromJson(Map<String, dynamic> json) {
-    return ShopData(
+  factory RestaurantData.fromJson(Map<String, dynamic> json) {
+    return RestaurantData(
       id: json["id"] ?? 0,
+      name: json["name"] ?? "",
       // uuid: json["uuid"] ?? 0,
-      userId: json["user_id"] ?? 0,
-      tax: json["tax"] ?? 0,
-      deliveryRange: json["price_per_km"] ?? 0,
       percentage: json["percentage"] ?? 0,
       phone: json["phone"]?.toString(),
       visibility: json["visibility"].toString().toBool(),
@@ -108,11 +100,6 @@ class ShopData {
           ? (json["type"] == 1 ? "shop" : "restaurant")
           : json["type"],
       isRecommend: json["is_recommended"] ?? false,
-      isDiscount:
-          json["discount"] == null ? false : json["discount"].isNotEmpty,
-      deliveryTime: json["delivery_time"] == null
-          ? null
-          : DeliveryTime.fromJson(json["delivery_time"]),
       createdAt: json["created_at"] == null
           ? null
           : DateTime.tryParse(json["created_at"])?.toLocal(),
@@ -130,7 +117,7 @@ class ShopData {
           ? null
           : List<TagsModel>.from(
               json["tags"].map((x) => TagsModel.fromJson(x))),
-      seller: json["seller"] == null ? null : Seller.fromJson(json["seller"]),
+
       avgRate: (double.tryParse(json["rating_avg"].toString()) ?? 0.0)
           .toStringAsFixed(1),
       rateCount: (double.tryParse(json["reviews_count"].toString()) ?? 0.0)
@@ -154,11 +141,11 @@ class ShopData {
     );
   }
 
+  get isDiscount => null;
+
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
-        "tax": tax,
-        "delivery_range": deliveryRange,
+        "name": name,
         "percentage": percentage,
         "phone": phone,
         "visibility": visibility,
@@ -169,7 +156,6 @@ class ShopData {
         "min_amount": minAmount,
         "status": status,
         "type": type,
-        "delivery_time": deliveryTime?.toJson(),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "location": location?.toJson(),

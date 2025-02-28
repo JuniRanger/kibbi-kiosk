@@ -31,7 +31,7 @@ mixin _$ShopState {
   String get query => throw _privateConstructorUsedError;
   String get categoryQuery => throw _privateConstructorUsedError;
   String get brandQuery => throw _privateConstructorUsedError;
-  ShopData? get selectedShop => throw _privateConstructorUsedError;
+  RestaurantData? get selectedShop => throw _privateConstructorUsedError;
   CategoryData? get selectedCategory => throw _privateConstructorUsedError;
   BrandData? get selectedBrand => throw _privateConstructorUsedError;
   OrderData? get selectedOrder => throw _privateConstructorUsedError;
@@ -62,7 +62,7 @@ abstract class $ShopStateCopyWith<$Res> {
       String query,
       String categoryQuery,
       String brandQuery,
-      ShopData? selectedShop,
+      RestaurantData? selectedShop,
       CategoryData? selectedCategory,
       BrandData? selectedBrand,
       OrderData? selectedOrder});
@@ -157,7 +157,7 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
       selectedShop: freezed == selectedShop
           ? _value.selectedShop
           : selectedShop // ignore: cast_nullable_to_non_nullable
-              as ShopData?,
+              as RestaurantData?,
       selectedCategory: freezed == selectedCategory
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
@@ -196,7 +196,7 @@ abstract class _$$ShopStateImplCopyWith<$Res>
       String query,
       String categoryQuery,
       String brandQuery,
-      ShopData? selectedShop,
+      RestaurantData? selectedShop,
       CategoryData? selectedCategory,
       BrandData? selectedBrand,
       OrderData? selectedOrder});
@@ -289,7 +289,7 @@ class __$$ShopStateImplCopyWithImpl<$Res>
       selectedShop: freezed == selectedShop
           ? _value.selectedShop
           : selectedShop // ignore: cast_nullable_to_non_nullable
-              as ShopData?,
+              as RestaurantData?,
       selectedCategory: freezed == selectedCategory
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
@@ -405,7 +405,7 @@ class _$ShopStateImpl extends _ShopState {
   @JsonKey()
   final String brandQuery;
   @override
-  final ShopData? selectedShop;
+  final RestaurantData? selectedShop;
   @override
   final CategoryData? selectedCategory;
   @override
@@ -500,7 +500,7 @@ abstract class _ShopState extends ShopState {
       final String query,
       final String categoryQuery,
       final String brandQuery,
-      final ShopData? selectedShop,
+      final RestaurantData? selectedShop,
       final CategoryData? selectedCategory,
       final BrandData? selectedBrand,
       final OrderData? selectedOrder}) = _$ShopStateImpl;
@@ -533,7 +533,7 @@ abstract class _ShopState extends ShopState {
   @override
   String get brandQuery;
   @override
-  ShopData? get selectedShop;
+  RestaurantData? get selectedShop;
   @override
   CategoryData? get selectedCategory;
   @override

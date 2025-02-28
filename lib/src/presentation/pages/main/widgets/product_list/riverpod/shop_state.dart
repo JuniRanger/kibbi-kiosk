@@ -1,4 +1,3 @@
-
 import 'package:kiosk/src/models/data/order_data.dart';
 import 'package:kiosk/src/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -20,7 +19,7 @@ class ShopState with _$ShopState {
     @Default('') String query,
     @Default('') String categoryQuery,
     @Default('') String brandQuery,
-    ShopData? selectedShop,
+    RestaurantData? selectedShop,
     CategoryData? selectedCategory,
     BrandData? selectedBrand,
     OrderData? selectedOrder,

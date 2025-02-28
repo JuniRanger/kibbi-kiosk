@@ -1,4 +1,3 @@
-
 import 'package:kiosk/src/models/data/product_data.dart';
 import 'package:kiosk/src/models/data/shop_data.dart';
 
@@ -28,19 +27,24 @@ class ProductCalculateResponse {
         data: data ?? this.data,
       );
 
-  factory ProductCalculateResponse.fromJson(Map<String, dynamic> json) => ProductCalculateResponse(
-    timestamp: json["timestamp"] == null ? null : DateTime.tryParse(json["timestamp"])?.toLocal(),
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : ProductCalculateResponseData.fromJson(json["data"]),
-  );
+  factory ProductCalculateResponse.fromJson(Map<String, dynamic> json) =>
+      ProductCalculateResponse(
+        timestamp: json["timestamp"] == null
+            ? null
+            : DateTime.tryParse(json["timestamp"])?.toLocal(),
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : ProductCalculateResponseData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "timestamp": timestamp?.toIso8601String(),
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "timestamp": timestamp?.toIso8601String(),
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class ProductCalculateResponseData {
@@ -65,17 +69,18 @@ class ProductCalculateResponseData {
         data: data ?? this.data,
       );
 
-  factory ProductCalculateResponseData.fromJson(Map<String, dynamic> json) => ProductCalculateResponseData(
-    status: json["status"],
-    code: json["code"],
-    data: json["data"] == null ? null : PriceDate.fromJson(json["data"]),
-  );
+  factory ProductCalculateResponseData.fromJson(Map<String, dynamic> json) =>
+      ProductCalculateResponseData(
+        status: json["status"],
+        code: json["code"],
+        data: json["data"] == null ? null : PriceDate.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "code": code,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "code": code,
+        "data": data?.toJson(),
+      };
 }
 
 class PriceDate {
@@ -104,7 +109,7 @@ class PriceDate {
   num? deliveryFee;
   num? rate;
   num? couponPrice;
-  ShopData? shop;
+  RestaurantData? shop;
   double? km;
 
   PriceDate copyWith({
@@ -118,7 +123,7 @@ class PriceDate {
     num? serviceFee,
     num? rate,
     num? couponPrice,
-    ShopData? shop,
+    RestaurantData? shop,
     double? km,
   }) =>
       PriceDate(
@@ -141,7 +146,7 @@ class PriceDate {
       stocks: json["stocks"] == null
           ? []
           : List<ProductData>.from(
-          json["stocks"]!.map((x) => ProductData.fromJson(x))),
+              json["stocks"]!.map((x) => ProductData.fromJson(x))),
       totalTax: json["total_tax"]?.toDouble(),
       price: json["price"],
       totalShopTax: json["total_shop_tax"]?.toDouble(),
@@ -151,34 +156,25 @@ class PriceDate {
       serviceFee: json["service_fee"],
       rate: json["rate"],
       couponPrice: json["coupon_price"],
-      shop: json["shop"] == null ? null : ShopData.fromJson(json["shop"]),
+      shop: json["shop"] == null ? null : RestaurantData.fromJson(json["shop"]),
       km: json["km"]?.toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    "stocks": stocks == null
-        ? []
-        : List<dynamic>.from(stocks!.map((x) => x.toJson())),
-    "total_tax": totalTax,
-    "price": price,
-    "total_shop_tax": totalShopTax,
-    "total_price": totalPrice,
-    "total_discount": totalDiscount,
-    "service_fee": serviceFee,
-    "delivery_fee": deliveryFee,
-    "rate": rate,
-    "coupon_price": couponPrice,
-    "shop": shop?.toJson(),
-    "km": km,
-  };
+        "stocks": stocks == null
+            ? []
+            : List<dynamic>.from(stocks!.map((x) => x.toJson())),
+        "total_tax": totalTax,
+        "price": price,
+        "total_shop_tax": totalShopTax,
+        "total_price": totalPrice,
+        "total_discount": totalDiscount,
+        "service_fee": serviceFee,
+        "delivery_fee": deliveryFee,
+        "rate": rate,
+        "coupon_price": couponPrice,
+        "shop": shop?.toJson(),
+        "km": km,
+      };
 }
-
-
-
-
-
-
-
-
-
