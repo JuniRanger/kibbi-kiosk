@@ -195,6 +195,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 );
                               },
                               goToMain: () {
+                                debugPrint('==> Navigate to main');
                                 context.replaceRoute(const MainRoute());
                               },
                             ),

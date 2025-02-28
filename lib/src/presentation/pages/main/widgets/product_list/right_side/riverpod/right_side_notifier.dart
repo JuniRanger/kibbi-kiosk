@@ -81,37 +81,6 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     );
   }
 
-  Future<void> checkPromoCode(BuildContext context, String? promoCode) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      state = state.copyWith(
-        isPromoCodeLoading: true,
-        isActive: false,
-      );
-
-      final response = await usersRepository.checkCoupon(
-        coupon: promoCode ?? "",
-        shopId: state.bags[state.selectedBagIndex].shopId as int? ?? 0,
-      );
-      response.when(
-        success: (data) {
-          state = state.copyWith(isPromoCodeLoading: false, isActive: true);
-        },
-        failure: (failure, status) {
-          state = state.copyWith(
-            isPromoCodeLoading: false,
-            isActive: false,
-          );
-        },
-      );
-    } else {
-      if (context.mounted) {
-        AppHelpers.showSnackBar(
-            context, AppHelpers.getTranslation(TrKeys.noInternetConnection));
-      }
-    }
-  }
-
   void addANewBag() {
     List<BagData> newBags = List.from(state.bags);
     newBags.add(BagData(index: newBags.length, bagProducts: []));

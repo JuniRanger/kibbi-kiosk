@@ -20,7 +20,7 @@ void setUpDependencies() {
   getIt.registerSingleton<CategoriesRepository>(CategoriesRepositoryImpl());
   getIt.registerSingleton<PaymentsRepository>(PaymentsRepositoryImpl());
   getIt.registerSingleton<OrdersRepository>(OrdersRepositoryImpl());
-  getIt.registerSingleton<UsersRepository>(UsersRepositoryImpl());
+  getIt.registerSingleton<KioskRepository>(UsersRepositoryImpl());
   getIt.registerSingleton<TableRepository>(TableRepositoryIml());
 }
 
@@ -34,5 +34,5 @@ final galleryRepository = getIt.get<GalleryRepositoryFacade>();
 final categoriesRepository = getIt.get<CategoriesRepository>();
 final paymentsRepository = getIt.get<PaymentsRepository>();
 final ordersRepository = getIt.get<OrdersRepository>();
-final usersRepository = getIt.get<UsersRepository>();
+final usersRepository = getIt.get<KioskRepository>();
 final tableRepository = getIt.get<TableRepository>();

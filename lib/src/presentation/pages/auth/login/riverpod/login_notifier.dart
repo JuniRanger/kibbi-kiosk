@@ -6,9 +6,9 @@ import 'login_state.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
   final AuthFacade _authRepository;
-  final UsersRepository _usersRepository;
+  final KioskRepository _kioskRepository;
 
-  LoginNotifier(this._authRepository, this._usersRepository)
+  LoginNotifier(this._authRepository, this._kioskRepository)
       : super(const LoginState());
 
   void setPassword(String text) {
@@ -40,36 +40,24 @@ class LoginNotifier extends StateNotifier<LoginState> {
   }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
-      // if (!AppValidators.isValidEmail(state.id)) {
-      //   state = state.copyWith(isSerialNotValid: true);
-      //   return;
-      // }
       state = state.copyWith(isLoading: true);
+
       final response = await _authRepository.login(
         serial: state.serial,
         password: state.password,
       );
-      response.when(
+      response.when(  
         success: (data) async {
+          // Guarda el token en local storage
           await LocalStorage.setToken(data.token ?? '');
-          LocalStorage.setUser(data.kiosk);
 
-          final res = await _usersRepository.getProfileDetails();
-          res.when(
-              success: (s) async {
-                state = state.copyWith(isLoading: false, isLoginError: false);
-                goToMain?.call();
-                // if (Platform.isAndroid || Platform.isIOS) {
-                //   String? fcmToken;
-                //   try {
-                //     fcmToken = await FirebaseMessaging.instance.getToken();
-                //   } catch (e) {
-                //     debugPrint('===> error with getting firebase token $e');
-                //   }
-                //   _authRepository.updateFirebaseToken(fcmToken);
-                // }
-              },
-              failure: (failure, status) {});
+          // Actualiza el estado y navega al main directamente
+          state = state.copyWith(isLoading: false, isLoginError: false);
+          if (goToMain != null) {
+            goToMain.call();
+          } else {
+            debugPrint('==> goToMain es null');
+          }
         },
         failure: (failure, status) {
           state = state.copyWith(isLoading: false, isLoginError: true);

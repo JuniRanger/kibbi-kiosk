@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:kiosk/src/models/models.dart';
@@ -17,6 +18,7 @@ abstract class LocalStorage {
   static Future<void> setToken(String? token) async {
     if (_preferences != null) {
       await _preferences!.setString(StorageKeys.keyToken, token ?? '');
+      debugPrint('===> token: $token');
     }
   }
 
@@ -28,7 +30,8 @@ abstract class LocalStorage {
   static Future<void> setUser(KioskData? user) async {
     if (_preferences != null) {
       final String userString = user != null ? jsonEncode(user.toJson()) : '';
-      await _preferences!.setString(StorageKeys.keyUser, userString);
+      await _preferences?.setString(StorageKeys.keyUser, userString);
+      debugPrint('===> user: $userString');
     }
   }
 
