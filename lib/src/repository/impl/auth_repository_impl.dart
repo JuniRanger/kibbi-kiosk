@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kiosk/src/core/handlers/handlers.dart';
 import 'package:kiosk/src/models/models.dart';
 import '../repository.dart';
+import '../../core/utils/local_storage.dart';
 
 class AuthRepository extends AuthFacade {
   @override
@@ -15,12 +16,6 @@ Future<ApiResult<LoginResponse>> login({
   try {
     final client = dioHttp.client(requireAuth: false);
 
-    // Imprimir los datos que vas a enviar
-    debugPrint('==> Enviando petición de login:');
-    debugPrint('URL: /api/kiosks/login/kiosk');
-    debugPrint('Body: { "serial": "$serial", "password": "$password" }');
-    debugPrint('Headers: { "Accept": "application/json", "Content-Type": "application/json" }');
-
     final response = await client.post(
       '/api/kiosks/login/kiosk',
       data: {
@@ -29,14 +24,21 @@ Future<ApiResult<LoginResponse>> login({
       },
     );
 
-    return ApiResult.success(
-      data: LoginResponse.fromJson(response.data),
-    );
+    final loginResponse = LoginResponse.fromJson(response.data);
+
+    // Cambiar funcion para poder guardar el objeto completo en lugar de solo el token
+    if (loginResponse.restaurantId != null) {
+      await LocalStorage.saveRestaurantId(loginResponse.restaurantId!);
+      debugPrint('==> Restaurant ID guardado: ${loginResponse.restaurantId}');
+    }
+
+    return ApiResult.success(data: loginResponse);
   } catch (e) {
     debugPrint('==> login failure: $e');
     return ApiResult.failure(error: AppHelpers.errorHandler(e));
   }
 }
+
 }
 
 

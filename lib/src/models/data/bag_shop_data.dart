@@ -1,5 +1,5 @@
 import 'bag_data.dart';
-import 'shop_data.dart';
+import 'restaurant_data.dart';
 
 class BagRestaurantData {
   final RestaurantData restaurantData;

@@ -32,6 +32,28 @@ class ShopsRepositoryImpl extends ShopsRepository {
   }
 
   @override
+  Future<ApiResult<Map<String, dynamic>>> getRestaurantDetails() async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+
+      // Aquí agregamos el token en el encabezado de autorización
+      final response = await client.get(
+        '/api/restaurants/myRestaurant', // Asegúrate de que esta URL sea la correcta
+      );
+
+      // Imprime la respuesta para ver la estructura del restaurante
+      debugPrint('==> Restaurant Details Response: ${response.data}');
+
+      return ApiResult.success(
+        data: response.data as Map<String, dynamic>,
+      );
+    } catch (e, s) {
+      debugPrint('==> get restaurant details failure: $e, $s');
+      return ApiResult.failure(error: AppHelpers.errorHandler(e));
+    }
+  }
+
+  @override
   Future<ApiResult<SingleShopResponse>> getSingleShop(
       {required String uuid}) async {
     final data = OnlyShopRequest();
@@ -56,7 +78,7 @@ class ShopsRepositoryImpl extends ShopsRepository {
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
-        '/api/v1/dashboard/Kiosk/categories',
+        '/api/categories/mineCategory',
         queryParameters: data,
       );
       return ApiResult.success(
@@ -89,6 +111,11 @@ class ShopsRepositoryImpl extends ShopsRepository {
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }
   }
+
+  // @override
+  // Future<ApiResult<RestaurantData>> getShopDetails({
+  //   required String token;
+  // });
 
   @override
   Future<ApiResult<ShopsPaginateResponse>> getAllShops({

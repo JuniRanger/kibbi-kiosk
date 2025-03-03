@@ -1,5 +1,5 @@
 import '../data/meta.dart';
-import '../data/shop_data.dart';
+import '../data/restaurant_data.dart';
 
 class ShopsPaginateResponse {
   ShopsPaginateResponse({List<RestaurantData>? data, Meta? meta}) {

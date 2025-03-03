@@ -8,7 +8,6 @@ abstract class ShopsRepository {
 
   Future<ApiResult<SingleShopResponse>> getSingleShop({required String uuid});
 
-
   Future<ApiResult<CategoriesPaginateResponse>> getShopCategory();
 
   Future<ApiResult<CategoriesPaginateResponse>> getShopTag();
@@ -20,4 +19,6 @@ abstract class ShopsRepository {
     bool? isOpen,
     bool? verify,
   });
+
+  Future<ApiResult<Map<String, dynamic>>> getRestaurantDetails();
 }

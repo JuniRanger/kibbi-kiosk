@@ -38,35 +38,22 @@ class MainPage extends ConsumerStatefulWidget {
 
 class _MainPageState extends ConsumerState<MainPage>
     with SingleTickerProviderStateMixin {
-  late List<IndexedStackChild> list = [
-    IndexedStackChild(child: const PostPage(), preload: true),
-  ];
+  late Widget currentPage = const PostPage(); // O la pantalla que prefieras
 
   @override
   void initState() {
     super.initState();
-    // if (Platform.isAndroid || Platform.isIOS) {
-    //   FirebaseMessaging.instance.requestPermission(
-    //     sound: true,
-    //     alert: true,
-    //     badge: false,
-    //   );
-    // }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (LocalStorage.getUser()?.shop != null) {
+      // Siempre mantén la vista en productos (index 1)
+      ref.read(mainProvider.notifier).changeIndex(1);
+
+      if (LocalStorage.getShop() != null) {
         ref
             .refresh(shopProvider.notifier)
-            .setShop(shop: LocalStorage.getUser()?.shop, context: context);
-        ref.read(mainProvider.notifier).changeIndex(1);
+            .setShop(shop: LocalStorage.getShop(), context: context);
       } else {
-        ref.read(mainProvider.notifier)
-          ..fetchShops(context: context)
-          ..changeIndex(0);
+        ref.read(mainProvider.notifier).fetchShops(context: context);
       }
-
-      // if (mounted) {
-      //   Timer.periodic(AppConstants.refreshTime, (s) {});
-      // }
     });
   }
 

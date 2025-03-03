@@ -95,7 +95,7 @@ class MarketTwoItem extends StatelessWidget {
                               ),
                               4.horizontalSpace,
                               Text(
-                                "${shop.deliveryTime?.from ?? 0} - ${shop.deliveryTime?.to ?? 0} ${shop.deliveryTime?.type ?? "min"}",
+                                "",
                                 style: Style.interNormal(
                                   size: 12,
                                   color: Style.black,
@@ -216,7 +216,7 @@ class MarketTwoItem extends StatelessWidget {
           ),
           6.verticalSpace,
           Text(
-            "${shop.deliveryTime?.from ?? 0} - ${shop.deliveryTime?.to ?? 0} ${shop.deliveryTime?.type ?? "min"}",
+            "",
             style: Style.interSemi(
               size: 12,
               color: Style.textGrey,

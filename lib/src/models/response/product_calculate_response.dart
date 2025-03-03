@@ -1,5 +1,5 @@
 import 'package:kiosk/src/models/data/product_data.dart';
-import 'package:kiosk/src/models/data/shop_data.dart';
+import 'package:kiosk/src/models/data/restaurant_data.dart';
 
 class ProductCalculateResponse {
   ProductCalculateResponse({

@@ -1,6 +1,7 @@
 abstract class StorageKeys {
   StorageKeys._();
 
+  static const String keyRestaurant = 'KeyRestaurant';
   static const String keyUser = 'keyUser';
   static const String keyBags = 'keyBags';
   static const String keyShop = 'keyShop';

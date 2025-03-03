@@ -10,7 +10,7 @@ export 'data/review_data.dart';
 export 'data/translation.dart';
 export 'response/products_paginate_response.dart';
 export 'data/bag_data.dart';
-export 'data/shop_data.dart';
+export 'data/restaurant_data.dart';
 export 'response/shops_paginate_response.dart';
 export 'data/dropdown_item_data.dart';
 export 'response/categories_paginate_response.dart';

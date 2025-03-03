@@ -1,4 +1,4 @@
-import '../data/shop_data.dart';
+import '../data/restaurant_data.dart';
 
 class SingleShopResponse {
   SingleShopResponse({

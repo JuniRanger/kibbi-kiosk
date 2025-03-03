@@ -18,7 +18,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       isSerialNotValid: false,
       isPasswordNotValid: false,
     );
-  }
+  } 
 
   void setSerial(String text) {
     state = state.copyWith(
@@ -45,7 +45,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       final response = await _authRepository.login(
         serial: state.serial,
         password: state.password,
-      );
+      );  
       response.when(  
         success: (data) async {
           // Guarda el token en local storage

@@ -35,6 +35,16 @@ abstract class LocalStorage {
     }
   }
 
+  static Future<void> saveRestaurantId(String restaurantId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(StorageKeys.keyRestaurant, restaurantId);
+  }
+
+  static Future<String?> getRestaurantId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(StorageKeys.keyRestaurant);
+  }
+
   static KioskData? getUser() {
     final savedString = _preferences?.getString(StorageKeys.keyUser);
     if (savedString == null) {
@@ -45,6 +55,18 @@ abstract class LocalStorage {
       return null;
     }
     return KioskData.fromJson(map);
+  }
+
+  static RestaurantData? getShop() {
+    final savedString = _preferences?.getString(StorageKeys.keyRestaurant);
+    if (savedString == null) {
+      return null;
+    }
+    final map = jsonDecode(savedString);
+    if (map == null) {
+      return null;
+    }
+    return RestaurantData.fromJson(map);
   }
 
   static void deleteUser() => _preferences?.remove(StorageKeys.keyUser);

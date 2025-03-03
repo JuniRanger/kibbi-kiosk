@@ -13,7 +13,7 @@ class UsersRepositoryImpl extends KioskRepository {
   @override
   Future getKioskDetails() async {
     try {
-
+      
     } catch (e) {
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }

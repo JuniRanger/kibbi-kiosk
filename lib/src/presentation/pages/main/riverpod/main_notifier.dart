@@ -15,7 +15,7 @@ class MainNotifier extends StateNotifier<MainState> {
   MainNotifier() : super(const MainState());
 
   changeIndex(int index) {
-    state = state.copyWith(selectIndex: index);
+    state = state.copyWith(selectIndex: 1); //forzar la vista interna para que siempre sea el apartado de tiendas
   }
 
   Future<void> fetchShops({

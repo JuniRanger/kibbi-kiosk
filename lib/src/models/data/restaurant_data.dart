@@ -60,7 +60,6 @@ class RestaurantData {
   num? minAmount;
   String? status;
   String? type;
-  DeliveryTime? deliveryTime;
   DateTime? createdAt;
   DateTime? updatedAt;
   LocationData? location;
@@ -165,30 +164,6 @@ class RestaurantData {
             locales == null ? null : List<dynamic>.from(locales!.map((x) => x)),
         "seller": seller?.toJson(),
         "bonus": bonus,
-      };
-}
-
-class DeliveryTime {
-  DeliveryTime({
-    this.to,
-    this.from,
-    this.type,
-  });
-
-  String? to;
-  String? from;
-  String? type;
-
-  factory DeliveryTime.fromJson(Map<String, dynamic> json) => DeliveryTime(
-        to: json["to"].toString(),
-        from: json["from"].toString(),
-        type: json["type"] ?? "min",
-      );
-
-  Map<String, dynamic> toJson() => {
-        "to": to,
-        "from": from,
-        "type": type,
       };
 }
 
