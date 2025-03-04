@@ -67,7 +67,7 @@ class RestaurantData {
   Translation? translation;
   List<String>? locales;
   List<TagsModel>? tags;
-  Seller? seller;
+  // Seller? seller;
   BonusModel? bonus;
   List<ShopWorkingDay>? shopWorkingDays;
   List<ShopClosedDate>? shopClosedDate;
@@ -162,42 +162,42 @@ class RestaurantData {
         "translation": translation?.toJson(),
         "locales":
             locales == null ? null : List<dynamic>.from(locales!.map((x) => x)),
-        "seller": seller?.toJson(),
+        // "seller": seller?.toJson(),
         "bonus": bonus,
       };
 }
 
-class Seller {
-  Seller({
-    this.id,
-    this.firstname,
-    this.lastname,
-    this.active,
-    this.role,
-  });
+// class Seller {
+//   Seller({
+//     this.id,
+//     this.firstname,
+//     this.lastname,
+//     this.active,
+//     this.role,
+//   });
 
-  num? id;
-  String? firstname;
-  String? lastname;
-  bool? active;
-  String? role;
+//   num? id;
+//   String? firstname;
+//   String? lastname;
+//   bool? active;
+//   String? role;
 
-  factory Seller.fromJson(Map<String, dynamic> json) => Seller(
-        id: json["id"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        active: json["active"],
-        role: json["role"],
-      );
+//   factory Seller.fromJson(Map<String, dynamic> json) => Seller(
+//         id: json["id"],
+//         firstname: json["firstname"],
+//         lastname: json["lastname"],
+//         active: json["active"],
+//         role: json["role"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "firstname": firstname,
-        "lastname": lastname,
-        "active": active,
-        "role": role,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "firstname": firstname,
+//         "lastname": lastname,
+//         "active": active,
+//         "role": role,
+//       };
+// }
 
 class ShopClosedDate {
   ShopClosedDate({

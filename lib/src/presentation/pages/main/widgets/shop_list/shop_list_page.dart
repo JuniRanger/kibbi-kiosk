@@ -89,7 +89,6 @@ class _ShopListPageState extends ConsumerState<ShopListPage> {
                             child: HasMoreButton(
                                 hasMore: state.hasMore,
                                 onViewMore: () {
-                                  notifier.fetchShops(context: context);
                                 }),
                           ),
                     16.verticalSpace,

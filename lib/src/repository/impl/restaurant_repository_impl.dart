@@ -71,15 +71,10 @@ class ShopsRepositoryImpl extends ShopsRepository {
 
   @override
   Future<ApiResult<CategoriesPaginateResponse>> getShopCategory() async {
-    final data = <String, dynamic>{
-      'lang': LocalStorage.getLanguage()?.locale ?? 'en',
-      'type': 'shop'
-    };
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/categories/mineCategory',
-        queryParameters: data,
       );
       return ApiResult.success(
         data: CategoriesPaginateResponse.fromJson(response.data),

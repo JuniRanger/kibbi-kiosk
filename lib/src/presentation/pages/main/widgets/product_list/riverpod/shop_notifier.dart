@@ -27,23 +27,15 @@ class ShopNotifier extends StateNotifier<ShopState> {
     fetchCategories(context: context);
   }
 
-  
-  // Método para obtener los detalles del restaurante
-  Future<void> fetchRestaurantDetails(BuildContext context) async {
-    final result = await shopsRepository.getRestaurantDetails();
-
-    result.when(
-      success: (data) {
-        // Aquí asumes que tienes una respuesta del tipo Map<String, dynamic>
-        final restaurantData = RestaurantData.fromJson(data); // Asegúrate de tener el modelo adecuado
-        state = state.copyWith(selectedShop: restaurantData); // Actualiza el estado con los datos
-        debugPrint('==> Restaurant details fetched successfully: $restaurantData');
-      },
-      failure: (error, status) {
-        debugPrint('==> Error fetching restaurant details: $error');
-      },
-    );
+  fetchData({required BuildContext context}) {
+    // Eliminar productos del carrito (si es necesario, aunque no tiene que ver con 'shop')
+    LocalStorage.deleteCartProducts();
+    
+    // Realizar los fetcheos de productos y categorías sin necesidad de usar 'shop'
+    fetchProducts(context: context, isRefresh: true);
+    fetchCategories(context: context);
   }
+
   
 
   Future<void> fetchProducts({
@@ -159,8 +151,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         categories: [],
       );
       final response = await categoriesRepository.searchCategories(
-        state.categoryQuery.isEmpty ? null : state.categoryQuery,
-        state.selectedShop?.id,
+        state.categoryQuery.isEmpty ? null : state.categoryQuery
       );
       response.when(
         success: (data) async {

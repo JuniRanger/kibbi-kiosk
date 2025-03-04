@@ -51,8 +51,6 @@ class _MainPageState extends ConsumerState<MainPage>
         ref
             .refresh(shopProvider.notifier)
             .setShop(shop: LocalStorage.getShop(), context: context);
-      } else {
-        ref.read(mainProvider.notifier).fetchShops(context: context);
       }
     });
   }
