@@ -7,8 +7,6 @@ abstract class ProductsFacade {
   Future<ApiResult<ProductsPaginateResponse>> getProductsPaginate({
     String? query,
     String? categoryId,
-    int? brandId,
-    String? shopId,
     required int page,
   });
 

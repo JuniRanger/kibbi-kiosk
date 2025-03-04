@@ -9,12 +9,16 @@ import '../repository.dart';
 class CategoriesRepositoryImpl extends CategoriesRepository {
   @override
   Future<ApiResult<CategoriesPaginateResponse>> searchCategories(
+    String? query
   ) async {
     try {
       final client = dioHttp.client(requireAuth: true);
       
       // Depurando antes de hacer la llamada
       debugPrint('==> Making API call to: /api/categories/mineCategory');
+      if (query != null) {
+        debugPrint('==> Query parameter: $query');
+      }
 
       final response = await client.get(
         '/api/categories/mineCategory',

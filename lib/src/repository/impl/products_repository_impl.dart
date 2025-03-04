@@ -13,14 +13,10 @@ class ProductsRepository extends ProductsFacade {
   Future<ApiResult<ProductsPaginateResponse>> getProductsPaginate({
     String? query,
     String? categoryId,
-    int? brandId,
-    String? shopId,
     required int page,
   }) async {
     final data = {
-      if (brandId != null) 'brand_id': brandId,
       if (categoryId != null) 'category_id': categoryId,
-      if (shopId != null) 'shop_id': shopId,
       if (query != null) 'search': query,
       'perPage': 12,
       'page': page,

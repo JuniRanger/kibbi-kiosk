@@ -7,12 +7,9 @@ import 'translation.dart';
 
 class ProductData {
   ProductData({
-    int? id,
-    String? uuid,
-    String? shopId,
-    int? categoryId,
+    String? id,
+    String? categoryId,
     String? keywords,
-    int? brandId,
     num? tax,
     num? totalPrice,
     num? discount,
@@ -40,11 +37,8 @@ class ProductData {
     int? count,
   }) {
     _id = id;
-    _uuid = uuid;
-    _shopId = shopId;
     _categoryId = categoryId;
     _keywords = keywords;
-    _brandId = brandId;
     _interval = interval;
     _tax = tax;
     _totalPrice = totalPrice;
@@ -75,14 +69,11 @@ class ProductData {
 
   ProductData.fromJson(dynamic json) {
     _id = json['id'];
-    _uuid = json['uuid'];
-    _shopId = json['shop_id'];
     _interval = json['interval'];
     _active = json['active'];
     _bonus = json['bonus'];
     _categoryId = json['category_id'];
     _keywords = json['keywords'];
-    _brandId = json['brand_id'];
     _tax = json['tax'];
     _quantity = json['quantity'];
     _discount = json['discount'];
@@ -136,13 +127,10 @@ class ProductData {
     }
   }
 
-  int? _id;
-  String? _uuid;
-  String? _shopId;
+  String? _id;
   int? _interval;
-  int? _categoryId;
+  String? _categoryId;
   String? _keywords;
-  int? _brandId;
   num? _tax;
   int? _quantity;
   num? _totalPrice;
@@ -170,12 +158,9 @@ class ProductData {
   int? _count;
 
   ProductData copyWith({
-    int? id,
-    String? uuid,
-    String? shopId,
-    int? categoryId,
+    String? id,
+    String? categoryId,
     String? keywords,
-    int? brandId,
     num? tax,
     int? quantity,
     num? totalPrice,
@@ -204,11 +189,8 @@ class ProductData {
     return ProductData(
       id: id ?? _id,
       interval: interval ?? _interval,
-      uuid: uuid ?? _uuid,
-      shopId: shopId ?? _shopId,
       categoryId: categoryId ?? _categoryId,
       keywords: keywords ?? _keywords,
-      brandId: brandId ?? _brandId,
       tax: tax ?? _tax,
       quantity: quantity ?? _quantity,
       totalPrice: totalPrice ?? _totalPrice,
@@ -235,19 +217,13 @@ class ProductData {
     );
   }
 
-  int? get id => _id;
+  String? get id => _id;
 
   int? get interval => _interval;
 
-  String? get uuid => _uuid;
-
-  String? get shopId => _shopId;
-
-  int? get categoryId => _categoryId;
+  String? get categoryId => _categoryId;
 
   String? get keywords => _keywords;
-
-  int? get brandId => _brandId;
 
   num? get tax => _tax;
 
@@ -299,13 +275,10 @@ class ProductData {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
-    map['uuid'] = _uuid;
-    map['shop_id'] = _shopId;
     map['bonus'] = _bonus;
     map['active'] = _active;
     map['category_id'] = _categoryId;
     map['keywords'] = _keywords;
-    map['brand_id'] = _brandId;
     map['interval'] = _interval;
     map['tax'] = _tax;
     map['min_qty'] = _minQty;

@@ -54,9 +54,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         final response = await productsRepository.getProductsPaginate(
           page: ++_page,
           query: state.query.isEmpty ? null : state.query,
-          shopId: state.selectedShop?.id,
           categoryId: state.selectedCategory?.id,
-          brandId: state.selectedBrand?.id,
         );
         response.when(
           success: (data) {
@@ -78,9 +76,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         final response = await productsRepository.getProductsPaginate(
           page: ++_page,
           query: state.query.isEmpty ? null : state.query,
-          shopId: state.selectedShop?.id,
           categoryId: state.selectedCategory?.id,
-          brandId: state.selectedBrand?.id,
         );
         response.when(
           success: (data) async {
@@ -151,6 +147,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         categories: [],
       );
       final response = await categoriesRepository.searchCategories(
+        state.categoryQuery.isEmpty ? null : state.categoryQuery
       );
       response.when(
         success: (data) async {
