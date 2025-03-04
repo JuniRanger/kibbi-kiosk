@@ -65,7 +65,7 @@ class CategoriesTab extends ConsumerWidget {
                                             context, index - 2);
                                       },
                                       title: state.categories[index - 2]
-                                          .translation?.title,
+                                          .name,
                                     );
                         }),
               ),

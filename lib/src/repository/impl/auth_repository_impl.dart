@@ -32,9 +32,6 @@ class AuthRepository extends AuthFacade {
         await LocalStorage.saveRestaurantId(loginResponse.restaurantId!);
         debugPrint('==> Restaurant ID guardado: ${loginResponse.restaurantId}');
       }
-
-      
-
       return ApiResult.success(data: loginResponse);
     } catch (e) {
       debugPrint('==> login failure: $e');

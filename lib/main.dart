@@ -13,7 +13,7 @@ void main() async {
   await MyApp.init();
   runApp(const MyApp());
 }
-  
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -65,5 +65,5 @@ class MyApp extends StatelessWidget {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Aquí no es necesario inicializar Firebase nuevamente, solo manejar los mensajes
-  print("Recibiendo mensaje en segundo plano: ${message.messageId}");
+  debugPrint("Recibiendo mensaje en segundo plano: ${message.messageId}");
 }

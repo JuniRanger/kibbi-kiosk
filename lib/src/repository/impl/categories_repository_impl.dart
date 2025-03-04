@@ -9,19 +9,28 @@ import '../repository.dart';
 class CategoriesRepositoryImpl extends CategoriesRepository {
   @override
   Future<ApiResult<CategoriesPaginateResponse>> searchCategories(
-    String? query
   ) async {
     try {
       final client = dioHttp.client(requireAuth: true);
+      
+      // Depurando antes de hacer la llamada
+      debugPrint('==> Making API call to: /api/categories/mineCategory');
+
       final response = await client.get(
         '/api/categories/mineCategory',
       );
+      
+      // Depurando la respuesta de la API
+      debugPrint('==> API response: ${response.data}');
+      
       return ApiResult.success(
         data: CategoriesPaginateResponse.fromJson(response.data),
       );
     } catch (e) {
+      // Depurando cualquier error que ocurra durante la llamada
       debugPrint('==> get categories failure: $e');
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }
   }
 }
+

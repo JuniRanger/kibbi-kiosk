@@ -12,7 +12,7 @@ class ProductsRepository extends ProductsFacade {
   @override
   Future<ApiResult<ProductsPaginateResponse>> getProductsPaginate({
     String? query,
-    int? categoryId,
+    String? categoryId,
     int? brandId,
     String? shopId,
     required int page,
@@ -31,7 +31,7 @@ class ProductsRepository extends ProductsFacade {
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
-        '/api/v1/rest/products/paginate',
+        '/api/products/mineProducts',
         queryParameters: data,
       );
       return ApiResult.success(

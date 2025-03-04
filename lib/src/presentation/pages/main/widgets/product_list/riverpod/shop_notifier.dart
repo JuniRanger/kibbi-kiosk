@@ -20,12 +20,12 @@ class ShopNotifier extends StateNotifier<ShopState> {
     state = state.copyWith(selectedOrder: order);
   }
 
-  setShop({required RestaurantData? shop, required BuildContext context}) {
-    LocalStorage.deleteCartProducts();
-    state = state.copyWith(selectedShop: shop);
-    fetchProducts(context: context, isRefresh: true);
-    fetchCategories(context: context);
-  }
+  // setShop({required RestaurantData? shop, required BuildContext context}) {
+  //   LocalStorage.deleteCartProducts();
+  //   state = state.copyWith(selectedShop: shop);
+  //   fetchProducts(context: context, isRefresh: true);
+  //   fetchCategories(context: context);
+  // }
 
   fetchData({required BuildContext context}) {
     // Eliminar productos del carrito (si es necesario, aunque no tiene que ver con 'shop')
@@ -151,7 +151,6 @@ class ShopNotifier extends StateNotifier<ShopState> {
         categories: [],
       );
       final response = await categoriesRepository.searchCategories(
-        state.categoryQuery.isEmpty ? null : state.categoryQuery
       );
       response.when(
         success: (data) async {

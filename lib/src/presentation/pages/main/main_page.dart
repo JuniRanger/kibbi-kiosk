@@ -40,18 +40,14 @@ class _MainPageState extends ConsumerState<MainPage>
     with SingleTickerProviderStateMixin {
   late Widget currentPage = const PostPage(); // O la pantalla que prefieras
 
-  @override
+  @override 
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Siempre mantén la vista en productos (index 1)
       ref.read(mainProvider.notifier).changeIndex(1);
-
-      if (LocalStorage.getShop() != null) {
-        ref
-            .refresh(shopProvider.notifier)
-            .setShop(shop: LocalStorage.getShop(), context: context);
-      }
+      ref.read(shopProvider.notifier).fetchCategories(context: context);
+      ref.read(shopProvider.notifier).fetchProducts(context: context);
     });
   }
 
@@ -60,7 +56,6 @@ class _MainPageState extends ConsumerState<MainPage>
     final state = ref.watch(mainProvider);
     final notifier = ref.read(mainProvider.notifier);
     final shopNotifier = ref.read(shopProvider.notifier);
-
     return SafeArea(
       child: CustomScaffold(
         extendBody: true,

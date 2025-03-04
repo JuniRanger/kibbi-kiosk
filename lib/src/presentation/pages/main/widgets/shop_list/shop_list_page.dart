@@ -63,10 +63,10 @@ class _ShopListPageState extends ConsumerState<ShopListPage> {
                                       isSimpleShop: true,
                                       onTap: () {
                                         ref
-                                            .refresh(shopProvider.notifier)
-                                            .setShop(
-                                                shop: state.shops[index],
-                                                context: context);
+                                            .refresh(shopProvider.notifier);
+                                            // .setShop(
+                                            //     shop: state.shops[index],
+                                            //     context: context);
                                         ref
                                             .read(mainProvider.notifier)
                                             .changeIndex(1);

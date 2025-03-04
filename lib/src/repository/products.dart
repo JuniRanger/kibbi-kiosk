@@ -6,7 +6,7 @@ import '../models/models.dart';
 abstract class ProductsFacade {
   Future<ApiResult<ProductsPaginateResponse>> getProductsPaginate({
     String? query,
-    int? categoryId,
+    String? categoryId,
     int? brandId,
     String? shopId,
     required int page,
