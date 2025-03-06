@@ -1,0 +1,128 @@
+import 'package:kibbi_kiosk/src/models/data/product_data.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../theme/theme.dart';
+
+class CartItem extends StatelessWidget {
+  final List<ProductData> products;  // Lista directa de productos en el carrito
+  final Function(ProductData) onDeleteProduct;
+  final Function(ProductData) onDecreaseProduct;
+  final Function(ProductData) onIncreaseProduct;
+  final Function onOrderComplete;  // Función para limpiar el carrito después de la orden
+
+  const CartItem({
+    super.key,
+    required this.products,
+    required this.onDeleteProduct,
+    required this.onDecreaseProduct,
+    required this.onIncreaseProduct,
+    required this.onOrderComplete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: REdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Carrito de compras',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                  color: Style.black,
+                  letterSpacing: -0.4,
+                ),
+              ),
+              Text(
+                '${products.length} productos',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                  color: Style.black,
+                  letterSpacing: -0.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+        22.verticalSpace,
+        Divider(
+          height: 1.r,
+          thickness: 1.r,
+          color: Style.black.withOpacity(0.1),
+        ),
+        // Lista de productos
+        for (var product in products)
+          Padding(
+            padding: REdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Row(
+              children: [
+                // Nombre del producto
+                Text(
+                  product.title ?? 'Producto',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.sp,
+                    color: Style.black,
+                  ),
+                ),
+                const Spacer(),
+                // Botones de aumentar y disminuir cantidad
+                GestureDetector(
+                  onTap: () => onDecreaseProduct(product),
+                  child: Icon(Icons.remove, color: Style.black),
+                ),
+                4.horizontalSpace,
+                Text(
+                  '${product.quantity ?? 1}',
+                  style: GoogleFonts.inter(
+                    fontSize: 14.sp,
+                    color: Style.black,
+                  ),
+                ),
+                4.horizontalSpace,
+                GestureDetector(
+                  onTap: () => onIncreaseProduct(product),
+                  child: Icon(Icons.add, color: Style.black),
+                ),
+                8.horizontalSpace,
+                // Eliminar producto
+                GestureDetector(
+                  onTap: () => onDeleteProduct(product),
+                  child: Icon(Icons.delete, color: Style.red),
+                ),
+              ],
+            ),
+          ),
+        // Botón para completar la orden y limpiar el carrito
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
+          child: ElevatedButton(
+            onPressed: () {
+              // Aquí se ejecuta la función de limpieza del carrito
+              onOrderComplete.call();
+            },
+            child: Text(
+              'Realizar Orden',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                fontSize: 16.sp,
+                color: Style.white,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              iconColor: Style.primary,
+              minimumSize: Size(double.infinity, 48.h),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

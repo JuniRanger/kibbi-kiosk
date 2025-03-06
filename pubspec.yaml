@@ -1,0 +1,82 @@
+name: kibbi_kiosk
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^5.4.3+1
+  intl: ^0.20.2
+  get_it: ^7.2.0
+  shimmer: ^3.0.0
+  auto_route: ^9.3.0+1
+  google_fonts: ^6.2.1
+  flutter_remix: ^0.0.3
+  bitsdojo_window: ^0.1.5
+  flutter_riverpod: ^2.5.1
+  connectivity_plus: ^6.0.3
+  freezed_annotation: ^2.1.0
+  flutter_screenutil: ^5.9.3
+  shared_preferences: ^2.2.3
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.10+1
+  osm_nominatim: ^3.0.0
+  lottie: ^3.1.2
+  flutter_staggered_animations: ^1.1.1
+  drag_and_drop_lists: ^0.4.1
+  flutter_slidable: ^4.0.0
+  image_picker: ^1.1.2
+  image_cropper: ^9.0.0
+  url_launcher: ^6.3.0
+  pull_to_refresh: ^2.0.0
+  proste_indexed_stack: ^0.2.4
+  fl_chart: ^0.70.2
+  percent_indicator: ^4.2.3
+  calendar_date_picker2: ^1.1.5
+  flutter_esc_pos_utils: ^1.0.1
+  geolocator: ^13.0.2
+  msix: ^3.12.1
+  multi_dropdown: ^3.0.1
+  flutter_advanced_switch: ^3.0.1
+  dotted_border: ^2.1.0
+  file_picker: ^9.0.0
+  auto_size_text: ^3.0.0
+  flutter_isolate: ^2.0.4
+  provider: ^6.0.5
+  intl_phone_field: ^3.2.0
+  webview_flutter: ^4.2.4
+
+  network_info_plus: ^6.1.3
+  ping_discover_network_forked: ^0.0.1
+  rxdart: ^0.28.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  freezed: ^2.4.9
+  build_runner: ^2.4.11
+  flutter_lints: ^5.0.0
+  auto_route_generator: ^9.3.1
+  flutter_launcher_icons: ^0.14.3
+
+flutter_icons:
+  android: true
+  ios: true
+  mac: true
+  remove_alpha_ios: true
+  image_path: 'assets/images/png/app_logo.png'
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/png/
+    - assets/svg/
+    - assets/lottie/
+    - assets/
+    - assets/images/
