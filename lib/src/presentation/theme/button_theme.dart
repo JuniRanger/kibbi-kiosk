@@ -15,8 +15,8 @@ ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
 
 TextButtonThemeData textButtonThemeData = TextButtonThemeData(
   style: ButtonStyle(
-    foregroundColor: MaterialStateProperty.all(Style.success),
-    textStyle: MaterialStateProperty.all(Style.interSemi(size: 16)),
+    foregroundColor: WidgetStateProperty.all(Style.success),
+    textStyle: WidgetStateProperty.all(Style.interSemi(size: 16)),
   ),
 );
 

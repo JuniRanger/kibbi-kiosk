@@ -81,7 +81,7 @@ class CommonImage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Icon(
                         FlutterRemix.image_line,
-                        color: Style.black.withOpacity(0.5),
+                        color: Style.black.withAlpha((0.5 * 255).toInt()),
                         size: isResponsive ? 20.r : 20,
                       ),
                     );

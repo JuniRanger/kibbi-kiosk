@@ -34,12 +34,12 @@ class ProductGridItem extends StatelessWidget {
           children: [
             Expanded(
               child: CommonImage(
-                url: product.img,
+                url: product.imageUrl,
               ),
             ),
             16.verticalSpace,
             Text(
-              '${product.title}', // Usamos directamente el título del producto en español
+              product.name, // Usamos directamente el título del producto en español
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(
@@ -65,7 +65,7 @@ class ProductGridItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${product.totalPrice}', // Usamos el precio total directamente
+                  '${product.salePrice}', // Usamos el precio total directamente
                   style: GoogleFonts.inter(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,

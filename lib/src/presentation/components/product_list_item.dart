@@ -51,7 +51,7 @@ class ProductListItem extends StatelessWidget {
               16.horizontalSpace,
               Expanded(
                 child: Text(
-                  product.title ?? '',
+                  product.name ?? '',
                   style: GoogleFonts.inter(
                     fontSize: 15.sp,
                     color: Style.black,

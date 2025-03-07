@@ -9,8 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-// import '../../../../../core/constants/constants.dart';
-// import '../../../../../core/utils/utils.dart';
+import '../../../../../core/constants/constants.dart';
+import '../../../../../core/utils/utils.dart';
 
 class CategoriesTab extends ConsumerWidget {
   const CategoriesTab({super.key});
@@ -73,7 +73,7 @@ class CategoriesTab extends ConsumerWidget {
             12.horizontalSpace,
             CustomRefresher(
               onTap: () {
-                // notifier.fetchProducts(context: context, isRefresh: true);
+                notifier.fetchProducts(context: context, isRefresh: true);
               },
               isLoading: state.isProductsLoading,
             ),

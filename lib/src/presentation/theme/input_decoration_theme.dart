@@ -32,7 +32,7 @@ OutlineInputBorder secondaryOutlineInputBorder(BuildContext context) {
   return OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(8.r)),
     borderSide: BorderSide(
-      color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.15),
+      color: Theme.of(context).textTheme.bodyLarge!.color!.withAlpha((0.15 * 255).toInt()),
     ),
   );
 }

@@ -19,7 +19,11 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     super.initState();
     Future.delayed(
       Duration.zero,
-      () => ref.read(splashProvider.notifier).checkConnectivity(context),
+      () {
+        if (mounted) {
+          ref.read(splashProvider.notifier).checkConnectivity(context);
+        }
+      },
     );
   }
 

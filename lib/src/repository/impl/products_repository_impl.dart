@@ -1,4 +1,4 @@
-import 'package:kibbi_kiosk/src/core/constants/constants.dart';
+// import 'package:kibbi_kiosk/src/core/constants/constants.dart';
 import 'package:kibbi_kiosk/src/core/di/dependency_manager.dart';
 // import 'package:kibbi_kiosk/src/models/response/product_calculate_response.dart';
 import 'package:flutter/material.dart';
@@ -10,34 +10,58 @@ import '../repository.dart';
 
 class ProductsRepository extends ProductsFacade {
   @override
-  Future<ApiResult<ProductsPaginateResponse>> getProductsPaginate({
+  Future<ApiResult<List<ProductData>>> getProductsPaginate({
     String? query,
-    String? categoryId,
-    required int page,
   }) async {
     final data = {
-      if (categoryId != null) 'category_id': categoryId,
       if (query != null) 'search': query,
-      'perPage': 12,
-      'page': page,
-      'lang': 'es',
-      "status": "published",
-      "addon_status": "published"
     };
+
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/products/mineProducts',
         queryParameters: data,
       );
-      return ApiResult.success(
-        data: ProductsPaginateResponse.fromJson(response.data),
-      );
+
+      // Verifica la estructura de response.data
+      debugPrint('Response data: ${response.data}');
+
+      // Convierte la lista de productos
+      final List<dynamic> responseData = response.data;
+      final products = responseData.map((product) => ProductData.fromJson(product)).toList();
+
+      debugPrint('==> get products success: $products');
+      return ApiResult.success(data: products);
     } catch (e) {
       debugPrint('==> get products failure: $e');
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }
   }
+
+  @override
+  Future<ApiResult<List<ProductData>>> getProductsByCategoryId({
+    required String categoryId,
+  }) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      final response = await client.get(
+        '/api/products/$categoryId',
+      );
+
+      debugPrint('Response data: ${response.data}');
+      final List<dynamic> responseData = response.data;
+      final products = responseData.map((product) => ProductData.fromJson(product)).toList();
+
+      debugPrint('==> get products by category success: $products');
+      return ApiResult.success(data: products);
+    } catch (e) {
+      debugPrint('==> get products by category failure: $e');
+      return ApiResult.failure(error: AppHelpers.errorHandler(e));
+    }
+  }
+}
+
 
   // @override
   // Future<ApiResult<ProductCalculateResponse>> getAllCalculations(
@@ -77,5 +101,4 @@ class ProductsRepository extends ProductsFacade {
   //     debugPrint('==> get all calculations failure: $e, $s');
   //     return ApiResult.failure(error: AppHelpers.errorHandler(e));
   //   }
-  // }
-}
+  // }}

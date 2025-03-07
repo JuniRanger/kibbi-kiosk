@@ -13,10 +13,12 @@ class SplashNotifier extends StateNotifier<SplashState> {
     final connect = await AppConnectivity.connectivity();
     if (connect) {
       // Si hay conexión, navegamos dependiendo del estado del token
-      if (LocalStorage.getToken().isEmpty) {
-        context.replaceRoute(const LoginRoute());  // Redirige al login si no hay token
-      } else {
-        context.replaceRoute(const MainRoute());  // Redirige a la pantalla principal si hay token
+      if (context.mounted) {
+        if (LocalStorage.getToken().isEmpty) {
+          context.replaceRoute(const LoginRoute());  // Redirige al login si no hay token
+        } else {
+          context.replaceRoute(const MainRoute());  // Redirige a la pantalla principal si hay token
+        }
       }
     } else {
       debugPrint('==> No hay conexión a la red');

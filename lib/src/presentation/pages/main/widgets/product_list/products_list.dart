@@ -84,7 +84,7 @@ class ProductsList extends ConsumerWidget {
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(10.r),
                                   onTap: () {
-                                    // notifier.fetchProducts(context: context);
+                                    notifier.fetchProducts(context: context);
                                   },
                                   child: Container(
                                     height: 50.r,

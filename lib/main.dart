@@ -1,6 +1,5 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/app_widget.dart';
 import 'src/core/di/dependency_manager.dart';
@@ -46,7 +45,3 @@ class MyApp extends StatelessWidget {
     return ProviderScope(child: AppWidget());
   }
 }
-
-// Eliminada toda la lógica de Firebase y mensajes push 📤
-
-// Si en el futuro necesitas agregar otra plataforma o servicio, solo dime. 😉

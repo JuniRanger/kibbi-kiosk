@@ -4,3 +4,4 @@ export './response/products_paginate_response.dart';
 export './data/kiosk_data.dart';
 export './data/dropdown_item_data.dart';
 export './data/product_data.dart';
+export './data/category_data.dart';

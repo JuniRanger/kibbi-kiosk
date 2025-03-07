@@ -15,12 +15,12 @@ FloatingActionButtonThemeData floatingActionButtonThemeData =
         backgroundColor: Style.primary, shape: CircleBorder());
 
 ScrollbarThemeData scrollbarThemeData = ScrollbarThemeData(
-  trackColor: MaterialStateProperty.all(Style.primary),
+  trackColor: WidgetStateProperty.all(Style.primary),
 );
 
 DataTableThemeData dataTableLightThemeData = DataTableThemeData(
   columnSpacing: 24,
-  headingRowColor: MaterialStateProperty.all(Style.transparent),
+  headingRowColor: WidgetStateProperty.all(Style.transparent),
   decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(AppConstants.radius.r),
     border: Border.all(color: Style.black),

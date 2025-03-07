@@ -11,7 +11,7 @@ import 'package:kibbi_kiosk/src/models/data/order_data.dart';
 class ShopNotifier extends StateNotifier<ShopState> {
   Timer? _searchProductsTimer;
   Timer? _searchCategoriesTimer;
-  Timer? _searchBrandsTimer;
+
   int _page = 0;
 
   ShopNotifier() : super(const ShopState());
@@ -30,81 +30,55 @@ class ShopNotifier extends StateNotifier<ShopState> {
   fetchData({required BuildContext context}) {
     // Eliminar productos del carrito (si es necesario, aunque no tiene que ver con 'shop')
     LocalStorage.deleteCartProducts();
-    
+
     // Realizar los fetcheos de productos y categorías sin necesidad de usar 'shop'
     fetchProducts(context: context, isRefresh: true);
     fetchCategories(context: context);
   }
 
-  
-
   Future<void> fetchProducts({
-    required BuildContext context,
-    bool? isRefresh,
-  }) async {
-    if (isRefresh ?? false) {
-      _page = 0;
-    } else if (!state.hasMore) {
-      return;
-    }
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      if (_page == 0) {
-        state = state.copyWith(isProductsLoading: true, products: []);
-        final response = await productsRepository.getProductsPaginate(
-          page: ++_page,
-          query: state.query.isEmpty ? null : state.query,
-          categoryId: state.selectedCategory?.id,
-        );
-        response.when(
-          success: (data) {
-            state = state.copyWith(
-              products: data.data ?? [],
-              isProductsLoading: false,
+  required BuildContext context,
+  bool? isRefresh,
+}) async {
+  final connected = await AppConnectivity.connectivity();
+  if (connected) {
+    state = state.copyWith(isProductsLoading: true, products: []);
+
+    try {
+      final response = state.selectedCategory?.id != null
+          ? await productsRepository.getProductsByCategoryId(
+              categoryId: state.selectedCategory!.id!,
+            )
+          : await productsRepository.getProductsPaginate(
+              query: state.query.isEmpty ? null : state.query,
             );
-            if ((data.data?.length ?? 0) < 12) {
-              state = state.copyWith(hasMore: false);
-            }
-          },
-          failure: (failure, status) {
-            state = state.copyWith(isProductsLoading: false);
-            debugPrint('==> get products failure: $failure');
-          },
-        );
-      } else {
-        state = state.copyWith(isMoreProductsLoading: true);
-        final response = await productsRepository.getProductsPaginate(
-          page: ++_page,
-          query: state.query.isEmpty ? null : state.query,
-          categoryId: state.selectedCategory?.id,
-        );
-        response.when(
-          success: (data) async {
-            final List<ProductData> newList = List.from(state.products);
-            newList.addAll(data.data ?? []);
-            state = state.copyWith(
-              products: newList,
-              isMoreProductsLoading: false,
-            );
-            if ((data.data?.length ?? 0) < 12) {
-              state = state.copyWith(hasMore: false);
-            }
-          },
-          failure: (failure, status) {
-            state = state.copyWith(isMoreProductsLoading: false);
-            debugPrint('==> get products more failure: $failure');
-            AppHelpers.showSnackBar(context, failure);
-          },
-        );
-      }
-    } else {
-      AppHelpers.showSnackBar(
-        // ignore: use_build_context_synchronously
-        context,
-        'Revisa tu conexión',
+
+      response.when(
+        success: (data) {
+          state = state.copyWith(
+            products: data,
+            isProductsLoading: false,
+          );
+        },
+        failure: (failure, status) {
+          state = state.copyWith(isProductsLoading: false);
+          debugPrint('==> get products failure: $failure');
+          AppHelpers.showSnackBar(context, failure);
+        },
       );
+    } catch (e) {
+      state = state.copyWith(isProductsLoading: false);
+      debugPrint('==> fetch products failure: $e');
+      AppHelpers.showSnackBar(context, 'Error al cargar los productos');
     }
+  } else {
+    AppHelpers.showSnackBar(
+      context,
+      'Revisa tu conexión',
+    );
   }
+}
+
 
   void setProductsQuery(BuildContext context, String query) {
     if (state.query == query) {
@@ -139,37 +113,40 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   Future<void> fetchCategories({required BuildContext context}) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      state = state.copyWith(
-        isCategoriesLoading: true,
-        dropDownCategories: [],
-        categories: [],
-      );
-      final response = await categoriesRepository.searchCategories(
-        state.categoryQuery.isEmpty ? null : state.categoryQuery
-      );
-      response.when(
-        success: (data) async {
-          final List<CategoryData> categories = data.data ?? [];
-          state = state.copyWith(
-            isCategoriesLoading: false,
-            categories: categories,
-          );
-        },
-        failure: (failure, status) {
-          state = state.copyWith(isCategoriesLoading: false);
-        },
-      );
-    } else {
-      AppHelpers.showSnackBar(
-        // ignore: use_build_context_synchronously
-        context,
-        'Revisa tu conexión',
-      );
-    }
-  }
+  final connected = await AppConnectivity.connectivity();
+  if (connected) {
+    state = state.copyWith(
+      isCategoriesLoading: true,
+      dropDownCategories: [],
+      categories: [],
+    );
 
+    final response = await categoriesRepository.searchCategories(
+      state.categoryQuery.isEmpty ? null : state.categoryQuery,
+    );
+
+    response.when(
+      success: (data) {
+        // data es una List<CategoryData>
+        state = state.copyWith(
+          isCategoriesLoading: false,
+          categories: data, // Guardar la lista de categorías directamente
+        );
+      },
+      failure: (failure, status) {
+        state = state.copyWith(isCategoriesLoading: false);
+        debugPrint('==> get categories failure: $failure');
+      },
+    );
+  } else {
+    AppHelpers.showSnackBar(
+      context,
+      'Revisa tu conexión',
+    );
+  }
+}
+
+  
   void setCategoriesQuery(BuildContext context, String query) {
     debugPrint('===> set categories query: $query');
     if (state.categoryQuery == query) {
@@ -200,14 +177,12 @@ class ShopNotifier extends StateNotifier<ShopState> {
       }
     }
 
-    _page = 0;
     fetchProducts(context: context);
     setCategoriesQuery(context, '');
   }
 
   void removeSelectedCategory(BuildContext context) {
     state = state.copyWith(selectedCategory: null, hasMore: true);
-    _page = 0;
     fetchProducts(context: context);
   }
 }

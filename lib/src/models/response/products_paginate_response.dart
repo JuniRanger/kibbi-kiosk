@@ -7,18 +7,29 @@ class ProductsPaginateResponse {
     Meta? meta,
   }) {
     _data = data;
-    // _links = links;
     _meta = meta;
   }
 
   ProductsPaginateResponse.fromJson(dynamic json) {
-    if (json['data'] != null) {
+    if (json is List) {
+      // Si la respuesta es una lista, la tratamos como la lista de productos
       _data = [];
-      json['data'].forEach((v) {
+      json.forEach((v) {
         _data?.add(ProductData.fromJson(v));
       });
+
+    } else if (json is Map<String, dynamic>) {
+      // Si la respuesta es un mapa, la tratamos como la estructura esperada
+      if (json['data'] != null) {
+        _data = [];
+        json['data'].forEach((v) {
+          _data?.add(ProductData.fromJson(v));
+        });
+      }
+      _meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    } else {
+      throw Exception('Invalid JSON format');
     }
-    _meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
   }
 
   List<ProductData>? _data;

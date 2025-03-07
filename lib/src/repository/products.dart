@@ -1,11 +1,12 @@
-
 import '../core/handlers/handlers.dart';
 import '../models/models.dart';
 
 abstract class ProductsFacade {
-  Future<ApiResult<ProductsPaginateResponse>> getProductsPaginate({
-    String? query,
-    String? categoryId,
-    required int page,
+  Future<ApiResult<List<ProductData>>> getProductsPaginate({
+    String? query
+  });
+
+  Future<ApiResult<List<ProductData>>> getProductsByCategoryId({
+    required String categoryId,
   });
 }

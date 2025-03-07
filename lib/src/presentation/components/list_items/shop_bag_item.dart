@@ -6,10 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../theme/theme.dart';
 
 class CartItem extends StatelessWidget {
-  final List<ProductData> products;  // Lista directa de productos en el carrito
-  final Function(ProductData) onDeleteProduct;
-  final Function(ProductData) onDecreaseProduct;
-  final Function(ProductData) onIncreaseProduct;
+  final List<OrderProduct> products;  // Lista de productos con cantidad y precio
+  final Function(OrderProduct) onDeleteProduct;
+  final Function(OrderProduct) onDecreaseProduct;
+  final Function(OrderProduct) onIncreaseProduct;
   final Function onOrderComplete;  // Función para limpiar el carrito después de la orden
 
   const CartItem({
@@ -58,14 +58,14 @@ class CartItem extends StatelessWidget {
           color: Style.black.withOpacity(0.1),
         ),
         // Lista de productos
-        for (var product in products)
+        for (var orderProduct in products)
           Padding(
             padding: REdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Row(
               children: [
                 // Nombre del producto
                 Text(
-                  product.title ?? 'Producto',
+                  orderProduct.product.name ?? 'Producto',
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600,
                     fontSize: 16.sp,
@@ -75,12 +75,12 @@ class CartItem extends StatelessWidget {
                 const Spacer(),
                 // Botones de aumentar y disminuir cantidad
                 GestureDetector(
-                  onTap: () => onDecreaseProduct(product),
+                  onTap: () => onDecreaseProduct(orderProduct),
                   child: Icon(Icons.remove, color: Style.black),
                 ),
                 4.horizontalSpace,
                 Text(
-                  '${product.quantity ?? 1}',
+                  '${orderProduct.quantity}',
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
                     color: Style.black,
@@ -88,13 +88,13 @@ class CartItem extends StatelessWidget {
                 ),
                 4.horizontalSpace,
                 GestureDetector(
-                  onTap: () => onIncreaseProduct(product),
+                  onTap: () => onIncreaseProduct(orderProduct),
                   child: Icon(Icons.add, color: Style.black),
                 ),
                 8.horizontalSpace,
                 // Eliminar producto
                 GestureDetector(
-                  onTap: () => onDeleteProduct(product),
+                  onTap: () => onDeleteProduct(orderProduct),
                   child: Icon(Icons.delete, color: Style.red),
                 ),
               ],
@@ -126,3 +126,5 @@ class CartItem extends StatelessWidget {
     );
   }
 }
+
+// Ahora tu carrito tiene cantidad y precio unitario, y puedes mandar bien la orden al servidor 🚀🔥

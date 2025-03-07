@@ -14,7 +14,6 @@ abstract class AppConstants {
 
   static const bool isSpecificNumberEnabled = false;
   static const bool isNumberLengthAlwaysSame = true;
-  static const String countryCodeISO = 'UZ';
 
   static const double radius = 12;
 }
