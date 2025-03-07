@@ -30,7 +30,7 @@ class _MainPageState extends ConsumerState<MainPage>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(shopProvider.notifier).fetchCategories(context: context);
-      // ref.read(shopProvider.notifier).fetchProducts(context: context);
+      ref.read(shopProvider.notifier).fetchProducts(context: context);
     });
   }
 

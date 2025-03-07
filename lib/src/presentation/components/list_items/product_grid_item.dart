@@ -65,7 +65,7 @@ class ProductGridItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${product.salePrice}', // Usamos el precio total directamente
+                  '\$ ${product.salePrice}', // Usamos el precio total directamente
                   style: GoogleFonts.inter(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,

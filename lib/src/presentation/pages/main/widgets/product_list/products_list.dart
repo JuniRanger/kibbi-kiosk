@@ -20,6 +20,7 @@ class ProductsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(shopProvider);
     final notifier = ref.read(shopProvider.notifier);
+    
     return state.isProductsLoading
         ? const ProductGridListShimmer()
         : state.products.isNotEmpty
@@ -32,7 +33,6 @@ class ProductsList extends ConsumerWidget {
                 }),
                 child: ListView(
                   shrinkWrap: false,
-                  cacheExtent: (state.products.length / 4) * 250,
                   children: [
                     AnimationLimiter(
                       child: GridView.builder(
@@ -59,13 +59,7 @@ class ProductsList extends ConsumerWidget {
                                 child: ProductGridItem(
                                   product: product,
                                   onTap: () {
-                                    // showDialog(
-                                    //   context: context,
-                                    //   builder: (context) {
-                                    //     return AddProductDialog(
-                                    //         product: product);
-                                    //   },
-                                    // );
+                                    // Aquí podrías mostrar más detalles del producto si lo deseas.
                                   },
                                 ),
                               ),
@@ -74,40 +68,6 @@ class ProductsList extends ConsumerWidget {
                         },
                       ),
                     ),
-                    10.verticalSpace,
-                    state.isMoreProductsLoading
-                        ? const ProductGridListShimmer(verticalPadding: 0)
-                        : (state.hasMore
-                            ? Material(
-                                borderRadius: BorderRadius.circular(10.r),
-                                color: Style.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  onTap: () {
-                                    notifier.fetchProducts(context: context);
-                                  },
-                                  child: Container(
-                                    height: 50.r,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      border: Border.all(
-                                        color: Style.black.withOpacity(0.17),
-                                        width: 1.r,
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'Ver más',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 16.sp,
-                                        color: Style.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox()),
                     15.verticalSpace,
                   ],
                 ),

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'categories_tab.dart';
 import 'products_list.dart';
-// import 'right_side/right_side.dart';
+import 'right_side/right_side.dart';
 
 class MenuPage extends ConsumerWidget {
   const MenuPage({super.key});
@@ -31,7 +31,7 @@ class MenuPage extends ConsumerWidget {
                   16.horizontalSpace,
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width / 3.2,
-                    // child: const RightSide(),
+                    child: const RightSide(),
                   ),
                 ],
               ),

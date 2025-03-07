@@ -28,7 +28,6 @@ class ShopNotifier extends StateNotifier<ShopState> {
   // }
 
   fetchData({required BuildContext context}) {
-    // Eliminar productos del carrito (si es necesario, aunque no tiene que ver con 'shop')
     LocalStorage.deleteCartProducts();
 
     // Realizar los fetcheos de productos y categorías sin necesidad de usar 'shop'
@@ -37,48 +36,47 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   Future<void> fetchProducts({
-  required BuildContext context,
-  bool? isRefresh,
-}) async {
-  final connected = await AppConnectivity.connectivity();
-  if (connected) {
-    state = state.copyWith(isProductsLoading: true, products: []);
+    required BuildContext context,
+    bool? isRefresh,
+  }) async {
+    final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      state = state.copyWith(isProductsLoading: true, products: []);
 
-    try {
-      final response = state.selectedCategory?.id != null
-          ? await productsRepository.getProductsByCategoryId(
-              categoryId: state.selectedCategory!.id!,
-            )
-          : await productsRepository.getProductsPaginate(
-              query: state.query.isEmpty ? null : state.query,
+      try {
+        final response = state.selectedCategory?.id != null
+            ? await productsRepository.getProductsByCategoryId(
+                categoryId: state.selectedCategory!.id!,
+              )
+            : await productsRepository.getProductsPaginate(
+                query: state.query.isEmpty ? null : state.query,
+              );
+
+        response.when(
+          success: (data) {
+            state = state.copyWith(
+              products: data,
+              isProductsLoading: false,
             );
-
-      response.when(
-        success: (data) {
-          state = state.copyWith(
-            products: data,
-            isProductsLoading: false,
-          );
-        },
-        failure: (failure, status) {
-          state = state.copyWith(isProductsLoading: false);
-          debugPrint('==> get products failure: $failure');
-          AppHelpers.showSnackBar(context, failure);
-        },
+          },
+          failure: (failure, status) {
+            state = state.copyWith(isProductsLoading: false);
+            debugPrint('==> get products failure: $failure');
+            AppHelpers.showSnackBar(context, failure);
+          },
+        );
+      } catch (e) {
+        state = state.copyWith(isProductsLoading: false);
+        debugPrint('==> fetch products failure: $e');
+        AppHelpers.showSnackBar(context, 'Error al cargar los productos');
+      }
+    } else {
+      AppHelpers.showSnackBar(
+        context,
+        'Revisa tu conexión',
       );
-    } catch (e) {
-      state = state.copyWith(isProductsLoading: false);
-      debugPrint('==> fetch products failure: $e');
-      AppHelpers.showSnackBar(context, 'Error al cargar los productos');
     }
-  } else {
-    AppHelpers.showSnackBar(
-      context,
-      'Revisa tu conexión',
-    );
   }
-}
-
 
   void setProductsQuery(BuildContext context, String query) {
     if (state.query == query) {
@@ -92,7 +90,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
       _searchProductsTimer = Timer(
         const Duration(milliseconds: 500),
         () {
-          state = state.copyWith(hasMore: true, products: []);
+          state = state.copyWith(products: []);
           _page = 0;
           fetchProducts(context: context);
         },
@@ -104,7 +102,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
       _searchProductsTimer = Timer(
         const Duration(milliseconds: 500),
         () {
-          state = state.copyWith(hasMore: true, products: []);
+          state = state.copyWith( products: []);
           _page = 0;
           fetchProducts(context: context);
         },
@@ -113,40 +111,39 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   Future<void> fetchCategories({required BuildContext context}) async {
-  final connected = await AppConnectivity.connectivity();
-  if (connected) {
-    state = state.copyWith(
-      isCategoriesLoading: true,
-      dropDownCategories: [],
-      categories: [],
-    );
+    final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      state = state.copyWith(
+        isCategoriesLoading: true,
+        dropDownCategories: [],
+        categories: [],
+      );
 
-    final response = await categoriesRepository.searchCategories(
-      state.categoryQuery.isEmpty ? null : state.categoryQuery,
-    );
+      final response = await categoriesRepository.searchCategories(
+        state.categoryQuery.isEmpty ? null : state.categoryQuery,
+      );
 
-    response.when(
-      success: (data) {
-        // data es una List<CategoryData>
-        state = state.copyWith(
-          isCategoriesLoading: false,
-          categories: data, // Guardar la lista de categorías directamente
-        );
-      },
-      failure: (failure, status) {
-        state = state.copyWith(isCategoriesLoading: false);
-        debugPrint('==> get categories failure: $failure');
-      },
-    );
-  } else {
-    AppHelpers.showSnackBar(
-      context,
-      'Revisa tu conexión',
-    );
+      response.when(
+        success: (data) {
+          // data es una List<CategoryData>
+          state = state.copyWith(
+            isCategoriesLoading: false,
+            categories: data, // Guardar la lista de categorías directamente
+          );
+        },
+        failure: (failure, status) {
+          state = state.copyWith(isCategoriesLoading: false);
+          debugPrint('==> get categories failure: $failure');
+        },
+      );
+    } else {
+      AppHelpers.showSnackBar(
+        context,
+        'Revisa tu conexión',
+      );
+    }
   }
-}
 
-  
   void setCategoriesQuery(BuildContext context, String query) {
     debugPrint('===> set categories query: $query');
     if (state.categoryQuery == query) {
@@ -167,13 +164,13 @@ class ShopNotifier extends StateNotifier<ShopState> {
 
   void setSelectedCategory(BuildContext context, int index) {
     if (index == -1) {
-      state = state.copyWith(selectedCategory: null, hasMore: true);
+      state = state.copyWith(selectedCategory: null);
     } else {
       final category = state.categories[index];
       if (category.id != state.selectedCategory?.id) {
-        state = state.copyWith(selectedCategory: category, hasMore: true);
+        state = state.copyWith(selectedCategory: category);
       } else {
-        state = state.copyWith(selectedCategory: null, hasMore: true);
+        state = state.copyWith(selectedCategory: null);
       }
     }
 
@@ -182,7 +179,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   void removeSelectedCategory(BuildContext context) {
-    state = state.copyWith(selectedCategory: null, hasMore: true);
+    state = state.copyWith(selectedCategory: null);
     fetchProducts(context: context);
   }
 }
