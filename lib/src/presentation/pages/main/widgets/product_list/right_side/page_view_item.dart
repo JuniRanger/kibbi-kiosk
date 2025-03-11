@@ -34,8 +34,8 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
     coupon = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
-          .read(rightSideProvider.notifier);
-          // .setInitialBagData(context, widget.bag);
+          .read(rightSideProvider.notifier)
+          .setInitialBagData(context, widget.bag);
     });
   }
 
@@ -88,7 +88,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      notifier.clearBag(/*context*/);
+                                      notifier.clearBag(context);
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.all(8.r),
@@ -109,21 +109,21 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                   state.paginateResponse?.stocks?.length ?? 0,
                               itemBuilder: (context, index) {
                                 return CartOrderItem(
-                                  symbol: '₡',
+                                  symbol: '\$',
                                   add: () {
                                     notifier.increaseProductCount(
-                                        /*productIndex: index*/);
+                                        productIndex: index);
                                   },
                                   remove: () {
                                     notifier.decreaseProductCount(
-                                        /*productIndex: index, context: context*/);
+                                        productIndex: index, context: context);
                                   },
                                   cart:
                                       state.paginateResponse?.stocks?[index] ??
-                                          'ProductData()',
+                                          ProductData(),
                                   delete: () {
                                     notifier.deleteProductCount(
-                                        /*productIndex: index*/);
+                                        productIndex: index);
                                   },
                                 );
                               },
@@ -143,31 +143,6 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                             fontSize: 14.sp),
                                       ),
                                       const Spacer(),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     AppHelpers.showAlertDialog(
-                                      //         context: context,
-                                      //         child: const PromoCodeDialog());
-                                      //   },
-                                      //   child: AnimationButtonEffect(
-                                      //     child: Container(
-                                      //       padding: EdgeInsets.symmetric(
-                                      //           vertical: 10.r,
-                                      //           horizontal: 18.r),
-                                      //       decoration: BoxDecoration(
-                                      //           color: Style.addButtonColor,
-                                      //           borderRadius:
-                                      //               BorderRadius.circular(
-                                      //                   10.r)),
-                                      //       child: Text(
-                                      //         AppHelpers.getTranslation(
-                                      //             TrKeys.promoCode),
-                                      //         style: GoogleFonts.inter(
-                                      //             fontSize: 14.sp),
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
                                       26.horizontalSpace,
                                       InkWell(
                                         onTap: () {
@@ -186,7 +161,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                                     BorderRadius.circular(
                                                         10.r)),
                                             child: Text(
-                                              'Añadir nota',
+                                              'Nota',
                                               style: GoogleFonts.inter(
                                                   fontSize: 14.sp),
                                             ),
@@ -223,7 +198,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             ),
                             14.verticalSpace,
                             Text(
-                              'No hay productos en l ',
+                              'No hay productos en el carrito',
                               style: GoogleFonts.inter(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -265,16 +240,28 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                 price: state.paginateResponse?.price,
                 symbol: '\$',
               ),
-              _priceItem(
-                title: 'Impuesto',
-                price: state.paginateResponse?.totalTax,
-                symbol: '\$',
-              ),
-              _priceItem(
-                title: 'Servicio',
-                price: state.paginateResponse?.serviceFee,
-                symbol: '\$',
-              ),
+              // _priceItem(
+              //   title: TrKeys.tax,
+              //   price: state.paginateResponse?.totalTax,
+              //   symbol: widget.bag.selectedCurrency?.symbol,
+              // ),
+              // _priceItem(
+              //   title: TrKeys.serviceFee,
+              //   price: state.paginateResponse?.serviceFee,
+              //   symbol: widget.bag.selectedCurrency?.symbol,
+              // ),
+              // _priceItem(
+              //   title: TrKeys.discount,
+              //   price: state.paginateResponse?.totalDiscount,
+              //   symbol: widget.bag.selectedCurrency?.symbol,
+              //   isDiscount: true,
+              // ),
+              // _priceItem(
+              //   title: TrKeys.promoCode,
+              //   price: state.paginateResponse?.couponPrice,
+              //   symbol: widget.bag.selectedCurrency?.symbol,
+              //   isDiscount: true,
+              // ),
             ],
           ),
         ),
@@ -289,7 +276,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total',
+                    'Precio total',
                     style: GoogleFonts.inter(
                       color: Style.black,
                       fontSize: 16.sp,
@@ -299,8 +286,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                   ),
                   Text(
                     NumberFormat.currency(
-                      symbol: '\$' ??
-                          '\$',
+                      symbol: '\$',
                     ).format(state.paginateResponse?.totalPrice ?? 0),
                     style: GoogleFonts.inter(
                       color: Style.black,
@@ -343,7 +329,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    title,
+                    'Titulo',
                     style: GoogleFonts.inter(
                       color: isDiscount ? Style.red : Style.black,
                       fontSize: 14.sp,
@@ -368,20 +354,4 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
           )
         : const SizedBox.shrink();
   }
-  
-  OrderInformation() {}
 }
-
-class NoteDialog extends StatelessWidget {
-  const NoteDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Note Dialog'),
-    );
-  }
-}
-
-// tengo una imagen png en assets, images png no_products.png
-

@@ -1,16 +1,11 @@
-import 'package:kibbi_kiosk/src/core/utils/utils.dart';
 import 'package:kibbi_kiosk/src/presentation/components/components.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/light_theme.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/theme.dart';
 
 import 'package:kibbi_kiosk/src/presentation/theme/theme/theme.dart';
-import 'package:kibbi_kiosk/src/repository/repository.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:provider/provider.dart';
-import 'core/di/dependency_manager.dart';
 import 'core/routes/app_router.dart';
 
 class AppWidget extends StatefulWidget {

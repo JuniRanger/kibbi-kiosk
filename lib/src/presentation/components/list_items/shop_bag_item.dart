@@ -6,10 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../theme/theme.dart';
 
 class CartItem extends StatelessWidget {
-  final List<OrderProduct> products;  // Lista de productos con cantidad y precio
-  final Function(OrderProduct) onDeleteProduct;
-  final Function(OrderProduct) onDecreaseProduct;
-  final Function(OrderProduct) onIncreaseProduct;
+  final List<ProductData> products;  // Lista de productos con cantidad y precio
+  final Function(ProductData) onDeleteProduct;
+  final Function(ProductData) onDecreaseProduct;
+  final Function(ProductData) onIncreaseProduct;
   final Function onOrderComplete;  // Función para limpiar el carrito después de la orden
 
   const CartItem({
@@ -55,7 +55,7 @@ class CartItem extends StatelessWidget {
         Divider(
           height: 1.r,
           thickness: 1.r,
-          color: Style.black.withOpacity(0.1),
+          color: Style.black.withAlpha((0.1 * 255).toInt()),
         ),
         // Lista de productos
         for (var orderProduct in products)
@@ -65,7 +65,7 @@ class CartItem extends StatelessWidget {
               children: [
                 // Nombre del producto
                 Text(
-                  orderProduct.product.name ?? 'Producto',
+                  orderProduct.name ?? 'Producto',
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600,
                     fontSize: 16.sp,

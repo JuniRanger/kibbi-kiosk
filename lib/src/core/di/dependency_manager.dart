@@ -10,7 +10,7 @@ void setUpDependencies() {
   getIt.registerSingleton<ProductsFacade>(ProductsRepository());
   getIt.registerSingleton<CategoriesRepository>(CategoriesRepositoryImpl());
   // getIt.registerSingleton<PaymentsRepository>(PaymentsRepositoryImpl());
-  // getIt.registerSingleton<OrdersRepository>(OrdersRepositoryImpl());
+  getIt.registerSingleton<OrdersRepository>(OrdersRepositoryImpl());
 }
 
 final dioHttp = getIt.get<HttpService>();
@@ -18,4 +18,4 @@ final authRepository = getIt.get<AuthFacade>();
 final productsRepository = getIt.get<ProductsFacade>();
 final categoriesRepository = getIt.get<CategoriesRepository>();
 // final paymentsRepository = getIt.get<PaymentsRepository>();
-// final ordersRepository = getIt.get<OrdersRepository>();
+final ordersRepository = getIt.get<OrdersRepository>();

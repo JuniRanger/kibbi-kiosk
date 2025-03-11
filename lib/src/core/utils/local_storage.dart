@@ -55,12 +55,31 @@ abstract class LocalStorage {
     return 'MXN';
   }
 
-    static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyBags);
+    static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyCart);
 
+
+  static Future<void> setBags(List<BagData> bags) async {
+    if (_preferences != null) {
+      final List<String> strings =
+          bags.map((bag) => jsonEncode(bag.toJson())).toList();
+      await _preferences!.setStringList(StorageKeys.keyBags, strings);
+    }
+  }
+
+    static List<BagData> getBags() {
+    final List<String> bags =
+        _preferences?.getStringList(StorageKeys.keyBags) ?? [];
+    final List<BagData> localBags = bags
+        .map(
+          (bag) => BagData.fromJson(jsonDecode(bag)),
+        )
+        .toList(growable: true);
+    return localBags;
+  }
 
       static void clearStore() {
-    deleteCartProducts();
-    deleteToken();
-    deleteCartProducts();
+      deleteCartProducts();
+      deleteToken();
+      deleteCartProducts();
   }
 }

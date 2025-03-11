@@ -1,4 +1,3 @@
-import 'package:kibbi_kiosk/src/models/data/addons_data.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
 
 class OrderData {
@@ -253,7 +252,6 @@ class OrderDetail {
     String? createdAt,
     String? status,
     String? updatedAt,
-    List<Addons>? addons,
     bool? isChecked,
   }) {
     _id = id;
@@ -268,7 +266,6 @@ class OrderDetail {
     _bonus = bonus;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-    _addons = addons;
     _isChecked = isChecked;
   }
 
@@ -285,12 +282,6 @@ class OrderDetail {
     _bonus =
         json['bonus'].runtimeType == int ? (json['bonus'] != 0) : json['bonus'];
     _createdAt = json['created_at'];
-    if (json['addons'] != null) {
-      _addons = [];
-      json['addons'].forEach((v) {
-        _addons?.add(Addons.fromJson(v));
-      });
-    }
     _isChecked = false;
   }
 
@@ -306,7 +297,6 @@ class OrderDetail {
   String? _createdAt;
   String? _status;
   String? _updatedAt;
-  List<Addons>? _addons;
   bool? _isChecked;
 
   OrderDetail copyWith({
@@ -322,7 +312,6 @@ class OrderDetail {
     String? createdAt,
     String? updatedAt,
     String? status,
-    List<Addons>? addons,
     bool? isChecked,
   }) =>
       OrderDetail(
@@ -337,7 +326,6 @@ class OrderDetail {
         bonus: bonus ?? _bonus,
         createdAt: createdAt ?? _createdAt,
         updatedAt: updatedAt ?? _updatedAt,
-        addons: addons ?? _addons,
         status: status ?? _status,
         isChecked: isChecked ?? _isChecked,
       );
@@ -365,8 +353,6 @@ class OrderDetail {
   String? get status => _status;
 
   String? get updatedAt => _updatedAt;
-
-  List<Addons>? get addons => _addons;
 
   bool? get isChecked => _isChecked;
 

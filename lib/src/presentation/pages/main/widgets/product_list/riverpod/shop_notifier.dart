@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'package:kibbi_kiosk/src/core/constants/constants.dart';
 import 'package:kibbi_kiosk/src/core/di/dependency_manager.dart';
 import 'package:kibbi_kiosk/src/core/utils/utils.dart';
-import 'package:kibbi_kiosk/src/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'shop_state.dart';
@@ -12,25 +10,14 @@ class ShopNotifier extends StateNotifier<ShopState> {
   Timer? _searchProductsTimer;
   Timer? _searchCategoriesTimer;
 
-  int _page = 0;
-
   ShopNotifier() : super(const ShopState());
 
   setOrder(OrderData? order) {
     state = state.copyWith(selectedOrder: order);
   }
 
-  // setShop({required RestaurantData? shop, required BuildContext context}) {
-  //   LocalStorage.deleteCartProducts();
-  //   state = state.copyWith(selectedShop: shop);
-  //   fetchProducts(context: context, isRefresh: true);
-  //   fetchCategories(context: context);
-  // }
-
   fetchData({required BuildContext context}) {
     LocalStorage.deleteCartProducts();
-
-    // Realizar los fetcheos de productos y categorías sin necesidad de usar 'shop'
     fetchProducts(context: context, isRefresh: true);
     fetchCategories(context: context);
   }
@@ -91,7 +78,6 @@ class ShopNotifier extends StateNotifier<ShopState> {
         const Duration(milliseconds: 500),
         () {
           state = state.copyWith(products: []);
-          _page = 0;
           fetchProducts(context: context);
         },
       );
@@ -103,7 +89,6 @@ class ShopNotifier extends StateNotifier<ShopState> {
         const Duration(milliseconds: 500),
         () {
           state = state.copyWith( products: []);
-          _page = 0;
           fetchProducts(context: context);
         },
       );

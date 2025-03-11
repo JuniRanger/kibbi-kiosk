@@ -8,7 +8,7 @@ import 'package:intl/intl.dart' as intl;
 import '../../theme/theme.dart';
 
 class CartOrderItem extends StatelessWidget {
-  final OrderProduct? cart;
+  final ProductData? cart;
   final String? symbol;
   final VoidCallback add;
   final VoidCallback remove;
@@ -27,8 +27,8 @@ class CartOrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    num sumPrice = (cart?.product.salePrice ?? 0) * (cart?.quantity ?? 1); // Calculamos el precio base
-    num disSumPrice = sumPrice - (cart?.product.salePrice ?? 0) * (cart?.quantity ?? 1); // Se mantiene como ejemplo, pero puedes personalizarlo según los descuentos
+    num sumPrice = (cart?.salePrice ?? 0) * (cart?.quantity ?? 1); // Calculamos el precio base
+    num disSumPrice = sumPrice - (cart?.salePrice ?? 0) * (cart?.quantity ?? 1); // Se mantiene como ejemplo, pero puedes personalizarlo según los descuentos
 
     return Slidable(
       endActionPane: ActionPane(
@@ -91,7 +91,7 @@ class CartOrderItem extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                cart?.product.name ?? "",
+                                cart?.name ?? "",
                                 style: GoogleFonts.inter(
                                   fontSize: 14.sp,
                                   color: Style.black,
@@ -99,7 +99,7 @@ class CartOrderItem extends StatelessWidget {
                               ),
                               8.verticalSpace,
                               Text(
-                                cart?.product.description ?? "",
+                                cart?.description ?? "",
                                 style: GoogleFonts.inter(
                                   fontSize: 12.sp,
                                   color: Style.unselectedTab,
@@ -206,7 +206,7 @@ class CartOrderItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    cart?.product.name ?? "",
+                    cart?.name ?? "",
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: Style.black,
@@ -214,7 +214,7 @@ class CartOrderItem extends StatelessWidget {
                   ),
                   8.verticalSpace,
                   Text(
-                    cart?.product.description ?? "",
+                    cart?.description ?? "",
                     style: GoogleFonts.inter(
                       fontSize: 12.sp,
                       color: Style.unselectedTab,

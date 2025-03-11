@@ -39,7 +39,7 @@ class ProductGridItem extends StatelessWidget {
             ),
             16.verticalSpace,
             Text(
-              product.name, // Usamos directamente el título del producto en español
+              product.name ?? 'Nombre no disponible', // Usamos directamente el título del producto en español
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(

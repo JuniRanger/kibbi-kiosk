@@ -1,29 +1,20 @@
-import 'kiosk_data.dart';
+import '../response/payments_response.dart';
 
 class BagData {
   BagData({
     int? index,
-    String? shopId,
-    KioskData? selectedUser,
-    // PaymentData? selectedPayment,
+    PaymentData? selectedPayment,
     List<BagProductData>? bagProducts,
   }) {
     _index = index;
-    _shopId = shopId;
-    _selectedUser = selectedUser;
-    // _selectedPayment = selectedPayment;
     _bagProducts = bagProducts;
   }
 
   BagData.fromJson(dynamic json) {
     _index = json['index'];
-    _shopId = json['shop_id'];
-    _selectedUser = json['selected_user'] != null
-        ? KioskData.fromJson(json['selected_user'])
+    _selectedPayment = json['selected_payment'] != null
+        ? PaymentData.fromJson(json['selected_payment'])
         : null;
-    // _selectedPayment = json['selected_payment'] != null
-    //     ? PaymentData.fromJson(json['selected_payment'])
-    //     : null;
     if (json['bag_products'] != null) {
       _bagProducts = [];
       json['bag_products'].forEach((v) {
@@ -33,46 +24,31 @@ class BagData {
   }
 
   int? _index;
-  String? _shopId;
-  KioskData? _selectedUser;
-  // PaymentData? _selectedPayment;
+  PaymentData? _selectedPayment;
   List<BagProductData>? _bagProducts;
 
   BagData copyWith({
     int? index,
-    String? shopId,
-    KioskData? selectedUser,
-    // PaymentData? selectedPayment,
+    PaymentData? selectedPayment,
     List<BagProductData>? bagProducts,
   }) =>
       BagData(
         index: index ?? _index,
-        shopId: shopId ?? _shopId,
-        selectedUser: selectedUser,
-        // selectedPayment: selectedPayment ?? _selectedPayment,
+        selectedPayment: selectedPayment ?? _selectedPayment,
         bagProducts: bagProducts ?? _bagProducts,
       );
 
   int? get index => _index;
-
-  String? get shopId => _shopId;
-
-  KioskData? get selectedUser => _selectedUser;
-
-  // PaymentData? get selectedPayment => _selectedPayment;
+  PaymentData? get selectedPayment => _selectedPayment;
 
   List<BagProductData>? get bagProducts => _bagProducts;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['index'] = _index;
-    map['shop_id'] = _shopId;
-    if (_selectedUser != null) {
-      map['selected_user'] = _selectedUser?.toJson();
+    if (_selectedPayment != null) {
+      map['selected_payment'] = _selectedPayment?.toJson();
     }
-    // if (_selectedPayment != null) {
-    //   map['selected_payment'] = _selectedPayment?.toJson();
-    // }
     if (_bagProducts != null) {
       map['bag_products'] = _bagProducts?.map((v) => v.toJsonInsert()).toList();
     }
@@ -81,14 +57,14 @@ class BagData {
 }
 
 class BagProductData {
-  final int? stockId;
   final int? quantity;
   final List<BagProductData>? carts;
+  final int? stockId;  // Agregado el campo stockId
 
   BagProductData({
-    this.stockId,
     this.quantity,
     this.carts,
+    this.stockId,  // Asegúrate de agregarlo al constructor
   });
 
   factory BagProductData.fromJson(Map data) {
@@ -97,25 +73,31 @@ class BagProductData {
       newList.add(BagProductData.fromJson(e));
     });
     return BagProductData(
-        stockId: data["stock_id"], quantity: data["quantity"], carts: newList);
+        quantity: data["quantity"],
+        carts: newList,
+        stockId: data["stockId"],  // Asegúrate de leer stockId del JSON
+    );
   }
 
-  BagProductData copyWith({int? quantity}) {
+  BagProductData copyWith({int? quantity, int? stockId}) {
     return BagProductData(
-        stockId: stockId, quantity: quantity ?? this.quantity, carts: carts);
+        quantity: quantity ?? this.quantity,
+        carts: carts,
+        stockId: stockId ?? this.stockId,  // Permite copiar el stockId
+    );
   }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (stockId != null) map["stock_id"] = stockId;
     if (quantity != null) map["quantity"] = quantity;
+    if (stockId != null) map["stockId"] = stockId;  // Agrega stockId a la salida
     return map;
   }
 
   Map<String, dynamic> toJsonInsert() {
     final map = <String, dynamic>{};
-    if (stockId != null) map["stock_id"] = stockId;
     if (quantity != null) map["quantity"] = quantity;
+    if (stockId != null) map["stockId"] = stockId;  // Agrega stockId a la salida
     if (carts != null) map["products"] = toJsonCart();
     return map;
   }
@@ -124,11 +106,10 @@ class BagProductData {
     List<Map<String, dynamic>> list = [];
     carts?.forEach((element) {
       final map = <String, dynamic>{};
-      map["stock_id"] = element.stockId;
       map["quantity"] = element.quantity;
+      if (element.stockId != null) map["stockId"] = element.stockId;  // Incluye stockId en los productos dentro del carrito
       list.add(map);
     });
-
     return list;
   }
 }

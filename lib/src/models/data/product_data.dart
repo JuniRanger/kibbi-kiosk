@@ -1,43 +1,91 @@
-import 'addons_data.dart';
-
 class ProductData {
   final String? id;
-  final String name;
-  final String description;
-  final num costPrice; // Cambié a num
-  final num salePrice; // Cambié a num
-  final String currency;
-  final bool availability;
-  final String restaurantId;
-  final List<String> ingredients;
-  final String category;
-  final String imageUrl;
-  final String createdAt;
-  final String updatedAt;
+  final String? name;
+  final String? description;
+  final num? costPrice;
+  final num? salePrice;
+  final String? currency;
+  final bool? availability;
+  final String? restaurantId;
+  final List<String>? ingredients;
+  final String? category;
+  final String? imageUrl;
+  final String? createdAt;
+  final String? updatedAt;
+  int? quantity;
+  final num? discount;
+  
+  // Añadimos los campos maxQty y minQty
+  final int? maxQty;
+  final int? minQty;
 
   ProductData({
     this.id,
-    required this.name,
-    required this.description,
-    required this.costPrice,
-    required this.salePrice,
-    required this.currency,
-    required this.availability,
-    required this.restaurantId,
-    required this.ingredients,
-    required this.category,
-    required this.imageUrl,
-    required this.createdAt,
-    required this.updatedAt,
+    this.name,
+    this.description,
+    this.costPrice,
+    this.salePrice,
+    this.currency,
+    this.availability,
+    this.restaurantId,
+    this.ingredients,
+    this.category,
+    this.imageUrl,
+    this.createdAt,
+    this.updatedAt,
+    this.quantity = 1, // Inicializa la cantidad en 1 por defecto
+    this.discount,
+    this.maxQty,  // Inicia maxQty
+    this.minQty,  // Inicia minQty
   });
+
+  ProductData copyWith({
+    String? id,
+    String? name,
+    String? description,
+    num? costPrice,
+    num? salePrice,
+    String? currency,
+    bool? availability,
+    String? restaurantId,
+    List<String>? ingredients,
+    String? category,
+    String? imageUrl,
+    String? createdAt,
+    String? updatedAt,
+    int? quantity,
+    num? discount,
+    int? maxQty,  // Añadimos maxQty
+    int? minQty,  // Añadimos minQty
+  }) {
+    return ProductData(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      costPrice: costPrice ?? this.costPrice,
+      salePrice: salePrice ?? this.salePrice,
+      currency: currency ?? this.currency,
+      availability: availability ?? this.availability,
+      restaurantId: restaurantId ?? this.restaurantId,
+      ingredients: ingredients ?? this.ingredients,
+      category: category ?? this.category,
+      imageUrl: imageUrl ?? this.imageUrl,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      quantity: quantity ?? this.quantity,
+      discount: discount ?? this.discount,
+      maxQty: maxQty ?? this.maxQty,  // Asignamos maxQty
+      minQty: minQty ?? this.minQty,  // Asignamos minQty
+    );
+  }
 
   factory ProductData.fromJson(Map<String, dynamic> json) {
     return ProductData(
       id: json['_id'],
       name: json['name'],
       description: json['description'],
-      costPrice: json['costPrice'], // Ahora se maneja directamente como num
-      salePrice: json['salePrice'], // Ahora se maneja directamente como num
+      costPrice: json['costPrice'],
+      salePrice: json['salePrice'],
       currency: json['currency'],
       availability: json['availability'],
       restaurantId: json['restaurantId'],
@@ -46,6 +94,10 @@ class ProductData {
       imageUrl: json['image'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      quantity: json['quantity'] ?? 1,
+      discount: json['discount'],
+      maxQty: json['maxQty'],  // Extraemos maxQty
+      minQty: json['minQty'],  // Extraemos minQty
     );
   }
 
@@ -64,44 +116,147 @@ class ProductData {
       'image': imageUrl,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'quantity': quantity,
+      'discount': discount,
+      'maxQty': maxQty,  // Añadimos maxQty al JSON
+      'minQty': minQty,  // Añadimos minQty al JSON
     };
   }
 
   String? get getId => id;
-  String get getName => name;
-  String get getDescription => description;
-  num get getCostPrice => costPrice; // Se mantiene como num
-  num get getSalePrice => salePrice; // Se mantiene como num
-  String get getCurrency => currency;
-  bool get getAvailability => availability;
-  String get getRestaurantId => restaurantId;
-  List<String> get getIngredients => ingredients;
-  String get getCategory => category;
-  String get getImageUrl => imageUrl;
-  String get getCreatedAt => createdAt;
-  String get getUpdatedAt => updatedAt;
-}
+  String? get getName => name;
+  String? get getDescription => description;
+  num? get getCostPrice => costPrice;
+  num? get getSalePrice => salePrice;
+  String? get getCurrency => currency;
+  bool? get getAvailability => availability;
+  String? get getRestaurantId => restaurantId;
+  List<String>? get getIngredients => ingredients;
+  String? get getCategory => category;
+  String? get getImageUrl => imageUrl;
+  String? get getCreatedAt => createdAt;
+  String? get getUpdatedAt => updatedAt;
+  int? get getQuantity => quantity;
+  
+  // Métodos para maxQty y minQty
+  int? get getMaxQty => maxQty;
+  int? get getMinQty => minQty;
 
-// Nueva clase para manejar productos en la orden
-class OrderProduct {
-  final ProductData product;
-  int quantity;
-  final num unitPrice; // Se mantiene como num
-
-  OrderProduct({
-    required this.product,
-    this.quantity = 1,
-    required this.unitPrice,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'productId': product.id,
-      'quantity': quantity,
-      'unitPrice': unitPrice,
-    };
+  set setQuantity(int value) {
+    quantity = value;
   }
 }
+
+
+class Stocks {
+  Stocks({
+    int? id,
+    int? countableId,
+    num? price,
+    int? quantity,
+    num? discount,
+    num? tax,
+    num? totalPrice,
+    String? img,
+    ProductData? product,
+  }) {
+    _id = id;
+    _countableId = countableId;
+    _price = price;
+    _quantity = quantity;
+    _discount = discount;
+    _img = img;
+    _tax = tax;
+    _totalPrice = totalPrice;
+    _product = product;
+  }
+
+  Stocks.fromJson(dynamic json) {
+    _id = json?['id'];
+    _countableId = json?['countable_id'];
+    _price = json?['price'];
+    _img = json?["product"]?["img"];
+    _quantity = json?['quantity'];
+    _discount = json?['discount'];
+    _tax = json?['tax'];
+    _totalPrice = json?['total_price'];
+    _product = (json?['product'] != null
+        ? ProductData.fromJson(json['product'])
+        : (json?['countable'] != null
+            ? ProductData.fromJson(json["countable"])
+            : null));
+  }
+
+  int? _id;
+  int? _countableId;
+  num? _price;
+  int? _quantity;
+  num? _discount;
+  String? _img;
+  num? _tax;
+  num? _totalPrice;
+  ProductData? _product;
+
+  Stocks copyWith({
+    int? id,
+    int? countableId,
+    num? price,
+    int? quantity,
+    String? img,
+    num? discount,
+    num? tax,
+    num? totalPrice,
+    ProductData? product,
+  }) =>
+      Stocks(
+          id: id ?? _id,
+          countableId: countableId ?? _countableId,
+          price: price ?? _price,
+          img: img ?? _img,
+          quantity: quantity ?? _quantity,
+          discount: discount ?? _discount,
+          tax: tax ?? _tax,
+          totalPrice: totalPrice ?? _totalPrice,
+          product: product ?? _product
+          );
+
+  int? get id => _id;
+
+  int? get countableId => _countableId;
+
+  num? get price => _price;
+
+  String? get img => _img;
+
+
+  int? get quantity => _quantity;
+
+  num? get discount => _discount;
+
+  num? get tax => _tax;
+
+  num? get totalPrice => _totalPrice;
+
+  ProductData? get product => _product;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['countable_id'] = _countableId;
+    map['price'] = _price;
+    map['quantity'] = _quantity;
+    map['discount'] = _discount;
+    map['tax'] = _tax;
+    map['total_price'] = _totalPrice;
+    if (_product != null) {
+      map['product'] = _product?.toJson();
+    }
+    return map;
+  }
+}
+
+// ¡Ahora tienes la cantidad integrada en tu modelo de producto! 🚀
+
 
 
 // Con esto ya puedes manejar la cantidad y precio unitario en la orden 🚀

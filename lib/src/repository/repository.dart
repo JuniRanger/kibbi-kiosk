@@ -4,3 +4,5 @@ export 'products.dart';
 export 'impl/products_repository_impl.dart';
 export 'categories.dart';
 export 'impl/categories_repository_impl.dart';
+export 'orders.dart';
+export 'impl/orders_repository_impl.dart';

@@ -26,15 +26,26 @@ mixin _$RightSideState {
   bool get isPromoCodeLoading => throw _privateConstructorUsedError;
   bool get isSectionLoading => throw _privateConstructorUsedError;
   bool get isTableLoading => throw _privateConstructorUsedError;
-  List<BagData> get bags =>
-      throw _privateConstructorUsedError; // @Default([]) List<PaymentData> payments,
+  List<BagData> get bags => throw _privateConstructorUsedError;
+  List<CurrencyData> get currencies => throw _privateConstructorUsedError;
+  List<PaymentData> get payments => throw _privateConstructorUsedError;
   int get selectedBagIndex => throw _privateConstructorUsedError;
   String get orderType => throw _privateConstructorUsedError;
+  String get tableQuery => throw _privateConstructorUsedError;
+  String get sectionQuery => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   String get calculate => throw _privateConstructorUsedError;
   String? get selectNameError => throw _privateConstructorUsedError;
+  String? get selectPhoneError => throw _privateConstructorUsedError;
+  String? get selectCurrencyError => throw _privateConstructorUsedError;
   String? get selectPaymentError => throw _privateConstructorUsedError;
+  String? get selectSectionError => throw _privateConstructorUsedError;
+  String? get selectTableError => throw _privateConstructorUsedError;
+  String? get coupon => throw _privateConstructorUsedError;
   KioskData? get selectedUser => throw _privateConstructorUsedError;
+  CurrencyData? get selectedCurrency => throw _privateConstructorUsedError;
+  PaymentData? get selectedPayment => throw _privateConstructorUsedError;
+  PriceDate? get paginateResponse => throw _privateConstructorUsedError;
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.
@@ -61,13 +72,25 @@ abstract class $RightSideStateCopyWith<$Res> {
       bool isSectionLoading,
       bool isTableLoading,
       List<BagData> bags,
+      List<CurrencyData> currencies,
+      List<PaymentData> payments,
       int selectedBagIndex,
       String orderType,
+      String tableQuery,
+      String sectionQuery,
       String comment,
       String calculate,
       String? selectNameError,
+      String? selectPhoneError,
+      String? selectCurrencyError,
       String? selectPaymentError,
-      KioskData? selectedUser});
+      String? selectSectionError,
+      String? selectTableError,
+      String? coupon,
+      KioskData? selectedUser,
+      CurrencyData? selectedCurrency,
+      PaymentData? selectedPayment,
+      PriceDate? paginateResponse});
 }
 
 /// @nodoc
@@ -96,13 +119,25 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? isSectionLoading = null,
     Object? isTableLoading = null,
     Object? bags = null,
+    Object? currencies = null,
+    Object? payments = null,
     Object? selectedBagIndex = null,
     Object? orderType = null,
+    Object? tableQuery = null,
+    Object? sectionQuery = null,
     Object? comment = null,
     Object? calculate = null,
     Object? selectNameError = freezed,
+    Object? selectPhoneError = freezed,
+    Object? selectCurrencyError = freezed,
     Object? selectPaymentError = freezed,
+    Object? selectSectionError = freezed,
+    Object? selectTableError = freezed,
+    Object? coupon = freezed,
     Object? selectedUser = freezed,
+    Object? selectedCurrency = freezed,
+    Object? selectedPayment = freezed,
+    Object? paginateResponse = freezed,
   }) {
     return _then(_value.copyWith(
       isBagsLoading: null == isBagsLoading
@@ -149,6 +184,14 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.bags
           : bags // ignore: cast_nullable_to_non_nullable
               as List<BagData>,
+      currencies: null == currencies
+          ? _value.currencies
+          : currencies // ignore: cast_nullable_to_non_nullable
+              as List<CurrencyData>,
+      payments: null == payments
+          ? _value.payments
+          : payments // ignore: cast_nullable_to_non_nullable
+              as List<PaymentData>,
       selectedBagIndex: null == selectedBagIndex
           ? _value.selectedBagIndex
           : selectedBagIndex // ignore: cast_nullable_to_non_nullable
@@ -156,6 +199,14 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
       orderType: null == orderType
           ? _value.orderType
           : orderType // ignore: cast_nullable_to_non_nullable
+              as String,
+      tableQuery: null == tableQuery
+          ? _value.tableQuery
+          : tableQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      sectionQuery: null == sectionQuery
+          ? _value.sectionQuery
+          : sectionQuery // ignore: cast_nullable_to_non_nullable
               as String,
       comment: null == comment
           ? _value.comment
@@ -169,14 +220,46 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.selectNameError
           : selectNameError // ignore: cast_nullable_to_non_nullable
               as String?,
+      selectPhoneError: freezed == selectPhoneError
+          ? _value.selectPhoneError
+          : selectPhoneError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectCurrencyError: freezed == selectCurrencyError
+          ? _value.selectCurrencyError
+          : selectCurrencyError // ignore: cast_nullable_to_non_nullable
+              as String?,
       selectPaymentError: freezed == selectPaymentError
           ? _value.selectPaymentError
           : selectPaymentError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectSectionError: freezed == selectSectionError
+          ? _value.selectSectionError
+          : selectSectionError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectTableError: freezed == selectTableError
+          ? _value.selectTableError
+          : selectTableError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      coupon: freezed == coupon
+          ? _value.coupon
+          : coupon // ignore: cast_nullable_to_non_nullable
               as String?,
       selectedUser: freezed == selectedUser
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
               as KioskData?,
+      selectedCurrency: freezed == selectedCurrency
+          ? _value.selectedCurrency
+          : selectedCurrency // ignore: cast_nullable_to_non_nullable
+              as CurrencyData?,
+      selectedPayment: freezed == selectedPayment
+          ? _value.selectedPayment
+          : selectedPayment // ignore: cast_nullable_to_non_nullable
+              as PaymentData?,
+      paginateResponse: freezed == paginateResponse
+          ? _value.paginateResponse
+          : paginateResponse // ignore: cast_nullable_to_non_nullable
+              as PriceDate?,
     ) as $Val);
   }
 }
@@ -201,13 +284,25 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       bool isSectionLoading,
       bool isTableLoading,
       List<BagData> bags,
+      List<CurrencyData> currencies,
+      List<PaymentData> payments,
       int selectedBagIndex,
       String orderType,
+      String tableQuery,
+      String sectionQuery,
       String comment,
       String calculate,
       String? selectNameError,
+      String? selectPhoneError,
+      String? selectCurrencyError,
       String? selectPaymentError,
-      KioskData? selectedUser});
+      String? selectSectionError,
+      String? selectTableError,
+      String? coupon,
+      KioskData? selectedUser,
+      CurrencyData? selectedCurrency,
+      PaymentData? selectedPayment,
+      PriceDate? paginateResponse});
 }
 
 /// @nodoc
@@ -234,13 +329,25 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? isSectionLoading = null,
     Object? isTableLoading = null,
     Object? bags = null,
+    Object? currencies = null,
+    Object? payments = null,
     Object? selectedBagIndex = null,
     Object? orderType = null,
+    Object? tableQuery = null,
+    Object? sectionQuery = null,
     Object? comment = null,
     Object? calculate = null,
     Object? selectNameError = freezed,
+    Object? selectPhoneError = freezed,
+    Object? selectCurrencyError = freezed,
     Object? selectPaymentError = freezed,
+    Object? selectSectionError = freezed,
+    Object? selectTableError = freezed,
+    Object? coupon = freezed,
     Object? selectedUser = freezed,
+    Object? selectedCurrency = freezed,
+    Object? selectedPayment = freezed,
+    Object? paginateResponse = freezed,
   }) {
     return _then(_$RightSideStateImpl(
       isBagsLoading: null == isBagsLoading
@@ -287,6 +394,14 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value._bags
           : bags // ignore: cast_nullable_to_non_nullable
               as List<BagData>,
+      currencies: null == currencies
+          ? _value._currencies
+          : currencies // ignore: cast_nullable_to_non_nullable
+              as List<CurrencyData>,
+      payments: null == payments
+          ? _value._payments
+          : payments // ignore: cast_nullable_to_non_nullable
+              as List<PaymentData>,
       selectedBagIndex: null == selectedBagIndex
           ? _value.selectedBagIndex
           : selectedBagIndex // ignore: cast_nullable_to_non_nullable
@@ -294,6 +409,14 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
       orderType: null == orderType
           ? _value.orderType
           : orderType // ignore: cast_nullable_to_non_nullable
+              as String,
+      tableQuery: null == tableQuery
+          ? _value.tableQuery
+          : tableQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      sectionQuery: null == sectionQuery
+          ? _value.sectionQuery
+          : sectionQuery // ignore: cast_nullable_to_non_nullable
               as String,
       comment: null == comment
           ? _value.comment
@@ -307,14 +430,46 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.selectNameError
           : selectNameError // ignore: cast_nullable_to_non_nullable
               as String?,
+      selectPhoneError: freezed == selectPhoneError
+          ? _value.selectPhoneError
+          : selectPhoneError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectCurrencyError: freezed == selectCurrencyError
+          ? _value.selectCurrencyError
+          : selectCurrencyError // ignore: cast_nullable_to_non_nullable
+              as String?,
       selectPaymentError: freezed == selectPaymentError
           ? _value.selectPaymentError
           : selectPaymentError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectSectionError: freezed == selectSectionError
+          ? _value.selectSectionError
+          : selectSectionError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectTableError: freezed == selectTableError
+          ? _value.selectTableError
+          : selectTableError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      coupon: freezed == coupon
+          ? _value.coupon
+          : coupon // ignore: cast_nullable_to_non_nullable
               as String?,
       selectedUser: freezed == selectedUser
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
               as KioskData?,
+      selectedCurrency: freezed == selectedCurrency
+          ? _value.selectedCurrency
+          : selectedCurrency // ignore: cast_nullable_to_non_nullable
+              as CurrencyData?,
+      selectedPayment: freezed == selectedPayment
+          ? _value.selectedPayment
+          : selectedPayment // ignore: cast_nullable_to_non_nullable
+              as PaymentData?,
+      paginateResponse: freezed == paginateResponse
+          ? _value.paginateResponse
+          : paginateResponse // ignore: cast_nullable_to_non_nullable
+              as PriceDate?,
     ));
   }
 }
@@ -334,14 +489,28 @@ class _$RightSideStateImpl extends _RightSideState {
       this.isSectionLoading = false,
       this.isTableLoading = false,
       final List<BagData> bags = const [],
+      final List<CurrencyData> currencies = const [],
+      final List<PaymentData> payments = const [],
       this.selectedBagIndex = 0,
       this.orderType = '',
+      this.tableQuery = '',
+      this.sectionQuery = '',
       this.comment = '',
       this.calculate = '',
       this.selectNameError = null,
+      this.selectPhoneError = null,
+      this.selectCurrencyError = null,
       this.selectPaymentError = null,
-      this.selectedUser = null})
+      this.selectSectionError = null,
+      this.selectTableError = null,
+      this.coupon = null,
+      this.selectedUser = null,
+      this.selectedCurrency,
+      this.selectedPayment,
+      this.paginateResponse})
       : _bags = bags,
+        _currencies = currencies,
+        _payments = payments,
         super._();
 
   @override
@@ -383,13 +552,36 @@ class _$RightSideStateImpl extends _RightSideState {
     return EqualUnmodifiableListView(_bags);
   }
 
-// @Default([]) List<PaymentData> payments,
+  final List<CurrencyData> _currencies;
+  @override
+  @JsonKey()
+  List<CurrencyData> get currencies {
+    if (_currencies is EqualUnmodifiableListView) return _currencies;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_currencies);
+  }
+
+  final List<PaymentData> _payments;
+  @override
+  @JsonKey()
+  List<PaymentData> get payments {
+    if (_payments is EqualUnmodifiableListView) return _payments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_payments);
+  }
+
   @override
   @JsonKey()
   final int selectedBagIndex;
   @override
   @JsonKey()
   final String orderType;
+  @override
+  @JsonKey()
+  final String tableQuery;
+  @override
+  @JsonKey()
+  final String sectionQuery;
   @override
   @JsonKey()
   final String comment;
@@ -401,14 +593,35 @@ class _$RightSideStateImpl extends _RightSideState {
   final String? selectNameError;
   @override
   @JsonKey()
+  final String? selectPhoneError;
+  @override
+  @JsonKey()
+  final String? selectCurrencyError;
+  @override
+  @JsonKey()
   final String? selectPaymentError;
   @override
   @JsonKey()
+  final String? selectSectionError;
+  @override
+  @JsonKey()
+  final String? selectTableError;
+  @override
+  @JsonKey()
+  final String? coupon;
+  @override
+  @JsonKey()
   final KioskData? selectedUser;
+  @override
+  final CurrencyData? selectedCurrency;
+  @override
+  final PaymentData? selectedPayment;
+  @override
+  final PriceDate? paginateResponse;
 
   @override
   String toString() {
-    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, isPromoCodeLoading: $isPromoCodeLoading, isSectionLoading: $isSectionLoading, isTableLoading: $isTableLoading, bags: $bags, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPaymentError: $selectPaymentError, selectedUser: $selectedUser)';
+    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, isPromoCodeLoading: $isPromoCodeLoading, isSectionLoading: $isSectionLoading, isTableLoading: $isTableLoading, bags: $bags, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, tableQuery: $tableQuery, sectionQuery: $sectionQuery, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
   }
 
   @override
@@ -438,42 +651,77 @@ class _$RightSideStateImpl extends _RightSideState {
             (identical(other.isTableLoading, isTableLoading) ||
                 other.isTableLoading == isTableLoading) &&
             const DeepCollectionEquality().equals(other._bags, _bags) &&
+            const DeepCollectionEquality()
+                .equals(other._currencies, _currencies) &&
+            const DeepCollectionEquality().equals(other._payments, _payments) &&
             (identical(other.selectedBagIndex, selectedBagIndex) ||
                 other.selectedBagIndex == selectedBagIndex) &&
             (identical(other.orderType, orderType) ||
                 other.orderType == orderType) &&
+            (identical(other.tableQuery, tableQuery) ||
+                other.tableQuery == tableQuery) &&
+            (identical(other.sectionQuery, sectionQuery) ||
+                other.sectionQuery == sectionQuery) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             (identical(other.calculate, calculate) ||
                 other.calculate == calculate) &&
             (identical(other.selectNameError, selectNameError) ||
                 other.selectNameError == selectNameError) &&
+            (identical(other.selectPhoneError, selectPhoneError) ||
+                other.selectPhoneError == selectPhoneError) &&
+            (identical(other.selectCurrencyError, selectCurrencyError) ||
+                other.selectCurrencyError == selectCurrencyError) &&
             (identical(other.selectPaymentError, selectPaymentError) ||
                 other.selectPaymentError == selectPaymentError) &&
+            (identical(other.selectSectionError, selectSectionError) ||
+                other.selectSectionError == selectSectionError) &&
+            (identical(other.selectTableError, selectTableError) ||
+                other.selectTableError == selectTableError) &&
+            (identical(other.coupon, coupon) || other.coupon == coupon) &&
             (identical(other.selectedUser, selectedUser) ||
-                other.selectedUser == selectedUser));
+                other.selectedUser == selectedUser) &&
+            (identical(other.selectedCurrency, selectedCurrency) ||
+                other.selectedCurrency == selectedCurrency) &&
+            (identical(other.selectedPayment, selectedPayment) ||
+                other.selectedPayment == selectedPayment) &&
+            (identical(other.paginateResponse, paginateResponse) ||
+                other.paginateResponse == paginateResponse));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      isBagsLoading,
-      isCurrenciesLoading,
-      isPaymentsLoading,
-      isProductCalculateLoading,
-      isButtonLoading,
-      isActive,
-      isOrderLoading,
-      isPromoCodeLoading,
-      isSectionLoading,
-      isTableLoading,
-      const DeepCollectionEquality().hash(_bags),
-      selectedBagIndex,
-      orderType,
-      comment,
-      calculate,
-      selectNameError,
-      selectPaymentError,
-      selectedUser);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        isBagsLoading,
+        isCurrenciesLoading,
+        isPaymentsLoading,
+        isProductCalculateLoading,
+        isButtonLoading,
+        isActive,
+        isOrderLoading,
+        isPromoCodeLoading,
+        isSectionLoading,
+        isTableLoading,
+        const DeepCollectionEquality().hash(_bags),
+        const DeepCollectionEquality().hash(_currencies),
+        const DeepCollectionEquality().hash(_payments),
+        selectedBagIndex,
+        orderType,
+        tableQuery,
+        sectionQuery,
+        comment,
+        calculate,
+        selectNameError,
+        selectPhoneError,
+        selectCurrencyError,
+        selectPaymentError,
+        selectSectionError,
+        selectTableError,
+        coupon,
+        selectedUser,
+        selectedCurrency,
+        selectedPayment,
+        paginateResponse
+      ]);
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.
@@ -498,13 +746,25 @@ abstract class _RightSideState extends RightSideState {
       final bool isSectionLoading,
       final bool isTableLoading,
       final List<BagData> bags,
+      final List<CurrencyData> currencies,
+      final List<PaymentData> payments,
       final int selectedBagIndex,
       final String orderType,
+      final String tableQuery,
+      final String sectionQuery,
       final String comment,
       final String calculate,
       final String? selectNameError,
+      final String? selectPhoneError,
+      final String? selectCurrencyError,
       final String? selectPaymentError,
-      final KioskData? selectedUser}) = _$RightSideStateImpl;
+      final String? selectSectionError,
+      final String? selectTableError,
+      final String? coupon,
+      final KioskData? selectedUser,
+      final CurrencyData? selectedCurrency,
+      final PaymentData? selectedPayment,
+      final PriceDate? paginateResponse}) = _$RightSideStateImpl;
   const _RightSideState._() : super._();
 
   @override
@@ -528,11 +788,19 @@ abstract class _RightSideState extends RightSideState {
   @override
   bool get isTableLoading;
   @override
-  List<BagData> get bags; // @Default([]) List<PaymentData> payments,
+  List<BagData> get bags;
+  @override
+  List<CurrencyData> get currencies;
+  @override
+  List<PaymentData> get payments;
   @override
   int get selectedBagIndex;
   @override
   String get orderType;
+  @override
+  String get tableQuery;
+  @override
+  String get sectionQuery;
   @override
   String get comment;
   @override
@@ -540,9 +808,25 @@ abstract class _RightSideState extends RightSideState {
   @override
   String? get selectNameError;
   @override
+  String? get selectPhoneError;
+  @override
+  String? get selectCurrencyError;
+  @override
   String? get selectPaymentError;
   @override
+  String? get selectSectionError;
+  @override
+  String? get selectTableError;
+  @override
+  String? get coupon;
+  @override
   KioskData? get selectedUser;
+  @override
+  CurrencyData? get selectedCurrency;
+  @override
+  PaymentData? get selectedPayment;
+  @override
+  PriceDate? get paginateResponse;
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.
