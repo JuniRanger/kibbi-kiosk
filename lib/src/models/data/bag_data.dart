@@ -1,4 +1,4 @@
-// import 'package:kibbi_kiosk/src/models/models.dart';
+import 'package:kibbi_kiosk/src/models/models.dart';
 
 // import '../response/payments_response.dart';
 
@@ -61,8 +61,7 @@ class BagData {
 
 class BagProductData {
   final int? quantity;
-  final String?
-      productId; // Solo el productId y la cantidad, sin carts ni addons.
+  final String? productId; // Solo el productId y la cantidad, sin carts ni addons.
 
   BagProductData({
     this.quantity,
@@ -96,8 +95,25 @@ class BagProductData {
   Map<String, dynamic> toJsonInsert() {
     final map = <String, dynamic>{};
     if (quantity != null) map["quantity"] = quantity;
-    if (productId != null)
-      map["product_id"] = productId; // Guarda el productId.
+    if (productId != null) map["product_id"] = productId; // Guarda el productId.
     return map;
+  }
+
+  // Método para obtener el nombre del producto según el productId
+  String getProductName(List<ProductData> products) {
+    final product = products.firstWhere(
+      (product) => product.id == productId,
+      orElse: () => ProductData(id: productId, name: 'Producto no encontrado'),
+    );
+    return product.name ?? 'Producto no encontrado';
+  }
+
+  // Método para obtener el salePrice del producto según el productId
+  num getProductSalePrice(List<ProductData> products) {
+    final product = products.firstWhere(
+      (product) => product.id == productId,
+      orElse: () => ProductData(id: productId, salePrice: 0.0),
+    );
+    return product.salePrice ?? 0.0;
   }
 }

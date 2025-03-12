@@ -15,6 +15,7 @@ import 'note_dialog.dart';
 import 'order_information.dart';
 import 'riverpod/right_side_provider.dart';
 import 'riverpod/right_side_state.dart';
+import 'package:kibbi_kiosk/src/presentation/pages/main/widgets/product_list/riverpod/shop_provider.dart';
 
 class PageViewItem extends ConsumerStatefulWidget {
   final BagData? bag;
@@ -33,8 +34,9 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
     super.initState();
     coupon = TextEditingController();
     debugPrint('PageViewItem initState - bag: ${widget.bag}');
-    debugPrint('PageViewItem initState - bag products: ${widget.bag?.bagProducts}');
-    
+    debugPrint(
+        'PageViewItem initState - bag products: ${widget.bag?.bagProducts}');
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(rightSideProvider.notifier)
@@ -52,15 +54,18 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   Widget build(BuildContext context) {
     final notifier = ref.read(rightSideProvider.notifier);
     final state = ref.watch(rightSideProvider);
-    
+    final products = ref.watch(shopProvider).products;
+
     // Verificación directa de bag para debugging
     debugPrint('PageViewItem build - bag: ${widget.bag}');
     debugPrint('PageViewItem build - bag products: ${widget.bag?.bagProducts}');
-    debugPrint('PageViewItem build - bag products length: ${widget.bag?.bagProducts?.length}');
-    
+    debugPrint(
+        'PageViewItem build - bag products length: ${widget.bag?.bagProducts?.length}');
+
     // Usar directamente los datos de bag
-    final hasBagProducts = widget.bag?.bagProducts != null && widget.bag!.bagProducts!.isNotEmpty;
-    
+    final hasBagProducts =
+        widget.bag?.bagProducts != null && widget.bag!.bagProducts!.isNotEmpty;
+
     return AbsorbPointer(
       absorbing: state.isPaymentsLoading ||
           state.isBagsLoading ||
@@ -119,16 +124,23 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: widget.bag?.bagProducts?.length ?? 0,
                               itemBuilder: (context, index) {
-                                final bagProduct = widget.bag?.bagProducts?[index];
+                                final bagProduct =
+                                    widget.bag?.bagProducts?[index];
+                                final productName =
+                                    bagProduct?.getProductName(products) ??
+                                        "Producto ${index + 1}";
+                                final productSalePrice =
+                                    bagProduct?.getProductSalePrice(products) ??
+                                        0.0;
                                 // Crear un ProductData temporal basado en BagProductData
                                 final product = ProductData(
                                   id: bagProduct?.productId,
                                   quantity: bagProduct?.quantity,
                                   // Añadir más campos según sea necesario, aquí solo ejemplo
-                                  // name: "Producto ${index + 1}",
-                                  // price: 0, // Pendiente obtener precio real
+                                  name: productName,
+                                  salePrice: productSalePrice,
                                 );
-                                
+
                                 return CartOrderItem(
                                   symbol: '\$',
                                   add: () {

@@ -53,8 +53,8 @@ class _RightSideState extends ConsumerState<RightSide> {
   Widget build(BuildContext context) {
     final state = ref.watch(rightSideProvider);
     final notifier = ref.read(rightSideProvider.notifier);
-    // Agrega el debugPrint para verificar el contenido de 'state.bag'
-    debugPrint('Bag data in RightSide: ${state.bag}');
+      // Agrega el debugPrint para verificar el contenido de 'state.bag'
+  debugPrint('Bag data in RightSide: ${state.bag}');
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,16 +107,6 @@ class _RightSideState extends ConsumerState<RightSide> {
                   ),
                 ),
               ),
-            ),
-            IconButton(
-              icon: Icon(
-                FlutterRemix.delete_bin_6_line,
-                color: Style.black,
-              ),
-              onPressed: () {
-                LocalStorage.deleteCartProducts();
-                notifier.clearBag(context);
-              },
             ),
           ],
         ),
