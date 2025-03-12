@@ -184,7 +184,7 @@ class OrderInformation extends ConsumerWidget {
                                 )
                                 .toList();
                           },
-                          onSelected: notifier.setSelectedPayment,
+                          // onSelected: notifier.setSelectedPayment,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
                           ),

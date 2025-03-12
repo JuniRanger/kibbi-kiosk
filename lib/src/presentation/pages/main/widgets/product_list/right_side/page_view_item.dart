@@ -32,6 +32,9 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   void initState() {
     super.initState();
     coupon = TextEditingController();
+    debugPrint('PageViewItem initState - bag: ${widget.bag}');
+    debugPrint('PageViewItem initState - bag products: ${widget.bag?.bagProducts}');
+    
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(rightSideProvider.notifier)
@@ -49,6 +52,15 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   Widget build(BuildContext context) {
     final notifier = ref.read(rightSideProvider.notifier);
     final state = ref.watch(rightSideProvider);
+    
+    // Verificación directa de bag para debugging
+    debugPrint('PageViewItem build - bag: ${widget.bag}');
+    debugPrint('PageViewItem build - bag products: ${widget.bag?.bagProducts}');
+    debugPrint('PageViewItem build - bag products length: ${widget.bag?.bagProducts?.length}');
+    
+    // Usar directamente los datos de bag
+    final hasBagProducts = widget.bag?.bagProducts != null && widget.bag!.bagProducts!.isNotEmpty;
+    
     return AbsorbPointer(
       absorbing: state.isPaymentsLoading ||
           state.isBagsLoading ||
@@ -66,7 +78,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                     borderRadius: BorderRadius.circular(10.r),
                     color: Style.white,
                   ),
-                  child: (state.paginateResponse?.stocks?.isNotEmpty ?? false)
+                  child: hasBagProducts
                       ? Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -105,9 +117,18 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount:
-                                  state.paginateResponse?.stocks?.length ?? 0,
+                              itemCount: widget.bag?.bagProducts?.length ?? 0,
                               itemBuilder: (context, index) {
+                                final bagProduct = widget.bag?.bagProducts?[index];
+                                // Crear un ProductData temporal basado en BagProductData
+                                final product = ProductData(
+                                  id: bagProduct?.productId,
+                                  quantity: bagProduct?.quantity,
+                                  // Añadir más campos según sea necesario, aquí solo ejemplo
+                                  // name: "Producto ${index + 1}",
+                                  // price: 0, // Pendiente obtener precio real
+                                );
+                                
                                 return CartOrderItem(
                                   symbol: '\$',
                                   add: () {
@@ -118,9 +139,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                     notifier.decreaseProductCount(
                                         productIndex: index, context: context);
                                   },
-                                  cart:
-                                      state.paginateResponse?.stocks?[index] ??
-                                          ProductData(),
+                                  cart: product,
                                   delete: () {
                                     notifier.deleteProductCount(
                                         productIndex: index);
@@ -226,6 +245,11 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   }
 
   Column _price(RightSideState state) {
+    // Calcular subtotal basado en los productos en la bolsa
+    // Esto es un placeholder, necesitarás ajustarlo con los precios reales
+    double subtotal = 0;
+    // Si tienes precios en los productos de la bolsa, calcular aquí
+
     return Column(
       children: [
         8.verticalSpace,
@@ -237,31 +261,10 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
             children: [
               _priceItem(
                 title: 'Subtotal',
-                price: state.paginateResponse?.price,
+                price: state.paginateResponse?.price ?? subtotal,
                 symbol: '\$',
               ),
-              // _priceItem(
-              //   title: TrKeys.tax,
-              //   price: state.paginateResponse?.totalTax,
-              //   symbol: widget.bag.selectedCurrency?.symbol,
-              // ),
-              // _priceItem(
-              //   title: TrKeys.serviceFee,
-              //   price: state.paginateResponse?.serviceFee,
-              //   symbol: widget.bag.selectedCurrency?.symbol,
-              // ),
-              // _priceItem(
-              //   title: TrKeys.discount,
-              //   price: state.paginateResponse?.totalDiscount,
-              //   symbol: widget.bag.selectedCurrency?.symbol,
-              //   isDiscount: true,
-              // ),
-              // _priceItem(
-              //   title: TrKeys.promoCode,
-              //   price: state.paginateResponse?.couponPrice,
-              //   symbol: widget.bag.selectedCurrency?.symbol,
-              //   isDiscount: true,
-              // ),
+              // Otros ítems de precio comentados...
             ],
           ),
         ),
@@ -287,7 +290,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                   Text(
                     NumberFormat.currency(
                       symbol: '\$',
-                    ).format(state.paginateResponse?.totalPrice ?? 0),
+                    ).format(state.paginateResponse?.totalPrice ?? subtotal),
                     style: GoogleFonts.inter(
                       color: Style.black,
                       fontSize: 22.sp,
@@ -329,7 +332,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Titulo',
+                    title, // Cambiado de 'Titulo' a title para usar el parámetro correcto
                     style: GoogleFonts.inter(
                       color: isDiscount ? Style.red : Style.black,
                       fontSize: 14.sp,

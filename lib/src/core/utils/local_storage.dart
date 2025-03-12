@@ -49,12 +49,13 @@ abstract class LocalStorage {
     return prefs.getString(StorageKeys.keyRestaurant);
   }
 
+  
+
   // Devuelve siempre 'MXN', sin interactuar con SharedPreferences
   static String getSelectedCurrency() {
     return 'MXN';
   }
 
-  static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyCart);
 
   static Future<void> setBag(BagData bag) async {
     if (_preferences != null) {
@@ -74,6 +75,9 @@ abstract class LocalStorage {
     debugPrint('===> Bag retrieved: $savedString');
     return BagData.fromJson(map);
   }
+
+  static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyBag);
+
 
   static void clearStore() {
     deleteCartProducts();

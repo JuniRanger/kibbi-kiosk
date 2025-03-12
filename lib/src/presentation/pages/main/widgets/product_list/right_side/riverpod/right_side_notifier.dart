@@ -27,31 +27,31 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
   RightSideNotifier() : super(const RightSideState());
 
-  void setSelectedPayment(String? paymentId) {
-    final BagData? bag = LocalStorage.getBag();
-    PaymentData? paymentData;
-    for (final payment in state.payments) {
-      if (paymentId == payment.id) {
-        paymentData = payment;
-        break;
-      }
-    }
-    final BagData updatedBag = bag!.copyWith(
-      selectedPayment: paymentData,
-    );
-    LocalStorage.setBag(updatedBag);
-    state = state.copyWith(
-        bag: updatedBag, selectedPayment: paymentData, selectPaymentError: null);
-  }
+  // void setSelectedPayment(String? paymentId) {
+  //   final BagData? bag = LocalStorage.getBag();
+  //   PaymentData? paymentData;
+  //   for (final payment in state.payments) {
+  //     if (paymentId == payment.id) {
+  //       paymentData = payment;
+  //       break;
+  //     }
+  //   }
+  //   final BagData updatedBag = bag!.copyWith(
+  //     selectedPayment: paymentData,
+  //   );
+  //   LocalStorage.setBag(updatedBag);
+  //   state = state.copyWith(
+  //       bag: updatedBag, selectedPayment: paymentData, selectPaymentError: null);
+  // }
 
   void setSelectedOrderType(String? type) {
-    PaymentData? selectedPayment = state.selectedPayment;
-    if (state.selectedPayment?.tag != 'cash') {
-      final List<PaymentData> payments = List.from(state.payments);
-      selectedPayment = payments.firstWhere((e) => e.tag == 'cash',
-          orElse: () => PaymentData());
-      setSelectedPayment(selectedPayment.id);
-    }
+    // PaymentData? selectedPayment = state.selectedPayment;
+    // if (state.selectedPayment?.tag != 'cash') {
+    //   final List<PaymentData> payments = List.from(state.payments);
+    //   selectedPayment = payments.firstWhere((e) => e.tag == 'cash',
+    //       orElse: () => PaymentData());
+    //   setSelectedPayment(selectedPayment.id);
+    // }
     state = state.copyWith(
       orderType: type ?? state.orderType,
       selectPaymentError: null,
@@ -92,6 +92,8 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       isActive: bag.bagProducts!.isNotEmpty,
       comment: '',
     );
+
+    debugPrint('===> Bag state updated: ${state.bag}');
   }
 
   Future<void> fetchCurrencies({VoidCallback? checkYourNetwork}) async {
@@ -159,7 +161,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       }
 
       // Obtener los productos del carrito desde el almacenamiento local
-      final List<BagProductData>  bagProducts =
+      final List<BagProductData> bagProducts =
           LocalStorage.getBag()?.bagProducts ?? [];
       debugPrint('===> Bag products retrieved: $bagProducts');
 
@@ -223,16 +225,43 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   }
 
   void clearBag(BuildContext context) {
-    var newPagination = state.paginateResponse?.copyWith(stocks: []);
-    state = state.copyWith(paginateResponse: newPagination);
+    // Limpiamos los productos de la bolsa en el estado
+    BagData emptyBag = BagData(bagProducts: []);
+    state = state.copyWith(bag: emptyBag);
+
+    // También limpiamos paginateResponse por si acaso todavía se usa en alguna parte
+    if (state.paginateResponse != null) {
+      var newPagination = state.paginateResponse!.copyWith(stocks: []);
+      state = state.copyWith(paginateResponse: newPagination);
+    }
+
+    // Obtenemos el objeto de la bolsa (bag) desde LocalStorage
     BagData? bag = LocalStorage.getBag();
-    bag = bag!.copyWith(bagProducts: []);
-    LocalStorage.setBag(bag);
+
+    // Verificamos que la bolsa no sea nula antes de modificarla
+    if (bag != null) {
+      // Copiamos la bolsa y le asignamos una lista vacía de productos
+      bag = bag.copyWith(bagProducts: []);
+
+      // Guardamos la bolsa actualizada en el almacenamiento local
+      LocalStorage.setBag(bag);
+
+      debugPrint("Bolsa limpiada correctamente.");
+    } else {
+      // Si no hay datos en el almacenamiento local, creamos una bolsa vacía
+      LocalStorage.setBag(emptyBag);
+      debugPrint("No había datos en la bolsa. Se ha creado una bolsa vacía.");
+    }
+
+    // Notificar a la UI que la bolsa ha sido vaciada
+    if (context.mounted) {
+      AppHelpers.showSnackBar(context, 'Carrito vaciado correctamente');
+    }
   }
 
   void deleteProductFromBag(BuildContext context, BagProductData bagProduct) {
-    final List<BagProductData> bagProducts = List.from(
-        LocalStorage.getBag()?.bagProducts ?? []);
+    final List<BagProductData> bagProducts =
+        List.from(LocalStorage.getBag()?.bagProducts ?? []);
     int index = 0;
     for (int i = 0; i < bagProducts.length; i++) {
       if (bagProducts[i] == bagProduct) {
@@ -256,8 +285,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     state = state.copyWith(paginateResponse: newData);
     BagData? bag = LocalStorage.getBag();
 
-    List<BagProductData>? bagProducts =
-        bag?.bagProducts;
+    List<BagProductData>? bagProducts = bag?.bagProducts;
     bagProducts?.removeAt(productIndex);
     bag = bag!.copyWith(bagProducts: bagProducts);
     LocalStorage.setBag(bag);
@@ -282,8 +310,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       PriceDate? data = state.paginateResponse;
       PriceDate? newData = data?.copyWith(stocks: listOfProduct);
       state = state.copyWith(paginateResponse: newData);
-      final List<BagProductData> bagProducts =
-          bag?.bagProducts ?? [];
+      final List<BagProductData> bagProducts = bag?.bagProducts ?? [];
       BagProductData newProductData = bagProducts[productIndex]
           .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) - 1);
       bagProducts[productIndex] = newProductData;
@@ -296,8 +323,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       PriceDate? data = state.paginateResponse;
       PriceDate? newData = data?.copyWith(stocks: listOfProduct);
       state = state.copyWith(paginateResponse: newData);
-      final List<BagProductData> bagProducts =
-          bag!.bagProducts ?? [];
+      final List<BagProductData> bagProducts = bag!.bagProducts ?? [];
       if (bagProducts.isNotEmpty) bagProducts.removeAt(productIndex);
       if (bagProducts.isEmpty) {
         clearBag(context);

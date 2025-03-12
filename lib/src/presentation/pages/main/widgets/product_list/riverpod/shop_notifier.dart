@@ -17,7 +17,9 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   fetchData({required BuildContext context}) {
+    // Borra el carrito siempre que se inicie la función
     LocalStorage.deleteCartProducts();
+
     fetchProducts(context: context, isRefresh: true);
     fetchCategories(context: context);
   }

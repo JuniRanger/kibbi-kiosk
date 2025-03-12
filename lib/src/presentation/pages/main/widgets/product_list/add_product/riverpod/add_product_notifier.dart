@@ -71,7 +71,6 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
     final newBagProduct = BagProductData(
       productId: state.product?.id, // Usar el id del producto
       quantity: state.stockCount,    // Usar la cantidad seleccionada en el carrito
-      carts: null,
     );
 
     // Obtener los productos actuales de la bolsa
@@ -86,7 +85,6 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
       bagProducts[existingIndex] = BagProductData(
         productId: state.product?.id,
         quantity: (bagProducts[existingIndex].quantity ?? 0) + state.stockCount,
-        carts: null,
       );
     } else {
       // Agregar nuevo producto si no existe

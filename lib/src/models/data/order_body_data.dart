@@ -21,11 +21,12 @@ class OrderBodyData {
     // Iteramos sobre los productos en la bolsa (bagProducts)
     for (BagProductData stock in bagData.bagProducts ?? []) {
       List<Map<String, dynamic>> addons = [];
-      for (BagProductData addon in stock.carts ?? []) {
+      for (BagProductData stock in bagData.bagProducts ?? []) {
         // Agregamos los addons si existen
-        addons.add({
-          'quantity': addon.quantity,
-        });
+        products.add({
+        'productId': stock.productId,  // productId del producto
+        'quantity': stock.quantity,    // Cantidad del producto
+      });
       }
 
       // Agregamos el producto y su cantidad
