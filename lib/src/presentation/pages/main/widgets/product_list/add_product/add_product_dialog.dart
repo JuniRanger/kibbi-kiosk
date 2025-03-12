@@ -26,21 +26,17 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(addProductProvider.notifier).setProduct(
-            widget.product,
-            ref.watch(rightSideProvider).selectedBagIndex,
-          );
+      ref.read(addProductProvider.notifier).setProduct(widget.product);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(addProductProvider);
-    final rightSideState = ref.watch(rightSideProvider);
     final notifier = ref.read(addProductProvider.notifier);
     final rightSideNotifier = ref.read(rightSideProvider.notifier);
 
-    final num price = state.selectedStock?.price ?? 0.0; // Sin descuento
+    final num price = state.selectedStock?.price ?? 0.0;
     final String priceFormatted = NumberFormat.currency(
       symbol: '\$',
     ).format(price);
@@ -85,8 +81,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: () => notifier.decreaseStockCount(
-                                      rightSideState.selectedBagIndex),
+                                  onPressed: () => notifier.decreaseStockCount(),
                                   icon: const Icon(FlutterRemix.subtract_line),
                                 ),
                                 13.horizontalSpace,
@@ -101,8 +96,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                                 ),
                                 12.horizontalSpace,
                                 IconButton(
-                                  onPressed: () => notifier.increaseStockCount(
-                                      rightSideState.selectedBagIndex),
+                                  onPressed: () => notifier.increaseStockCount(),
                                   icon: const Icon(FlutterRemix.add_line),
                                 ),
                               ],
@@ -147,7 +141,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                               width: MediaQuery.sizeOf(context).width / 1.6 -
                                   370.w,
                               child: Divider(
-                                color: Style.black.withOpacity(0.2),
+                                color: Style.black.withAlpha((0.2 * 255).toInt()),
                               ),
                             ),
                           ],
@@ -168,7 +162,6 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                           onPressed: () {
                             notifier.addProductToBag(
                               context,
-                              rightSideState.selectedBagIndex,
                               rightSideNotifier,
                             );
                             context.router.maybePop();
@@ -222,3 +215,4 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
     );
   }
 }
+

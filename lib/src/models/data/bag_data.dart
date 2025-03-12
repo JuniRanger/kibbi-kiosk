@@ -2,16 +2,13 @@ import '../response/payments_response.dart';
 
 class BagData {
   BagData({
-    int? index,
-    PaymentData? selectedPayment,
+    // PaymentData? selectedPayment,
     List<BagProductData>? bagProducts,
   }) {
-    _index = index;
     _bagProducts = bagProducts;
   }
 
   BagData.fromJson(dynamic json) {
-    _index = json['index'];
     _selectedPayment = json['selected_payment'] != null
         ? PaymentData.fromJson(json['selected_payment'])
         : null;
@@ -23,7 +20,6 @@ class BagData {
     }
   }
 
-  int? _index;
   PaymentData? _selectedPayment;
   List<BagProductData>? _bagProducts;
 
@@ -33,19 +29,16 @@ class BagData {
     List<BagProductData>? bagProducts,
   }) =>
       BagData(
-        index: index ?? _index,
-        selectedPayment: selectedPayment ?? _selectedPayment,
+        // selectedPayment: selectedPayment ?? _selectedPayment,
         bagProducts: bagProducts ?? _bagProducts,
       );
 
-  int? get index => _index;
   PaymentData? get selectedPayment => _selectedPayment;
 
   List<BagProductData>? get bagProducts => _bagProducts;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['index'] = _index;
     if (_selectedPayment != null) {
       map['selected_payment'] = _selectedPayment?.toJson();
     }
@@ -59,12 +52,12 @@ class BagData {
 class BagProductData {
   final int? quantity;
   final List<BagProductData>? carts;
-  final int? stockId;  // Agregado el campo stockId
+  final String? productId;  // Cambié stockId por productId
 
   BagProductData({
     this.quantity,
     this.carts,
-    this.stockId,  // Asegúrate de agregarlo al constructor
+    this.productId,  // Asegúrate de agregar el productId en el constructor
   });
 
   factory BagProductData.fromJson(Map data) {
@@ -73,31 +66,35 @@ class BagProductData {
       newList.add(BagProductData.fromJson(e));
     });
     return BagProductData(
-        quantity: data["quantity"],
-        carts: newList,
-        stockId: data["stockId"],  // Asegúrate de leer stockId del JSON
+      quantity: data["quantity"],
+      productId: data["product_id"], // Asegúrate de leer el productId del JSON
+      carts: newList,
     );
   }
 
-  BagProductData copyWith({int? quantity, int? stockId}) {
+  BagProductData copyWith({
+    int? quantity,
+    List<BagProductData>? carts,
+    String? productId,
+  }) {
     return BagProductData(
-        quantity: quantity ?? this.quantity,
-        carts: carts,
-        stockId: stockId ?? this.stockId,  // Permite copiar el stockId
+      quantity: quantity ?? this.quantity,
+      carts: carts ?? this.carts,
+      productId: productId ?? this.productId,
     );
   }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (quantity != null) map["quantity"] = quantity;
-    if (stockId != null) map["stockId"] = stockId;  // Agrega stockId a la salida
+    if (productId != null) map["product_id"] = productId; // Guarda el productId
     return map;
   }
 
   Map<String, dynamic> toJsonInsert() {
     final map = <String, dynamic>{};
     if (quantity != null) map["quantity"] = quantity;
-    if (stockId != null) map["stockId"] = stockId;  // Agrega stockId a la salida
+    if (productId != null) map["product_id"] = productId; // Guarda el productId también
     if (carts != null) map["products"] = toJsonCart();
     return map;
   }
@@ -107,7 +104,7 @@ class BagProductData {
     carts?.forEach((element) {
       final map = <String, dynamic>{};
       map["quantity"] = element.quantity;
-      if (element.stockId != null) map["stockId"] = element.stockId;  // Incluye stockId en los productos dentro del carrito
+      if (element.productId != null) map["product_id"] = element.productId; // Asegúrate de agregar el productId
       list.add(map);
     });
     return list;

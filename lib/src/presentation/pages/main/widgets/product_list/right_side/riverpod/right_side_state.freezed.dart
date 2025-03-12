@@ -26,7 +26,7 @@ mixin _$RightSideState {
   bool get isPromoCodeLoading => throw _privateConstructorUsedError;
   bool get isSectionLoading => throw _privateConstructorUsedError;
   bool get isTableLoading => throw _privateConstructorUsedError;
-  List<BagData> get bags => throw _privateConstructorUsedError;
+  BagData? get bag => throw _privateConstructorUsedError;
   List<CurrencyData> get currencies => throw _privateConstructorUsedError;
   List<PaymentData> get payments => throw _privateConstructorUsedError;
   int get selectedBagIndex => throw _privateConstructorUsedError;
@@ -71,7 +71,7 @@ abstract class $RightSideStateCopyWith<$Res> {
       bool isPromoCodeLoading,
       bool isSectionLoading,
       bool isTableLoading,
-      List<BagData> bags,
+      BagData? bag,
       List<CurrencyData> currencies,
       List<PaymentData> payments,
       int selectedBagIndex,
@@ -118,7 +118,7 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? isPromoCodeLoading = null,
     Object? isSectionLoading = null,
     Object? isTableLoading = null,
-    Object? bags = null,
+    Object? bag = freezed,
     Object? currencies = null,
     Object? payments = null,
     Object? selectedBagIndex = null,
@@ -180,10 +180,10 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.isTableLoading
           : isTableLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      bags: null == bags
-          ? _value.bags
-          : bags // ignore: cast_nullable_to_non_nullable
-              as List<BagData>,
+      bag: freezed == bag
+          ? _value.bag
+          : bag // ignore: cast_nullable_to_non_nullable
+              as BagData?,
       currencies: null == currencies
           ? _value.currencies
           : currencies // ignore: cast_nullable_to_non_nullable
@@ -283,7 +283,7 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       bool isPromoCodeLoading,
       bool isSectionLoading,
       bool isTableLoading,
-      List<BagData> bags,
+      BagData? bag,
       List<CurrencyData> currencies,
       List<PaymentData> payments,
       int selectedBagIndex,
@@ -328,7 +328,7 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? isPromoCodeLoading = null,
     Object? isSectionLoading = null,
     Object? isTableLoading = null,
-    Object? bags = null,
+    Object? bag = freezed,
     Object? currencies = null,
     Object? payments = null,
     Object? selectedBagIndex = null,
@@ -390,10 +390,10 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.isTableLoading
           : isTableLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      bags: null == bags
-          ? _value._bags
-          : bags // ignore: cast_nullable_to_non_nullable
-              as List<BagData>,
+      bag: freezed == bag
+          ? _value.bag
+          : bag // ignore: cast_nullable_to_non_nullable
+              as BagData?,
       currencies: null == currencies
           ? _value._currencies
           : currencies // ignore: cast_nullable_to_non_nullable
@@ -488,7 +488,7 @@ class _$RightSideStateImpl extends _RightSideState {
       this.isPromoCodeLoading = false,
       this.isSectionLoading = false,
       this.isTableLoading = false,
-      final List<BagData> bags = const [],
+      this.bag = null,
       final List<CurrencyData> currencies = const [],
       final List<PaymentData> payments = const [],
       this.selectedBagIndex = 0,
@@ -508,8 +508,7 @@ class _$RightSideStateImpl extends _RightSideState {
       this.selectedCurrency,
       this.selectedPayment,
       this.paginateResponse})
-      : _bags = bags,
-        _currencies = currencies,
+      : _currencies = currencies,
         _payments = payments,
         super._();
 
@@ -543,15 +542,9 @@ class _$RightSideStateImpl extends _RightSideState {
   @override
   @JsonKey()
   final bool isTableLoading;
-  final List<BagData> _bags;
   @override
   @JsonKey()
-  List<BagData> get bags {
-    if (_bags is EqualUnmodifiableListView) return _bags;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_bags);
-  }
-
+  final BagData? bag;
   final List<CurrencyData> _currencies;
   @override
   @JsonKey()
@@ -621,7 +614,7 @@ class _$RightSideStateImpl extends _RightSideState {
 
   @override
   String toString() {
-    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, isPromoCodeLoading: $isPromoCodeLoading, isSectionLoading: $isSectionLoading, isTableLoading: $isTableLoading, bags: $bags, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, tableQuery: $tableQuery, sectionQuery: $sectionQuery, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
+    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, isPromoCodeLoading: $isPromoCodeLoading, isSectionLoading: $isSectionLoading, isTableLoading: $isTableLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, tableQuery: $tableQuery, sectionQuery: $sectionQuery, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
   }
 
   @override
@@ -650,7 +643,7 @@ class _$RightSideStateImpl extends _RightSideState {
                 other.isSectionLoading == isSectionLoading) &&
             (identical(other.isTableLoading, isTableLoading) ||
                 other.isTableLoading == isTableLoading) &&
-            const DeepCollectionEquality().equals(other._bags, _bags) &&
+            (identical(other.bag, bag) || other.bag == bag) &&
             const DeepCollectionEquality()
                 .equals(other._currencies, _currencies) &&
             const DeepCollectionEquality().equals(other._payments, _payments) &&
@@ -701,7 +694,7 @@ class _$RightSideStateImpl extends _RightSideState {
         isPromoCodeLoading,
         isSectionLoading,
         isTableLoading,
-        const DeepCollectionEquality().hash(_bags),
+        bag,
         const DeepCollectionEquality().hash(_currencies),
         const DeepCollectionEquality().hash(_payments),
         selectedBagIndex,
@@ -745,7 +738,7 @@ abstract class _RightSideState extends RightSideState {
       final bool isPromoCodeLoading,
       final bool isSectionLoading,
       final bool isTableLoading,
-      final List<BagData> bags,
+      final BagData? bag,
       final List<CurrencyData> currencies,
       final List<PaymentData> payments,
       final int selectedBagIndex,
@@ -788,7 +781,7 @@ abstract class _RightSideState extends RightSideState {
   @override
   bool get isTableLoading;
   @override
-  List<BagData> get bags;
+  BagData? get bag;
   @override
   List<CurrencyData> get currencies;
   @override

@@ -17,7 +17,7 @@ import 'riverpod/right_side_provider.dart';
 import 'riverpod/right_side_state.dart';
 
 class PageViewItem extends ConsumerStatefulWidget {
-  final BagData bag;
+  final BagData? bag;
 
   const PageViewItem({super.key, required this.bag});
 
@@ -35,7 +35,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(rightSideProvider.notifier)
-          .setInitialBagData(context, widget.bag);
+          .setInitialBagData(context, widget.bag ?? BagData());
     });
   }
 
@@ -300,7 +300,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
               24.verticalSpace,
               LoginButton(
                 isLoading: state.isButtonLoading,
-                title: 'Orden',
+                title: 'Ordenar',
                 titleColor: Style.black,
                 onPressed: () {
                   AppHelpers.showAlertDialog(

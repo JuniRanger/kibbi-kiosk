@@ -9,120 +9,99 @@ import 'add_product_state.dart';
 class AddProductNotifier extends StateNotifier<AddProductState> {
   AddProductNotifier() : super(const AddProductState());
 
-  void setProduct(ProductData? product, int bagIndex) {
+  void setProduct(ProductData? product) {
     state = state.copyWith(
       isLoading: false,
       product: product,
-      stockCount: 0,
+      stockCount: 1, // Se inicia con 0 como la cantidad seleccionada
     );
   }
 
   void updateSelectedIndexes({
     required int index,
     required int value,
-    required int bagIndex,
   }) {
     final newList = state.selectedIndexes.sublist(0, index);
     newList.add(value);
     final postList =
         List.filled(state.selectedIndexes.length - newList.length, 0);
     newList.addAll(postList);
-    initialSetSelectedIndexes(newList, bagIndex);
+    initialSetSelectedIndexes(newList);
   }
 
-  void initialSetSelectedIndexes(List<int> indexes, int bagIndex) {
+  void initialSetSelectedIndexes(List<int> indexes) {
     state = state.copyWith(selectedIndexes: indexes);
-    updateStock(bagIndex);
+    // Ya no necesitamos actualizar el stock
   }
 
-  void updateStock(int bagIndex) {
-    final Stocks? selectedStock = state.initialStocks.isNotEmpty
-        ? state.initialStocks[0] // Assuming we're picking the first stock
-        : null;
-    final int minQty = state.product?.minQty ?? 0;
-    final int selectedStockQty = selectedStock?.quantity ?? 0;
-    final int stockCount =
-        minQty <= selectedStockQty ? minQty : selectedStockQty;
-    state = state.copyWith(
-      selectedStock: selectedStock,
-      stockCount: stockCount,
-    );
-  }
-
-  void increaseStockCount(int bagIndex) {
-    if ((state.selectedStock?.quantity ?? 0) < (state.product?.minQty ?? 0)) {
-      return;
-    }
+  void increaseStockCount() {
     int newCount = state.stockCount;
-    if (newCount >= (state.product?.maxQty ?? 100000) ||
-        newCount >= (state.selectedStock?.quantity ?? 100000)) {
-      return;
-    } else if (newCount < (state.product?.minQty ?? 0)) {
-      newCount = state.product?.minQty ?? 1;
-      state = state.copyWith(stockCount: newCount);
+    // Limitar a un mínimo de 1, si se desea
+    if (newCount < 1) {
+      newCount = 1;
     } else {
-      newCount = newCount + 1;
-      state = state.copyWith(stockCount: newCount);
+      newCount = newCount + 1; // Aumentar la cantidad seleccionada
     }
+    state = state.copyWith(stockCount: newCount);
   }
 
-  void decreaseStockCount(int bagIndex) {
-    int newCount = state.stockCount;
-    if (newCount <= 1) {
-      return;
-    } else if (newCount <= (state.product?.minQty ?? 0)) {
-      newCount = (state.product?.minQty ?? 0);
-      state = state.copyWith(stockCount: newCount);
-    } else {
-      newCount = newCount - 1;
-      state = state.copyWith(stockCount: newCount);
-    }
+  void decreaseStockCount() {
+  int newCount = state.stockCount;
+  if (newCount <= 1) {
+    return; // No decrementamos más si la cantidad es 1 o menos
+  } else {
+    newCount = newCount - 1;
+    state = state.copyWith(stockCount: newCount);
   }
+}
+
 
   void addProductToBag(
     BuildContext context,
-    int bagIndex,
     RightSideNotifier rightSideNotifier,
   ) {
-    final List<BagProductData> bagProducts =
-        LocalStorage.getBags()[bagIndex].bagProducts ?? [];
-
-    int newStockIndex = -1;
-
-    if (bagProducts.map((e) => e.stockId).contains(state.selectedStock?.id)) {
-      for (int i = 0; i < bagProducts.length; i++) {
-        if (bagProducts[i].stockId == state.selectedStock?.id) {
-          newStockIndex = i;
-          break;
-        } else {
-          newStockIndex = -1;
-        }
-      }
+    // Obtener la bolsa existente o crear una nueva si es nula
+    BagData? bag = LocalStorage.getBag();
+    if (bag == null) {
+      debugPrint('No se encontró bolsa en LocalStorage, creando nueva bolsa');
+      bag = BagData(bagProducts: []);
     }
 
-    List<BagProductData> list = [];
-    if (newStockIndex == -1) {
-      bagProducts.insert(
-        0,
-        BagProductData(
-            quantity: state.stockCount,
-            carts: list),
+    // Crear el nuevo producto para la bolsa
+    final newBagProduct = BagProductData(
+      productId: state.product?.id, // Usar el id del producto
+      quantity: state.stockCount,    // Usar la cantidad seleccionada en el carrito
+      carts: null,
+    );
+
+    // Obtener los productos actuales de la bolsa
+    List<BagProductData> bagProducts = List.from(bag.bagProducts ?? []);
+
+    // Buscar si el producto ya existe
+    int existingIndex = bagProducts
+        .indexWhere((product) => product.productId == state.product?.id);
+
+    if (existingIndex != -1) {
+      // Actualizar cantidad si el producto existe
+      bagProducts[existingIndex] = BagProductData(
+        productId: state.product?.id,
+        quantity: (bagProducts[existingIndex].quantity ?? 0) + state.stockCount,
+        carts: null,
       );
     } else {
-      int oldCount = bagProducts[newStockIndex].quantity ?? 0;
-      bagProducts.removeAt(newStockIndex);
-      bagProducts.insert(
-        newStockIndex,
-        BagProductData(
-            quantity: state.stockCount + oldCount,
-            carts: list),
-      );
+      // Agregar nuevo producto si no existe
+      bagProducts.insert(0, newBagProduct);
     }
 
-    List<BagData> bags = List.from(LocalStorage.getBags());
-    bags[bagIndex] = bags[bagIndex].copyWith(bagProducts: bagProducts);
-    LocalStorage.setBags(bags);
+    // Actualizar la bolsa
+    bag = bag.copyWith(bagProducts: bagProducts);
 
-    rightSideNotifier.fetchCarts(context: context);
+    // Guardar en LocalStorage
+    LocalStorage.setBag(bag);
+
+    // Actualizar el estado en RightSide
+    rightSideNotifier
+      ..fetchBag() // Actualiza la bolsa
+      ..fetchCarts(context: context); // Actualiza el carrito
   }
 }

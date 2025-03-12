@@ -31,8 +31,7 @@ class OrderInformation extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final notifier = ref.read(rightSideProvider.notifier);
     final state = ref.watch(rightSideProvider);
-    final BagData bag =
-        state.bags.isNotEmpty ? state.bags[state.selectedBagIndex] : BagData();
+    final BagData? bag = state.bag;
     return KeyboardDismisser(
       child: Container(
         width: MediaQuery.sizeOf(context).width / 2,
@@ -281,7 +280,7 @@ class OrderInformation extends ConsumerWidget {
               _priceInformation(
                 state: state,
                 notifier: notifier,
-                bag: bag,
+                bag: bag ?? BagData(),
                 context: context,
               ),
               20.verticalSpace,

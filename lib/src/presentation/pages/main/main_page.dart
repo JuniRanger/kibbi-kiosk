@@ -54,7 +54,6 @@ class _MainPageState extends ConsumerState<MainPage>
       elevation: 0.5,
       title: Row(
         children: [
-          SvgPicture.asset(Assets.svgLogo),
           12.horizontalSpace,
           Text(
             AppHelpers.getAppName() ?? "Kibbi Kiosk",

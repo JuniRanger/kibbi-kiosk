@@ -28,7 +28,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   RightSideNotifier() : super(const RightSideState());
 
   void setSelectedPayment(String? paymentId) {
-    final List<BagData> bags = List.from(LocalStorage.getBags());
+    final BagData? bag = LocalStorage.getBag();
     PaymentData? paymentData;
     for (final payment in state.payments) {
       if (paymentId == payment.id) {
@@ -36,13 +36,12 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         break;
       }
     }
-    final BagData bag = bags[state.selectedBagIndex].copyWith(
+    final BagData updatedBag = bag!.copyWith(
       selectedPayment: paymentData,
     );
-    bags[state.selectedBagIndex] = bag;
-    LocalStorage.setBags(bags);
+    LocalStorage.setBag(updatedBag);
     state = state.copyWith(
-        bags: bags, selectedPayment: paymentData, selectPaymentError: null);
+        bag: updatedBag, selectedPayment: paymentData, selectPaymentError: null);
   }
 
   void setSelectedOrderType(String? type) {
@@ -77,146 +76,135 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  Future<void> fetchBags(String? shopId) async {
-    state = state.copyWith(isBagsLoading: true, bags: []);
-    List<BagData> bags = [];
-    final BagData firstBag = BagData(index: 0, bagProducts: []);
-    LocalStorage.setBags([firstBag]);
-    bags = [firstBag];
+  Future<void> fetchBag() async {
+    state = state.copyWith(isBagsLoading: true);
+    BagData? bag = LocalStorage.getBag();
+    if (bag == null) {
+      bag = BagData(bagProducts: []);
+      LocalStorage.setBag(bag);
+      debugPrint('===> New bag created and set: $bag');
+    } else {
+      debugPrint('===> Bag retrieved: $bag');
+    }
     state = state.copyWith(
-      bags: bags,
+      bag: bag,
       isBagsLoading: false,
-      isActive: false,
-      isPromoCodeLoading: false,
+      isActive: bag.bagProducts!.isNotEmpty,
       comment: '',
     );
   }
 
   Future<void> fetchCurrencies({VoidCallback? checkYourNetwork}) async {
-  final connected = await AppConnectivity.connectivity();
-  if (connected) {
-    state = state.copyWith(isCurrenciesLoading: true, currencies: []);
-    
-    // Crear una instancia de CurrencyData para MXN
-    final mxnCurrency = CurrencyData();
-    
-    // Actualizar el estado con solo esta moneda
-    state = state.copyWith(
-      isCurrenciesLoading: false,
-      currencies: [mxnCurrency],
-    );
-    
-    // Establecer esta moneda como la seleccionada
-    // Si tu método setSelectedCurrency requiere un ID, puedes manejarlo según sea necesario
-    // Por ejemplo, si mxnCurrency tiene un ID predeterminado o si puedes pasar null
-    _setSelectedCurrency(null); // Ajusta según sea necesario
-    
-  } else {
-    checkYourNetwork?.call();
+    final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      state = state.copyWith(isCurrenciesLoading: true, currencies: []);
+
+      // Crear una instancia de CurrencyData para MXN
+      final mxnCurrency = CurrencyData();
+
+      // Actualizar el estado con solo esta moneda
+      state = state.copyWith(
+        isCurrenciesLoading: false,
+        currencies: [mxnCurrency],
+      );
+
+      // Establecer esta moneda como la seleccionada
+      // Si tu método setSelectedCurrency requiere un ID, puedes manejarlo según sea necesario
+      // Por ejemplo, si mxnCurrency tiene un ID predeterminado o si puedes pasar null
+      _setSelectedCurrency(null); // Ajusta según sea necesario
+    } else {
+      checkYourNetwork?.call();
+    }
   }
-}
 
   void _setSelectedCurrency(String? currencyId) {
     final List<CurrencyData> currencies = List.from(state.currencies);
     final CurrencyData? selectedCurrency = currencies.firstWhere(
-      (currency) => currency.title == currencyId, // Assuming 'name' is a field in CurrencyData
+      (currency) =>
+          currency.title ==
+          currencyId, // Assuming 'name' is a field in CurrencyData
       orElse: () => CurrencyData(),
     );
     state = state.copyWith(selectedCurrency: selectedCurrency);
   }
 
-  void setSelectedBagIndex(int index) {
-    state = state.copyWith(
-      selectedBagIndex: index
-    );
-  }
-
   void removeOrderedBag(BuildContext context) {
-    List<BagData> bags = List.from(state.bags);
-    List<BagData> newBags = LocalStorage.getBags();
-    bags.removeAt(state.selectedBagIndex);
-    if (bags.isEmpty) {
-      final BagData firstBag = BagData(index: 0, bagProducts: []);
-      newBags = [firstBag];
-    } else {
-      for (int i = 0; i < bags.length; i++) {
-        newBags.add(BagData(index: i, bagProducts: bags[i].bagProducts));
-      }
-    }
-    LocalStorage.setBags(newBags);
+    BagData? bag = LocalStorage.getBag();
+    bag = BagData(bagProducts: []);
+    LocalStorage.setBag(bag);
     state = state.copyWith(
-        bags: newBags,
+        bag: bag,
         selectedBagIndex: 0,
         selectedUser: null,
         // selectedPayment: null,
         orderType: 'Para llevar');
-    setInitialBagData(context, newBags[0]);
+    setInitialBagData(context, bag);
   }
 
+  Future<void> fetchCarts(
+      {BuildContext? context, bool isNotLoading = false}) async {
+    final connected = await AppConnectivity.connectivity();
 
-  Future<void> fetchCarts({BuildContext? context, bool isNotLoading = false}) async {
-  final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      // Aquí se gestiona si la carga es con o sin indicador de carga
+      if (isNotLoading) {
+        state = state.copyWith(
+          isButtonLoading: true,
+        );
+      } else {
+        state = state.copyWith(
+          isProductCalculateLoading: true,
+          bag: LocalStorage.getBag(),
+        );
+      }
 
-  if (connected) {
-    // Aquí se gestiona si la carga es con o sin indicador de carga
-    if (isNotLoading) {
-      state = state.copyWith(
-        isButtonLoading: true,
-      );
-    } else {
-      state = state.copyWith(
-        isProductCalculateLoading: true,
-        bags: LocalStorage.getBags(),
-      );
-    }
+      // Obtener los productos del carrito desde el almacenamiento local
+      final List<BagProductData>  bagProducts =
+          LocalStorage.getBag()?.bagProducts ?? [];
+      debugPrint('===> Bag products retrieved: $bagProducts');
 
-    // Obtener los productos del carrito desde el almacenamiento local
-    final List<BagProductData> bagProducts =
-        LocalStorage.getBags()[state.selectedBagIndex].bagProducts ?? [];
-    
-    if (bagProducts.isNotEmpty) {
-      // Aquí realizamos los cálculos internamente en lugar de hacer una solicitud de red
-      _calculateCartTotal(bagProducts);
+      if (bagProducts.isNotEmpty) {
+        // Aquí realizamos los cálculos internamente en lugar de hacer una solicitud de red
+        _calculateCartTotal(bagProducts);
 
-      // El estado ahora se actualiza con el resultado de los cálculos
+        // El estado ahora se actualiza con el resultado de los cálculos
+        state = state.copyWith(
+          isButtonLoading: false,
+          isProductCalculateLoading: false,
+        );
+      }
+      // Finalmente, deshabilitamos los indicadores de carga
       state = state.copyWith(
         isButtonLoading: false,
         isProductCalculateLoading: false,
       );
-    }
-    // Finalmente, deshabilitamos los indicadores de carga
-    state = state.copyWith(
-      isButtonLoading: false,
-      isProductCalculateLoading: false,
-    );
-  } else {
-    if (context?.mounted ?? false) {
-      AppHelpers.showSnackBar(
-        context!,
-        'Revisa tu conexión',
-      );
+    } else {
+      if (context?.mounted ?? false) {
+        AppHelpers.showSnackBar(
+          context!,
+          'Revisa tu conexión',
+        );
+      }
     }
   }
-}
 
 // Método interno para realizar los cálculos de los productos en el carrito
-void _calculateCartTotal(List<BagProductData> bagProducts) {
-  // double total = 0.0;
-  
-  // for (var product in bagProducts) {
-  //   // Lógica para calcular el precio total de cada producto
-  //   // Esto puede involucrar descuento, impuestos, o cualquier otra regla
-  //   double price = product.price?? 0.0;
+  void _calculateCartTotal(List<BagProductData> bagProducts) {
+    // double total = 0.0;
 
-  //   // Aquí deberías agregar lógica si hay descuentos o cualquier otro ajuste
+    // for (var product in bagProducts) {
+    //   // Lógica para calcular el precio total de cada producto
+    //   // Esto puede involucrar descuento, impuestos, o cualquier otra regla
+    //   double price = product.price?? 0.0;
 
-  //   total += price;
-  // }
+    //   // Aquí deberías agregar lógica si hay descuentos o cualquier otro ajuste
 
-  // // Aquí puedes actualizar el estado con el total calculado
-  // state = state.copyWith(totalPrice: total);
-}
+    //   total += price;
+    // }
 
+    // // Aquí puedes actualizar el estado con el total calculado
+    // state = state.copyWith(totalPrice: total);
+  }
 
   void setInitialBagData(BuildContext context, BagData bag) {
     state = state.copyWith(
@@ -237,15 +225,14 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
   void clearBag(BuildContext context) {
     var newPagination = state.paginateResponse?.copyWith(stocks: []);
     state = state.copyWith(paginateResponse: newPagination);
-    List<BagData> bags = List.from(LocalStorage.getBags());
-    bags[state.selectedBagIndex] =
-        bags[state.selectedBagIndex].copyWith(bagProducts: []);
-    LocalStorage.setBags(bags);
+    BagData? bag = LocalStorage.getBag();
+    bag = bag!.copyWith(bagProducts: []);
+    LocalStorage.setBag(bag);
   }
 
   void deleteProductFromBag(BuildContext context, BagProductData bagProduct) {
     final List<BagProductData> bagProducts = List.from(
-        LocalStorage.getBags()[state.selectedBagIndex].bagProducts ?? []);
+        LocalStorage.getBag()?.bagProducts ?? []);
     int index = 0;
     for (int i = 0; i < bagProducts.length; i++) {
       if (bagProducts[i] == bagProduct) {
@@ -254,10 +241,9 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
       }
     }
     bagProducts.removeAt(index);
-    List<BagData> bags = List.from(LocalStorage.getBags());
-    bags[state.selectedBagIndex] =
-        bags[state.selectedBagIndex].copyWith(bagProducts: bagProducts);
-    LocalStorage.setBags(bags);
+    BagData? bag = LocalStorage.getBag();
+    bag = bag!.copyWith(bagProducts: bagProducts);
+    LocalStorage.setBag(bag);
     fetchCarts(context: context);
   }
 
@@ -268,14 +254,13 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
     PriceDate? data = state.paginateResponse;
     PriceDate? newData = data?.copyWith(stocks: listOfProduct);
     state = state.copyWith(paginateResponse: newData);
-    List<BagData> bags = List.from(LocalStorage.getBags());
+    BagData? bag = LocalStorage.getBag();
 
     List<BagProductData>? bagProducts =
-        bags[state.selectedBagIndex].bagProducts;
+        bag?.bagProducts;
     bagProducts?.removeAt(productIndex);
-    bags[state.selectedBagIndex] =
-        bags[state.selectedBagIndex].copyWith(bagProducts: bagProducts);
-    LocalStorage.setBags(bags);
+    bag = bag!.copyWith(bagProducts: bagProducts);
+    LocalStorage.setBag(bag);
 
     fetchCarts(isNotLoading: true);
   }
@@ -286,7 +271,7 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
   }) async {
     timer?.cancel();
     ProductData? product = state.paginateResponse?.stocks?[productIndex];
-    List<BagData> bags = LocalStorage.getBags();
+    BagData? bag = LocalStorage.getBag();
     if ((product?.quantity ?? 1) > 1) {
       ProductData? newProduct = product?.copyWith(
         quantity: ((product.quantity ?? 0) - 1),
@@ -298,13 +283,12 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
       PriceDate? newData = data?.copyWith(stocks: listOfProduct);
       state = state.copyWith(paginateResponse: newData);
       final List<BagProductData> bagProducts =
-          bags[state.selectedBagIndex].bagProducts ?? [];
+          bag?.bagProducts ?? [];
       BagProductData newProductData = bagProducts[productIndex]
           .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) - 1);
       bagProducts[productIndex] = newProductData;
-      bags[state.selectedBagIndex] =
-          bags[state.selectedBagIndex].copyWith(bagProducts: bagProducts);
-      LocalStorage.setBags(bags);
+      bag = bag!.copyWith(bagProducts: bagProducts);
+      LocalStorage.setBag(bag);
     } else {
       List<ProductData> listOfProduct =
           List.from(state.paginateResponse?.stocks ?? []);
@@ -313,14 +297,13 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
       PriceDate? newData = data?.copyWith(stocks: listOfProduct);
       state = state.copyWith(paginateResponse: newData);
       final List<BagProductData> bagProducts =
-          bags[state.selectedBagIndex].bagProducts ?? [];
+          bag!.bagProducts ?? [];
       if (bagProducts.isNotEmpty) bagProducts.removeAt(productIndex);
       if (bagProducts.isEmpty) {
         clearBag(context);
       }
-      bags[state.selectedBagIndex] =
-          bags[state.selectedBagIndex].copyWith(bagProducts: bagProducts);
-      LocalStorage.setBags(bags);
+      bag = bag.copyWith(bagProducts: bagProducts);
+      LocalStorage.setBag(bag);
     }
     timer = Timer(
       const Duration(milliseconds: 600),
@@ -340,16 +323,15 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
     PriceDate? newData = data?.copyWith(stocks: listOfProduct);
     state = state.copyWith(paginateResponse: newData);
     final List<BagProductData> bagProducts =
-        LocalStorage.getBags()[state.selectedBagIndex].bagProducts ?? [];
+        LocalStorage.getBag()?.bagProducts ?? [];
 
     BagProductData newProductData = bagProducts[productIndex]
         .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) + 1);
     bagProducts.removeAt(productIndex);
     bagProducts.insert(productIndex, newProductData);
-    List<BagData> bags = List.from(LocalStorage.getBags());
-    bags[state.selectedBagIndex] =
-        bags[state.selectedBagIndex].copyWith(bagProducts: bagProducts);
-    LocalStorage.setBags(bags);
+    BagData? bag = LocalStorage.getBag();
+    bag = bag!.copyWith(bagProducts: bagProducts);
+    LocalStorage.setBag(bag);
     timer = Timer(
       const Duration(milliseconds: 500),
       () => fetchCarts(isNotLoading: true),
@@ -379,15 +361,15 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
     }
 
     if (active) {
-      state =
-          state.copyWith(selectedUser: KioskData(name: _name, phone: _phone));
       createOrder(
           context,
           OrderBodyData(
-            bagData: state.bags[state.selectedBagIndex],
+            orderType: 'Para llevar',
+            paymentMethod: 'tarjeta',
+            bagData: state.bag ?? BagData(),
             note: state.comment,
           ), onSuccess: (o) {
-        fetchBags(shopId);
+        fetchBag();
         context.maybePop();
         showDialog(
             context: context,
@@ -422,40 +404,39 @@ void _calculateCartTotal(List<BagProductData> bagProducts) {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       state = state.copyWith(isOrderLoading: true);
-        final response = await ordersRepository.createOrder(data);
-        response.when(
-          success: (order) async {
-            removeOrderedBag(context);
-            switch (data.bagData.selectedPayment?.tag) {
-              case 'cash':
-                // paymentsRepository.createTransaction(
-                //   orderId: order.data!.id,
-                //   paymentId: data.bagData.selectedPayment?.id,
-                // );
-                state = state.copyWith(isOrderLoading: false);
-                onSuccess?.call(order['data']);
-                break;
-              default:
-                state = state.copyWith(isOrderLoading: false);
-                onSuccess?.call(order['data']);
-                break;
-            }
-          },
-          failure: (failure, status) {
-            state = state.copyWith(isOrderLoading: false);
-            if (context.mounted) {
-              AppHelpers.showSnackBar(
-                context,
-                'Error al procesar la solicitud',
-              );
-            }
-          },
-        );
-      } else {
-        if (context.mounted) {
-          AppHelpers.showSnackBar(
-              context, 'Sin conexión a internet');
-        }
+      final response = await ordersRepository.createOrder(data);
+      response.when(
+        success: (order) async {
+          removeOrderedBag(context);
+          switch (data.bagData.selectedPayment?.tag) {
+            case 'cash':
+              // paymentsRepository.createTransaction(
+              //   orderId: order.data!.id,
+              //   paymentId: data.bagData.selectedPayment?.id,
+              // );
+              state = state.copyWith(isOrderLoading: false);
+              onSuccess?.call(order['data']);
+              break;
+            default:
+              state = state.copyWith(isOrderLoading: false);
+              onSuccess?.call(order['data']);
+              break;
+          }
+        },
+        failure: (failure, status) {
+          state = state.copyWith(isOrderLoading: false);
+          if (context.mounted) {
+            AppHelpers.showSnackBar(
+              context,
+              'Error al procesar la solicitud',
+            );
+          }
+        },
+      );
+    } else {
+      if (context.mounted) {
+        AppHelpers.showSnackBar(context, 'Sin conexión a internet');
       }
     }
+  }
 }

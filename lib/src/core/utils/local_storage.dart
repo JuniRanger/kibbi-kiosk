@@ -27,7 +27,7 @@ abstract class LocalStorage {
 
   static void deleteToken() => _preferences?.remove(StorageKeys.keyToken);
 
-    static KioskData? getKiosk() {
+  static KioskData? getKiosk() {
     final savedString = _preferences?.getString(StorageKeys.keyKiosk);
     if (savedString == null) {
       return null;
@@ -38,7 +38,6 @@ abstract class LocalStorage {
     }
     return KioskData.fromJson(map);
   }
-
 
   static Future<void> saveRestaurantId(String restaurantId) async {
     final prefs = await SharedPreferences.getInstance();
@@ -55,31 +54,31 @@ abstract class LocalStorage {
     return 'MXN';
   }
 
-    static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyCart);
+  static void deleteCartProducts() => _preferences?.remove(StorageKeys.keyCart);
 
-
-  static Future<void> setBags(List<BagData> bags) async {
+  static Future<void> setBag(BagData bag) async {
     if (_preferences != null) {
-      final List<String> strings =
-          bags.map((bag) => jsonEncode(bag.toJson())).toList();
-      await _preferences!.setStringList(StorageKeys.keyBags, strings);
+      final String bagString = jsonEncode(bag.toJson());
+      await _preferences!.setString(StorageKeys.keyBag, bagString);
+      debugPrint('===> Bag set: $bagString');
     }
   }
 
-    static List<BagData> getBags() {
-    final List<String> bags =
-        _preferences?.getStringList(StorageKeys.keyBags) ?? [];
-    final List<BagData> localBags = bags
-        .map(
-          (bag) => BagData.fromJson(jsonDecode(bag)),
-        )
-        .toList(growable: true);
-    return localBags;
+  static BagData? getBag() {
+    final savedString = _preferences?.getString(StorageKeys.keyBag);
+    if (savedString == null) {
+      debugPrint('===> No bag found');
+      return null;
+    }
+    final map = jsonDecode(savedString);
+    debugPrint('===> Bag retrieved: $savedString');
+    return BagData.fromJson(map);
   }
 
-      static void clearStore() {
-      deleteCartProducts();
-      deleteToken();
-      deleteCartProducts();
+  static void clearStore() {
+    deleteCartProducts();
+    deleteToken();
+    deleteCartProducts();
+    debugPrint('===> Store cleared');
   }
 }
