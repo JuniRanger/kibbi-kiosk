@@ -36,7 +36,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
     final notifier = ref.read(addProductProvider.notifier);
     final rightSideNotifier = ref.read(rightSideProvider.notifier);
 
-    final num price = state.selectedStock?.price ?? 0.0;
+    final num price = widget.product?.salePrice ?? 0.0;
     final String priceFormatted = NumberFormat.currency(
       symbol: '\$',
     ).format(price);
