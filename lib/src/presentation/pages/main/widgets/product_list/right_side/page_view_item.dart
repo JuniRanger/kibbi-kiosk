@@ -57,14 +57,14 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
     final products = ref.watch(shopProvider).products;
 
     // Verificación directa de bag para debugging
-    debugPrint('PageViewItem build - bag: ${widget.bag}');
-    debugPrint('PageViewItem build - bag products: ${widget.bag?.bagProducts}');
+    debugPrint('PageViewItem build - bag: ${state.bag}');
+    debugPrint('PageViewItem build - bag products: ${state.bag?.bagProducts}');
     debugPrint(
-        'PageViewItem build - bag products length: ${widget.bag?.bagProducts?.length}');
+        'PageViewItem build - bag products length: ${state.bag?.bagProducts?.length}');
 
     // Usar directamente los datos de bag
     final hasBagProducts =
-        widget.bag?.bagProducts != null && widget.bag!.bagProducts!.isNotEmpty;
+        state.bag?.bagProducts != null && state.bag!.bagProducts!.isNotEmpty;
 
     return AbsorbPointer(
       absorbing: state.isPaymentsLoading ||
@@ -122,10 +122,10 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: widget.bag?.bagProducts?.length ?? 0,
+                              itemCount: state.bag?.bagProducts?.length ?? 0,
                               itemBuilder: (context, index) {
                                 final bagProduct =
-                                    widget.bag?.bagProducts?[index];
+                                    state.bag?.bagProducts?[index];
                                 final productName =
                                     bagProduct?.getProductName(products) ??
                                         "Producto ${index + 1}";
@@ -136,7 +136,6 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                 final product = ProductData(
                                   id: bagProduct?.productId,
                                   quantity: bagProduct?.quantity,
-                                  // Añadir más campos según sea necesario, aquí solo ejemplo
                                   name: productName,
                                   salePrice: productSalePrice,
                                 );
@@ -145,19 +144,16 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                   symbol: '\$',
                                   add: () {
                                     notifier.increaseProductCount(
-                                        productIndex: index);
-                                    setState(() {}); // Forzar la reconstrucción
+                                          productIndex: index);
                                   },
                                   remove: () {
                                     notifier.decreaseProductCount(
                                         productIndex: index, context: context);
-                                    setState(() {}); // Forzar la reconstrucción
                                   },
                                   cart: product,
                                   delete: () {
                                     notifier.deleteProductCount(
                                         productIndex: index);
-                                    setState(() {}); // Forzar la reconstrucción
                                   },
                                 );
                               },
@@ -320,7 +316,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
               LoginButton(
                 isLoading: state.isButtonLoading,
                 title: 'Ordenar',
-                titleColor: Style.black,
+                titleColor: Style.white,
                 onPressed: () {
                   AppHelpers.showAlertDialog(
                     context: context,

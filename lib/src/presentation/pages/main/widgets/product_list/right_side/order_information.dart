@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, deprecated_member_use
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kibbi_kiosk/src/core/constants/constants.dart';
@@ -61,11 +61,11 @@ class OrderInformation extends ConsumerWidget {
                   )
                 ],
               ),
-              16.verticalSpace,
+              // 8.verticalSpace,
               Row(
                 children: [
                   Expanded(
-                    flex: 999,
+                    flex: 18,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -89,25 +89,9 @@ class OrderInformation extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Visibility(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                          child: Text(
-                            'Error al seleccionar el teléfono',
-                            style: GoogleFonts.inter(
-                                color: Style.red, fontSize: 14.sp),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
                 ],
               ),
-              16.verticalSpace,
+              8.verticalSpace,
               Row(
                 children: [
                   Expanded(
@@ -160,7 +144,7 @@ class OrderInformation extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  16.horizontalSpace,
+                  8.horizontalSpace,
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,9 +194,9 @@ class OrderInformation extends ConsumerWidget {
                   ),
                 ],
               ),
-              12.verticalSpace,
+              4.verticalSpace,
               const Divider(),
-              12.verticalSpace,
+              4.verticalSpace,
               Row(
                 children: [
                   ...listOfType.map((e) => Expanded(
@@ -244,26 +228,56 @@ class OrderInformation extends ConsumerWidget {
                                       decoration: BoxDecoration(
                                         color: Style.transparent,
                                         shape: BoxShape.circle,
-                                        border: Border.all(color: Style.black),
+                                        border: Border.all(
+                                          color: state.orderType.toLowerCase() ==
+                                                  e.toString().toLowerCase()
+                                              ? Style.white
+                                              : Style.black,
+                                        ),
                                       ),
                                       padding: EdgeInsets.all(6.r),
                                       child: e == 'Para llevar'
                                           ? Icon(
                                               FlutterRemix.takeaway_fill,
                                               size: 18.sp,
+                                              color: state.orderType
+                                                          .toLowerCase() ==
+                                                      e.toString()
+                                                          .toLowerCase()
+                                                  ? Style.white
+                                                  : Style.black,
                                             )
                                           : e == 'Comer Aquí'
                                               ? SvgPicture.asset(
-                                                  "assets/svg/pickup.svg")
+                                                  "assets/svg/pickup.svg",
+                                                  color: state.orderType
+                                                              .toLowerCase() ==
+                                                          e.toString()
+                                                              .toLowerCase()
+                                                      ? Style.white
+                                                      : Style.black,
+                                                )
                                               : SvgPicture.asset(
-                                                  "assets/svg/dine.svg"),
+                                                  "assets/svg/dine.svg",
+                                                  color: state.orderType
+                                                              .toLowerCase() ==
+                                                          e.toString()
+                                                              .toLowerCase()
+                                                      ? Style.white
+                                                      : Style.black,
+                                                ),
                                     ),
                                     8.horizontalSpace,
                                     Text(
                                       e,
                                       style: GoogleFonts.inter(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: state.orderType.toLowerCase() ==
+                                                e.toString().toLowerCase()
+                                            ? Style.white
+                                            : Style.black,
+                                      ),
                                     )
                                   ],
                                 ),
@@ -274,16 +288,16 @@ class OrderInformation extends ConsumerWidget {
                       )),
                 ],
               ),
-              12.verticalSpace,
+              8.verticalSpace,
               const Divider(),
-              24.verticalSpace,
+              16.verticalSpace,
               _priceInformation(
                 state: state,
                 notifier: notifier,
                 bag: bag ?? BagData(),
                 context: context,
               ),
-              20.verticalSpace,
+              16.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -292,6 +306,7 @@ class OrderInformation extends ConsumerWidget {
                     child: LoginButton(
                         isLoading: state.isOrderLoading,
                         title: 'Ordenar',
+                        titleColor: Style.white,
                         onPressed: () {
                           notifier.placeOrder(
                               context: context,

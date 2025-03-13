@@ -159,6 +159,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                         child: LoginButton(
                           isLoading: state.isLoading,
                           title: 'Agregar',
+                          titleColor: Style.white,
                           onPressed: () {
                             notifier.addProductToBag(
                               context,

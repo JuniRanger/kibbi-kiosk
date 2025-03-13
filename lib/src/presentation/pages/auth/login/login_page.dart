@@ -170,6 +170,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           LoginButton(
                             isLoading: state.isLoading,
                             title: 'Iniciar sesión',
+                            titleColor: Style.white,
                             onPressed: () => notifier.login(
                               checkYourNetwork: () {
                                 AppHelpers.showSnackBar(

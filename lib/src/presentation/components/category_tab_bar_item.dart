@@ -45,7 +45,7 @@ class CategoryTabBarItem extends StatelessWidget {
                 '$title',
                 style: GoogleFonts.inter(
                   fontSize: 13.sp,
-                  color: Style.black,
+                  color: isActive ? Style.white : Style.black,
                 ),
               ),
             ],

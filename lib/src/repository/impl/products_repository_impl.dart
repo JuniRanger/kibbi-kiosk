@@ -43,10 +43,11 @@ class ProductsRepository extends ProductsFacade {
   Future<ApiResult<List<ProductData>>> getProductsByCategoryId({
     required String categoryId,
   }) async {
+
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
-        '/api/products/$categoryId',
+        '/api/products/mineProducts/category/$categoryId',
       );
 
       debugPrint('Response data: ${response.data}');

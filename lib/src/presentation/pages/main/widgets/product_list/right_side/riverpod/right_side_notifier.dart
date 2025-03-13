@@ -369,20 +369,16 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       String? shopId,
       required VoidCallback invalidateState}) async {
     bool active = true;
-    // if (_name?.isEmpty ?? true) {
-    //   state = state.copyWith(selectNameError: TrKeys.selectName);
-    //   active = false;
-    // }
-    // if (_phone?.isEmpty ?? true) {
-    //   state = state.copyWith(selectPhoneError: TrKeys.phoneNumberIsNotValid);
-    //   active = false;
-    // }
-    // if (state.selectedCurrency == null) {
-    //   state = state.copyWith(selectCurrencyError: 'Moneda no seleccionada');
-    //   active = false;
-    // }
+    if (_name?.isEmpty ?? true) {
+      state = state.copyWith(selectNameError: 'Nombre vacio');
+      active = false;
+    }
+    if (state.selectedCurrency == null) {
+      state = state.copyWith(selectCurrencyError: 'Moneda no seleccionada');
+      active = false;
+    }
     if (state.selectedPayment == null) {
-      state = state.copyWith(selectPaymentError: 'Pago no seleccionado');
+      state = state.copyWith(selectPaymentError: 'Metodo de pago no seleccionado');
       active = false;
     }
 

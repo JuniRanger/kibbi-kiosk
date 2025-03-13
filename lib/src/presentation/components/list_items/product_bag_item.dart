@@ -5,6 +5,7 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:kibbi_kiosk/src/models/models.dart';
 import '../../theme/theme.dart';
 
 class CartOrderItem extends StatelessWidget {
@@ -27,12 +28,10 @@ class CartOrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    num sumPrice = (cart?.salePrice ?? 0) *
-        (cart?.quantity ?? 1); // Calculamos el precio base
-    num disSumPrice = sumPrice -
-        (cart?.salePrice ?? 0) *
-            (cart?.quantity ??
-                1); // Se mantiene como ejemplo, pero puedes personalizarlo según los descuentos
+    num sumPrice = (cart?.salePrice ?? 0) * (cart?.quantity ?? 1);
+
+    // Log the quantity of the cart
+    debugPrint('CartOrderItem build - cart quantity: ${cart?.quantity}');
 
     return Slidable(
       endActionPane: ActionPane(
@@ -130,7 +129,7 @@ class CartOrderItem extends StatelessWidget {
                           "${(cart?.quantity ?? 1).toString()}x",
                           style: GoogleFonts.inter(
                               fontSize: 14.sp,
-                              color: Style.black,
+                              color: Style.white,
                               fontWeight: FontWeight.w700),
                         ),
                       ),
