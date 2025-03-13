@@ -27,8 +27,12 @@ class CartOrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    num sumPrice = (cart?.salePrice ?? 0) * (cart?.quantity ?? 1); // Calculamos el precio base
-    num disSumPrice = sumPrice - (cart?.salePrice ?? 0) * (cart?.quantity ?? 1); // Se mantiene como ejemplo, pero puedes personalizarlo según los descuentos
+    num sumPrice = (cart?.salePrice ?? 0) *
+        (cart?.quantity ?? 1); // Calculamos el precio base
+    num disSumPrice = sumPrice -
+        (cart?.salePrice ?? 0) *
+            (cart?.quantity ??
+                1); // Se mantiene como ejemplo, pero puedes personalizarlo según los descuentos
 
     return Slidable(
       endActionPane: ActionPane(
@@ -68,7 +72,7 @@ class CartOrderItem extends StatelessWidget {
       ),
       child: Column(
         children: [
-          if (isActive && cart == null)
+          if (isActive && cart != null)
             Container(
               width: double.infinity,
               decoration: BoxDecoration(

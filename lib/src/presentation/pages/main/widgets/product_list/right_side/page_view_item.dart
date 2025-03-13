@@ -146,15 +146,18 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                   add: () {
                                     notifier.increaseProductCount(
                                         productIndex: index);
+                                    setState(() {}); // Forzar la reconstrucción
                                   },
                                   remove: () {
                                     notifier.decreaseProductCount(
                                         productIndex: index, context: context);
+                                    setState(() {}); // Forzar la reconstrucción
                                   },
                                   cart: product,
                                   delete: () {
                                     notifier.deleteProductCount(
                                         productIndex: index);
+                                    setState(() {}); // Forzar la reconstrucción
                                   },
                                 );
                               },
@@ -271,18 +274,19 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
           padding: REdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              _priceItem(
-                title: 'Subtotal',
-                price: state.paginateResponse?.price ?? subtotal,
-                symbol: '\$',
-              ),
+              // Comentar la parte de subtotal, tax y demás
+              // _priceItem(
+              //   title: 'Subtotal',
+              //   price: state.paginateResponse?.price ?? subtotal,
+              //   symbol: '\$',
+              // ),
               // Otros ítems de precio comentados...
             ],
           ),
         ),
-        8.verticalSpace,
-        const Divider(),
-        8.verticalSpace,
+        // 8.verticalSpace,
+        // const Divider(),
+        // 8.verticalSpace,
         Padding(
           padding: REdgeInsets.symmetric(horizontal: 20),
           child: Column(
