@@ -9,6 +9,7 @@ import 'package:kibbi_kiosk/src/core/utils/utils.dart';
 import 'package:kibbi_kiosk/src/models/data/order_data.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
 import 'package:kibbi_kiosk/src/repository/orders.dart';
+import 'package:kibbi_kiosk/src/models/models.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +175,13 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
           isButtonLoading: false,
           isProductCalculateLoading: false,
         );
+      } else {
+        // Si no hay productos, establecer el total en 0.0
+        PriceDate? data = state.paginateResponse;
+        PriceDate? newData = data?.copyWith(totalPrice: 0.0);
+        state = state.copyWith(paginateResponse: newData);
       }
+
       // Finalmente, deshabilitamos los indicadores de carga
       state = state.copyWith(
         isButtonLoading: false,
@@ -190,22 +197,34 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-// Método interno para realizar los cálculos de los productos en el carrito
   void _calculateCartTotal(List<BagProductData> bagProducts) {
-    // double total = 0.0;
+    // Obtener la lista de productos del estado
+    final List<ProductData> products = state.paginateResponse?.stocks ?? [];
+    debugPrint('Stocks: $products');
 
-    // for (var product in bagProducts) {
-    //   // Lógica para calcular el precio total de cada producto
-    //   // Esto puede involucrar descuento, impuestos, o cualquier otra regla
-    //   double price = product.price?? 0.0;
+    // Calcular el total del carrito
+    num total = 0.0;
+    for (var bagProduct in bagProducts) {
+      final salePrice = bagProduct.getProductSalePrice(products);
+      final quantity = bagProduct.quantity ?? 1;
 
-    //   // Aquí deberías agregar lógica si hay descuentos o cualquier otro ajuste
+      if (quantity <= 0) {
+        debugPrint('Cantidad inválida para productId: ${bagProduct.productId}');
+      }
 
-    //   total += price;
-    // }
+      final productTotal = salePrice * quantity;
+      debugPrint(
+          'Producto: ${bagProduct.productId}, Precio: $salePrice, Cantidad: $quantity, Subtotal: $productTotal');
 
-    // // Aquí puedes actualizar el estado con el total calculado
-    // state = state.copyWith(totalPrice: total);
+      total += productTotal;
+    }
+
+    debugPrint('Total del carrito calculado: $total');
+
+    // Actualizar el estado con el total calculado
+    PriceDate? data = state.paginateResponse;
+    PriceDate? newData = data?.copyWith(totalPrice: total);
+    state = state.copyWith(paginateResponse: newData);
   }
 
   void setInitialBagData(BuildContext context, BagData bag) {
@@ -378,7 +397,8 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       active = false;
     }
     if (state.selectedPayment == null) {
-      state = state.copyWith(selectPaymentError: 'Metodo de pago no seleccionado');
+      state =
+          state.copyWith(selectPaymentError: 'Metodo de pago no seleccionado');
       active = false;
     }
 

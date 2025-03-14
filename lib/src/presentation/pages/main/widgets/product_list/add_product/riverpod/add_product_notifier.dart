@@ -46,15 +46,14 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
   }
 
   void decreaseStockCount() {
-  int newCount = state.stockCount;
-  if (newCount <= 1) {
-    return; // No decrementamos más si la cantidad es 1 o menos
-  } else {
-    newCount = newCount - 1;
-    state = state.copyWith(stockCount: newCount);
+    int newCount = state.stockCount;
+    if (newCount <= 1) {
+      return; // No decrementamos más si la cantidad es 1 o menos
+    } else {
+      newCount = newCount - 1;
+      state = state.copyWith(stockCount: newCount);
+    }
   }
-}
-
 
   void addProductToBag(
     BuildContext context,
@@ -70,7 +69,7 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
     // Crear el nuevo producto para la bolsa
     final newBagProduct = BagProductData(
       productId: state.product?.id, // Usar el id del producto
-      quantity: state.stockCount,    // Usar la cantidad seleccionada en el carrito
+      quantity: state.stockCount, // Usar la cantidad seleccionada en el carrito
     );
 
     // Obtener los productos actuales de la bolsa
@@ -99,7 +98,7 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
 
     // Actualizar el estado en RightSide
     rightSideNotifier
-      // ..fetchBag() // Actualiza la bolsa
-      .fetchCarts(context: context); // Actualiza el carrito
+        ..fetchBag() // Actualiza la bolsa
+        ..fetchCarts(context: context); // Actualiza el carrito
   }
 }

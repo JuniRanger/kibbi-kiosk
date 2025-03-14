@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
 
 // import '../response/payments_response.dart';
@@ -109,11 +110,15 @@ class BagProductData {
   }
 
   // Método para obtener el salePrice del producto según el productId
-  num getProductSalePrice(List<ProductData> products) {
-    final product = products.firstWhere(
-      (product) => product.id == productId,
-      orElse: () => ProductData(id: productId, salePrice: 0.0),
-    );
-    return product.salePrice ?? 0.0;
-  }
+num getProductSalePrice(List<ProductData> products) {
+  final product = products.firstWhere(
+    (product) => product.id.toString() == productId, // Convertir _id a cadena
+    orElse: () {
+      debugPrint('Producto no encontrado para productId: $productId');
+      return ProductData(id: productId, salePrice: 0.0);
+    },
+  );
+  debugPrint('Precio encontrado para productId: $productId -> ${product.salePrice}');
+  return product.salePrice ?? 0.0;
+}
 }
