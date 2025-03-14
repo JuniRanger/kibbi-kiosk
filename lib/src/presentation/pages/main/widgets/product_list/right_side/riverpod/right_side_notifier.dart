@@ -122,7 +122,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
   void _setSelectedCurrency(String? currencyId) {
     final List<CurrencyData> currencies = List.from(state.currencies);
-    final CurrencyData? selectedCurrency = currencies.firstWhere(
+    final CurrencyData selectedCurrency = currencies.firstWhere(
       (currency) =>
           currency.title ==
           currencyId, // Assuming 'name' is a field in CurrencyData
@@ -312,75 +312,137 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     fetchCarts(isNotLoading: true);
   }
 
-  Future<void> decreaseProductCount({
+  void increaseProductCount({required int productIndex}) {
+    // Cancelamos el timer existente si hay uno
+    timer?.cancel();
+    
+    // Obtenemos el producto actual
+    ProductData? product = state.paginateResponse?.stocks?[productIndex];
+    
+    // Creamos un nuevo producto con cantidad incrementada
+    ProductData? newProduct = product?.copyWith(
+        quantity: ((product.quantity ?? 0) + 1), discount: product.discount);
+    
+    // Actualizamos la lista de productos
+    List<ProductData> listOfProduct = List.from(state.paginateResponse?.stocks ?? []);
+    if (productIndex < listOfProduct.length) {
+      listOfProduct[productIndex] = newProduct ?? ProductData();
+    }
+    
+    // Actualizamos el estado con la nueva lista
+    PriceDate? data = state.paginateResponse;
+    PriceDate? newData = data?.copyWith(stocks: listOfProduct);
+    
+    // Actualizamos la lista de productos en el carrito
+    final List<BagProductData> bagProducts = List.from(LocalStorage.getBag()?.bagProducts ?? []);
+    if (productIndex < bagProducts.length) {
+      BagProductData newProductData = bagProducts[productIndex]
+          .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) + 1);
+      bagProducts[productIndex] = newProductData;
+      
+      // Actualizamos el carrito en LocalStorage
+      BagData? bag = LocalStorage.getBag();
+      bag = bag!.copyWith(bagProducts: bagProducts);
+      LocalStorage.setBag(bag);
+      
+      // Actualizamos el estado directamente sin esperar
+      state = state.copyWith(
+        paginateResponse: newData,
+        bag: bag,
+      );
+      
+      // Calculamos el total inmediatamente
+      _calculateCartTotal(bagProducts);
+    }
+  }
+
+  void decreaseProductCount({
     required int productIndex,
     required BuildContext context,
   }) async {
+    // Cancelamos el timer existente si hay uno
     timer?.cancel();
-    ProductData? product = state.paginateResponse?.stocks?[productIndex];
+    
+    // Obtenemos la información del carrito y el producto
     BagData? bag = LocalStorage.getBag();
-    if ((product?.quantity ?? 1) > 1) {
-      ProductData? newProduct = product?.copyWith(
-        quantity: ((product.quantity ?? 0) - 1),
+    final List<BagProductData> bagProducts = List.from(bag?.bagProducts ?? []);
+    
+    // Verificamos que el índice sea válido
+    if (productIndex >= bagProducts.length) {
+      return; // Índice fuera de rango, salimos de la función
+    }
+    
+    // Obtenemos la cantidad actual del producto
+    int currentQuantity = bagProducts[productIndex].quantity ?? 0;
+    debugPrint('Cantidad actual: $currentQuantity para producto en índice: $productIndex');
+    
+    // Si la cantidad es mayor a 1, simplemente decrementamos
+    if (currentQuantity > 1) {
+      // Actualizamos el producto en BagProducts
+      BagProductData updatedBagProduct = bagProducts[productIndex].copyWith(
+        quantity: currentQuantity - 1
       );
-      List<ProductData> listOfProduct =
-          List.from(state.paginateResponse?.stocks ?? []);
-      listOfProduct[productIndex] = newProduct ?? ProductData();
-      PriceDate? data = state.paginateResponse;
-      PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-      state = state.copyWith(paginateResponse: newData);
-      final List<BagProductData> bagProducts = bag?.bagProducts ?? [];
-      BagProductData newProductData = bagProducts[productIndex]
-          .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) - 1);
-      bagProducts[productIndex] = newProductData;
+      bagProducts[productIndex] = updatedBagProduct;
+      
+      // Actualizamos también en la lista de stocks si existe
+      List<ProductData> listOfProduct = List.from(state.paginateResponse?.stocks ?? []);
+      if (productIndex < listOfProduct.length) {
+        ProductData? updatedProduct = listOfProduct[productIndex].copyWith(
+          quantity: currentQuantity - 1
+        );
+        listOfProduct[productIndex] = updatedProduct;
+      }
+      
+      // Actualizamos el estado y LocalStorage
       bag = bag!.copyWith(bagProducts: bagProducts);
       LocalStorage.setBag(bag);
-    } else {
-      List<ProductData> listOfProduct =
-          List.from(state.paginateResponse?.stocks ?? []);
-      listOfProduct.removeAt(productIndex);
+      
       PriceDate? data = state.paginateResponse;
       PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-      state = state.copyWith(paginateResponse: newData);
-      final List<BagProductData> bagProducts = bag!.bagProducts ?? [];
-      if (bagProducts.isNotEmpty) bagProducts.removeAt(productIndex);
+      
+      state = state.copyWith(
+        paginateResponse: newData,
+        bag: bag,
+      );
+      
+      // Calculamos el total inmediatamente
+      _calculateCartTotal(bagProducts);
+      
+      debugPrint('Cantidad decrementada a: ${currentQuantity - 1}');
+    } 
+    // Si la cantidad es 1 o menos, eliminamos el producto
+    else {
+      debugPrint('Eliminando producto del carrito porque cantidad = $currentQuantity');
+      
+      // Eliminamos de BagProducts
+      bagProducts.removeAt(productIndex);
+      
+      // Eliminamos de stocks si existe
+      List<ProductData> listOfProduct = List.from(state.paginateResponse?.stocks ?? []);
+      if (productIndex < listOfProduct.length) {
+        listOfProduct.removeAt(productIndex);
+      }
+      
+      // Si el carrito queda vacío, lo limpiamos completamente
       if (bagProducts.isEmpty) {
         clearBag(context);
+      } else {
+        // Actualizamos el estado y LocalStorage
+        bag = bag!.copyWith(bagProducts: bagProducts);
+        LocalStorage.setBag(bag);
+        
+        PriceDate? data = state.paginateResponse;
+        PriceDate? newData = data?.copyWith(stocks: listOfProduct);
+        
+        state = state.copyWith(
+          paginateResponse: newData,
+          bag: bag,
+        );
+        
+        // Calculamos el total inmediatamente
+        _calculateCartTotal(bagProducts);
       }
-      bag = bag.copyWith(bagProducts: bagProducts);
-      LocalStorage.setBag(bag);
     }
-    timer = Timer(
-      const Duration(milliseconds: 600),
-      () => fetchCarts(isNotLoading: true),
-    );
-  }
-
-  void increaseProductCount({required int productIndex}) {
-    timer?.cancel();
-    ProductData? product = state.paginateResponse?.stocks?[productIndex];
-    ProductData? newProduct = product?.copyWith(
-        quantity: ((product.quantity ?? 0) + 1), discount: product.discount);
-    List<ProductData>? listOfProduct = state.paginateResponse?.stocks;
-    listOfProduct?.removeAt(productIndex);
-    listOfProduct?.insert(productIndex, newProduct ?? ProductData());
-    PriceDate? data = state.paginateResponse;
-    PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-    state = state.copyWith(paginateResponse: newData);
-    final List<BagProductData> bagProducts =
-        LocalStorage.getBag()?.bagProducts ?? [];
-
-    BagProductData newProductData = bagProducts[productIndex]
-        .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) + 1);
-    bagProducts.removeAt(productIndex);
-    bagProducts.insert(productIndex, newProductData);
-    BagData? bag = LocalStorage.getBag();
-    bag = bag!.copyWith(bagProducts: bagProducts);
-    LocalStorage.setBag(bag);
-    timer = Timer(
-      const Duration(milliseconds: 500),
-      () => fetchCarts(isNotLoading: true),
-    );
   }
 
   Future<void> placeOrder(
