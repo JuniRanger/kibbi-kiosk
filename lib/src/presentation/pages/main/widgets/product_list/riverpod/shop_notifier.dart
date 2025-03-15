@@ -79,21 +79,30 @@ void setProductsQuery(BuildContext context, String query) {
   _searchProductsTimer = Timer(
     const Duration(milliseconds: 500),
     () async {
-      final response = await productsRepository.getProductsPaginate(); // Fetch async
-      response.when(
-        success: (data) {
-          final allProducts = data; // Obtener lista de productos
+      // Obtener todos los productos y categorías
+      final productResponse = await productsRepository.getProductsPaginate();
+      final categoryResponse = await categoriesRepository.searchCategories();
 
-          if (state.query.isNotEmpty) {
-            final filteredProducts = allProducts
-                .where((product) => product.name!
-                    .toLowerCase()
-                    .contains(state.query.toLowerCase()))
-                .toList();
-            state = state.copyWith(products: filteredProducts);
-          } else {
-            state = state.copyWith(products: allProducts);
-          }
+      productResponse.when(
+        success: (allProducts) {
+          categoryResponse.when(
+            success: (categoriesData) {
+              // Crear un mapa {categoryId: categoryName}
+              final categoryMap = {for (var c in categoriesData) c.id: c.name!.toLowerCase()};
+
+              // Filtrar productos por nombre o categoría
+              final filteredProducts = allProducts.where((product) {
+                final matchesName = product.name!.toLowerCase().contains(state.query.toLowerCase());
+                final matchesCategory = categoryMap[product.category]?.contains(state.query.toLowerCase()) ?? false;
+                return matchesName || matchesCategory;
+              }).toList();
+
+              state = state.copyWith(products: filteredProducts);
+            },
+            failure: (error, status) {
+              debugPrint('Error al obtener categorías: $error');
+            },
+          );
         },
         failure: (error, status) {
           debugPrint('Error al obtener productos: $error');
@@ -105,6 +114,7 @@ void setProductsQuery(BuildContext context, String query) {
 
 
 
+
   Future<void> fetchCategories({required BuildContext context}) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
@@ -113,11 +123,7 @@ void setProductsQuery(BuildContext context, String query) {
         dropDownCategories: [],
         categories: [],
       );
-
-      final response = await categoriesRepository.searchCategories(
-        state.categoryQuery.isEmpty ? null : state.categoryQuery,
-      );
-
+      final response = await categoriesRepository.searchCategories();
       response.when(
         success: (data) {
           // data es una List<CategoryData>

@@ -3,6 +3,6 @@ import '../models/models.dart';
 
 abstract class CategoriesRepository {
   Future<ApiResult<List<CategoryData>>> searchCategories(
-    String? query
+
   );
 }
