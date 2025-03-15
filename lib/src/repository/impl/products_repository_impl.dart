@@ -29,7 +29,8 @@ class ProductsRepository extends ProductsFacade {
 
       // Convierte la lista de productos
       final List<dynamic> responseData = response.data;
-      final products = responseData.map((product) => ProductData.fromJson(product)).toList();
+      final products =
+          responseData.map((product) => ProductData.fromJson(product)).toList();
 
       debugPrint('==> get products success: $products');
       return ApiResult.success(data: products);
@@ -43,7 +44,6 @@ class ProductsRepository extends ProductsFacade {
   Future<ApiResult<List<ProductData>>> getProductsByCategoryId({
     required String categoryId,
   }) async {
-
     try {
       final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
@@ -52,12 +52,50 @@ class ProductsRepository extends ProductsFacade {
 
       debugPrint('Response data: ${response.data}');
       final List<dynamic> responseData = response.data;
-      final products = responseData.map((product) => ProductData.fromJson(product)).toList();
+      final products =
+          responseData.map((product) => ProductData.fromJson(product)).toList();
 
       debugPrint('==> get products by category success: $products');
       return ApiResult.success(data: products);
     } catch (e) {
       debugPrint('==> get products by category failure: $e');
+      return ApiResult.failure(error: AppHelpers.errorHandler(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<double>> productsCalculateTotal(
+      {required List<BagProductData> bagProducts}) async {
+        debugPrint('==> productsCalculateTotal CALLED');
+    final List<Map<String, dynamic>> data = bagProducts
+        .map((product) => {
+              "productId": product.productId,
+              "quantity": product.quantity,
+            })
+        .toList();
+
+    debugPrint('==> Calculating total sale with data: $data');
+
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      final response = await client.post(
+        '/api/orders/calculateTotalSale',
+        data: data, // Mandamos el array directamente
+      );
+
+      debugPrint('==> Response status code: ${response.statusCode}');
+      debugPrint('==> Response data: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        final totalSale = response.data['totalSale'];
+        debugPrint('==> Total sale calculated successfully: $totalSale');
+        return ApiResult.success(data: totalSale);
+      } else {
+        debugPrint('==> Error: Unexpected response format or status code');
+        throw Exception("Error al calcular el total del carrito");
+      }
+    } catch (e, s) {
+      debugPrint('==> get cart total failure: $e, $s');
       return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }
   }
@@ -102,4 +140,4 @@ class ProductsRepository extends ProductsFacade {
   //     debugPrint('==> get all calculations failure: $e, $s');
   //     return ApiResult.failure(error: AppHelpers.errorHandler(e));
   //   }
-  // }}
+  // }

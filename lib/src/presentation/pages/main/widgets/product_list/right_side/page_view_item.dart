@@ -271,11 +271,11 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
           child: Column(
             children: [
               // Comentar la parte de subtotal, tax y demás
-              // _priceItem(
-              //   title: 'Subtotal',
-              //   price: state.paginateResponse?.price ?? subtotal,
-              //   symbol: '\$',
-              // ),
+              _priceItem(
+                title: 'Subtotal',
+                price: state.bag?.cartTotal ?? subtotal,
+                symbol: '\$',
+              ),
               // Otros ítems de precio comentados...
             ],
           ),
@@ -302,7 +302,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                   Text(
                     NumberFormat.currency(
                       symbol: '\$',
-                    ).format(state.paginateResponse?.totalPrice ?? subtotal),
+                    ).format(state.bag?.cartTotal ?? subtotal),
                     style: GoogleFonts.inter(
                       color: Style.black,
                       fontSize: 22.sp,

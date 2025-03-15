@@ -9,4 +9,8 @@ abstract class ProductsFacade {
   Future<ApiResult<List<ProductData>>> getProductsByCategoryId({
     required String categoryId,
   });
+
+  Future<ApiResult<double>> productsCalculateTotal({
+    required List<BagProductData> bagProducts,
+  });
 }

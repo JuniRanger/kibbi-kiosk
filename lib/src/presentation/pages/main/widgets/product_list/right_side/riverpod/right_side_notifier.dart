@@ -59,24 +59,6 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     );
   }
 
-  setCalculate(String item) {
-    if (item == "-1" && state.calculate.isNotEmpty) {
-      state = state.copyWith(
-          calculate: state.calculate.substring(0, state.calculate.length - 1));
-      return;
-    } else if (state.calculate.length > 25) {
-      return;
-    } else if (item == "." && state.calculate.isEmpty) {
-      state = state.copyWith(calculate: "${state.calculate}0$item");
-      return;
-    } else if (item == "." && state.calculate.contains(".")) {
-      return;
-    } else if (item != "-1") {
-      state = state.copyWith(calculate: state.calculate + item);
-      return;
-    }
-  }
-
   Future<void> fetchBag() async {
     state = state.copyWith(isBagsLoading: true);
     BagData? bag = LocalStorage.getBag();
@@ -168,7 +150,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
       if (bagProducts.isNotEmpty) {
         // Aquí realizamos los cálculos internamente en lugar de hacer una solicitud de red
-        _calculateCartTotal(bagProducts);
+        calculateCartTotal();
 
         // El estado ahora se actualiza con el resultado de los cálculos
         state = state.copyWith(
@@ -197,34 +179,34 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  void _calculateCartTotal(List<BagProductData> bagProducts) {
-    // Obtener la lista de productos del estado
-    final List<ProductData> products = state.paginateResponse?.stocks ?? [];
-    debugPrint('Stocks: $products');
+  void calculateCartTotal() async {
+    final List<BagProductData> bagProducts =
+        List.from(LocalStorage.getBag()?.bagProducts ?? []);
 
-    // Calcular el total del carrito
-    num total = 0.0;
-    for (var bagProduct in bagProducts) {
-      final salePrice = bagProduct.getProductSalePrice(products);
-      final quantity = bagProduct.quantity ?? 1;
-
-      if (quantity <= 0) {
-        debugPrint('Cantidad inválida para productId: ${bagProduct.productId}');
-      }
-
-      final productTotal = salePrice * quantity;
-      debugPrint(
-          'Producto: ${bagProduct.productId}, Precio: $salePrice, Cantidad: $quantity, Subtotal: $productTotal');
-
-      total += productTotal;
+    if (bagProducts.isEmpty) {
+      // Si no hay productos, establecer el total en 0 dentro de la bolsa
+      state = state.copyWith(
+        bag: state.bag?.copyWith(cartTotal: 0.0),
+      );
+      return;
     }
 
-    debugPrint('Total del carrito calculado: $total');
+    final result = await productsRepository.productsCalculateTotal(
+        bagProducts: bagProducts);
 
-    // Actualizar el estado con el total calculado
-    PriceDate? data = state.paginateResponse;
-    PriceDate? newData = data?.copyWith(totalPrice: total);
-    state = state.copyWith(paginateResponse: newData);
+    result.when(
+      success: (total) {
+        // Actualizar el cartTotal dentro del estado de la bolsa
+        state = state.copyWith(
+          bag: state.bag?.copyWith(cartTotal: total),
+        );
+        debugPrint('Nuevo total del carrito: \$$total');
+      },
+      failure: (error, status) {
+        debugPrint(
+            'Error al calcular el total del carrito: $error, Status: $status');
+      },
+    );
   }
 
   void setInitialBagData(BuildContext context, BagData bag) {
@@ -315,44 +297,46 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   void increaseProductCount({required int productIndex}) {
     // Cancelamos el timer existente si hay uno
     timer?.cancel();
-    
+
     // Obtenemos el producto actual
     ProductData? product = state.paginateResponse?.stocks?[productIndex];
-    
+
     // Creamos un nuevo producto con cantidad incrementada
     ProductData? newProduct = product?.copyWith(
         quantity: ((product.quantity ?? 0) + 1), discount: product.discount);
-    
+
     // Actualizamos la lista de productos
-    List<ProductData> listOfProduct = List.from(state.paginateResponse?.stocks ?? []);
+    List<ProductData> listOfProduct =
+        List.from(state.paginateResponse?.stocks ?? []);
     if (productIndex < listOfProduct.length) {
       listOfProduct[productIndex] = newProduct ?? ProductData();
     }
-    
+
     // Actualizamos el estado con la nueva lista
     PriceDate? data = state.paginateResponse;
     PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-    
+
     // Actualizamos la lista de productos en el carrito
-    final List<BagProductData> bagProducts = List.from(LocalStorage.getBag()?.bagProducts ?? []);
+    final List<BagProductData> bagProducts =
+        List.from(LocalStorage.getBag()?.bagProducts ?? []);
     if (productIndex < bagProducts.length) {
       BagProductData newProductData = bagProducts[productIndex]
           .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) + 1);
       bagProducts[productIndex] = newProductData;
-      
+
       // Actualizamos el carrito en LocalStorage
       BagData? bag = LocalStorage.getBag();
       bag = bag!.copyWith(bagProducts: bagProducts);
       LocalStorage.setBag(bag);
-      
+
       // Actualizamos el estado directamente sin esperar
       state = state.copyWith(
         paginateResponse: newData,
         bag: bag,
       );
-      
+
       // Calculamos el total inmediatamente
-      _calculateCartTotal(bagProducts);
+      calculateCartTotal();
     }
   }
 
@@ -362,67 +346,69 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   }) async {
     // Cancelamos el timer existente si hay uno
     timer?.cancel();
-    
+
     // Obtenemos la información del carrito y el producto
     BagData? bag = LocalStorage.getBag();
     final List<BagProductData> bagProducts = List.from(bag?.bagProducts ?? []);
-    
+
     // Verificamos que el índice sea válido
     if (productIndex >= bagProducts.length) {
       return; // Índice fuera de rango, salimos de la función
     }
-    
+
     // Obtenemos la cantidad actual del producto
     int currentQuantity = bagProducts[productIndex].quantity ?? 0;
-    debugPrint('Cantidad actual: $currentQuantity para producto en índice: $productIndex');
-    
+    debugPrint(
+        'Cantidad actual: $currentQuantity para producto en índice: $productIndex');
+
     // Si la cantidad es mayor a 1, simplemente decrementamos
     if (currentQuantity > 1) {
       // Actualizamos el producto en BagProducts
-      BagProductData updatedBagProduct = bagProducts[productIndex].copyWith(
-        quantity: currentQuantity - 1
-      );
+      BagProductData updatedBagProduct =
+          bagProducts[productIndex].copyWith(quantity: currentQuantity - 1);
       bagProducts[productIndex] = updatedBagProduct;
-      
+
       // Actualizamos también en la lista de stocks si existe
-      List<ProductData> listOfProduct = List.from(state.paginateResponse?.stocks ?? []);
+      List<ProductData> listOfProduct =
+          List.from(state.paginateResponse?.stocks ?? []);
       if (productIndex < listOfProduct.length) {
-        ProductData? updatedProduct = listOfProduct[productIndex].copyWith(
-          quantity: currentQuantity - 1
-        );
+        ProductData? updatedProduct =
+            listOfProduct[productIndex].copyWith(quantity: currentQuantity - 1);
         listOfProduct[productIndex] = updatedProduct;
       }
-      
+
       // Actualizamos el estado y LocalStorage
       bag = bag!.copyWith(bagProducts: bagProducts);
       LocalStorage.setBag(bag);
-      
+
       PriceDate? data = state.paginateResponse;
       PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-      
+
       state = state.copyWith(
         paginateResponse: newData,
         bag: bag,
       );
-      
+
       // Calculamos el total inmediatamente
-      _calculateCartTotal(bagProducts);
-      
+      calculateCartTotal();
+
       debugPrint('Cantidad decrementada a: ${currentQuantity - 1}');
-    } 
+    }
     // Si la cantidad es 1 o menos, eliminamos el producto
     else {
-      debugPrint('Eliminando producto del carrito porque cantidad = $currentQuantity');
-      
+      debugPrint(
+          'Eliminando producto del carrito porque cantidad = $currentQuantity');
+
       // Eliminamos de BagProducts
       bagProducts.removeAt(productIndex);
-      
+
       // Eliminamos de stocks si existe
-      List<ProductData> listOfProduct = List.from(state.paginateResponse?.stocks ?? []);
+      List<ProductData> listOfProduct =
+          List.from(state.paginateResponse?.stocks ?? []);
       if (productIndex < listOfProduct.length) {
         listOfProduct.removeAt(productIndex);
       }
-      
+
       // Si el carrito queda vacío, lo limpiamos completamente
       if (bagProducts.isEmpty) {
         clearBag(context);
@@ -430,17 +416,17 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         // Actualizamos el estado y LocalStorage
         bag = bag!.copyWith(bagProducts: bagProducts);
         LocalStorage.setBag(bag);
-        
+
         PriceDate? data = state.paginateResponse;
         PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-        
+
         state = state.copyWith(
           paginateResponse: newData,
           bag: bag,
         );
-        
+
         // Calculamos el total inmediatamente
-        _calculateCartTotal(bagProducts);
+        calculateCartTotal();
       }
     }
   }

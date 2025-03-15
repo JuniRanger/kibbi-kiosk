@@ -97,7 +97,6 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
 
     // Actualizar el estado en RightSide
     rightSideNotifier
-        ..fetchBag() // Actualiza la bolsa
-        ..fetchCarts(context: context); // Actualiza el carrito
+        .fetchCarts(context: context); // Actualiza el carrito
   }
 }

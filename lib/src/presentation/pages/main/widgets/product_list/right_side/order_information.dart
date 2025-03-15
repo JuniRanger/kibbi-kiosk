@@ -330,7 +330,7 @@ class OrderInformation extends ConsumerWidget {
                       ),
                       Text(
                         AppHelpers.numberFormat(
-                          state.paginateResponse?.totalPrice,
+                          state.bag?.cartTotal,
                           symbol: '\$',
                         ),
                         style: GoogleFonts.inter(
@@ -372,7 +372,7 @@ Widget _priceInformation({
             ),
           ),
           Text(
-            AppHelpers.numberFormat(state.paginateResponse?.totalPrice,
+            AppHelpers.numberFormat(state.bag?.cartTotal,
                 symbol: '\$'),
             style: GoogleFonts.inter(
               fontWeight: FontWeight.w600,
