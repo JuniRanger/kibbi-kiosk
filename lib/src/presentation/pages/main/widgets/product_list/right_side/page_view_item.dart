@@ -79,6 +79,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  height: MediaQuery.of(context).size.height * 0.75, // Reducir la altura del carrito
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
                     color: Style.white,
@@ -119,44 +120,46 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                               ),
                             ),
                             const Divider(),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.bag?.bagProducts?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                final bagProduct =
-                                    state.bag?.bagProducts?[index];
-                                final productName =
-                                    bagProduct?.getProductName(products) ??
-                                        "Producto ${index + 1}";
-                                final productSalePrice =
-                                    bagProduct?.getProductSalePrice(products) ??
-                                        0.0;
-                                // Crear un ProductData temporal basado en BagProductData
-                                final product = ProductData(
-                                  id: bagProduct?.productId,
-                                  quantity: bagProduct?.quantity,
-                                  name: productName,
-                                  salePrice: productSalePrice,
-                                );
+                            Expanded(
+                              child: ListView.builder(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: state.bag?.bagProducts?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  final bagProduct =
+                                      state.bag?.bagProducts?[index];
+                                  final productName =
+                                      bagProduct?.getProductName(products) ??
+                                          "Producto ${index + 1}";
+                                  final productSalePrice =
+                                      bagProduct?.getProductSalePrice(products) ??
+                                          0.0;
+                                  // Crear un ProductData temporal basado en BagProductData
+                                  final product = ProductData(
+                                    id: bagProduct?.productId,
+                                    quantity: bagProduct?.quantity,
+                                    name: productName,
+                                    salePrice: productSalePrice,
+                                  );
 
-                                return CartOrderItem(
-                                  symbol: '\$',
-                                  add: () {
-                                    notifier.increaseProductCount(
+                                  return CartOrderItem(
+                                    symbol: '\$',
+                                    add: () {
+                                      notifier.increaseProductCount(
                                           productIndex: index);
-                                  },
-                                  remove: () {
-                                    notifier.decreaseProductCount(
-                                        productIndex: index, context: context);
-                                  },
-                                  cart: product,
-                                  delete: () {
-                                    notifier.deleteProductCount(
-                                        productIndex: index);
-                                  },
-                                );
-                              },
+                                    },
+                                    remove: () {
+                                      notifier.decreaseProductCount(
+                                          productIndex: index,
+                                          context: context);
+                                    },
+                                    cart: product,
+                                    delete: () {
+                                      notifier.deleteProductCount(
+                                          productIndex: index);
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                             8.verticalSpace,
                             Column(
@@ -207,37 +210,37 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             28.verticalSpace,
                           ],
                         )
-                      : Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            170.verticalSpace,
-                            Container(
-                              width: 142.r,
-                              height: 142.r,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.r),
-                                color: Style.dontHaveAccBtnBack,
+                      : Center( // Centrar el contenido
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 142.r,
+                                height: 142.r,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  color: Style.dontHaveAccBtnBack,
+                                ),
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                  Assets.pngNoProducts,
+                                  width: 87.r,
+                                  height: 60.r,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              alignment: Alignment.center,
-                              child: Image.asset(
-                                Assets.pngNoProducts,
-                                width: 87.r,
-                                height: 60.r,
-                                fit: BoxFit.cover,
+                              14.verticalSpace,
+                              Text(
+                                'No hay productos en el carrito',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -14 * 0.02,
+                                  color: Style.black,
+                                ),
                               ),
-                            ),
-                            14.verticalSpace,
-                            Text(
-                              'No hay productos en el carrito',
-                              style: GoogleFonts.inter(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: -14 * 0.02,
-                                color: Style.black,
-                              ),
-                            ),
-                            SizedBox(height: 170.r, width: double.infinity),
-                          ],
+                            ],
+                          ),
                         ),
                 ),
                 15.verticalSpace,

@@ -88,13 +88,13 @@ class _RightSideState extends ConsumerState<RightSide> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
-                          FlutterRemix.shopping_bag_3_fill,
+                          FlutterRemix.shopping_cart_2_fill,
                           size: 20.r,
                           color: Style.black,
                         ),
                         8.horizontalSpace,
                         Text(
-                          'Bolsa de compras',
+                          'Visualización del pedido',
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.sp,

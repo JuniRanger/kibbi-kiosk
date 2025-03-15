@@ -7,13 +7,15 @@ class BagData {
   BagData({
     // PaymentData? selectedPayment,
     List<BagProductData>? bagProducts,
-    this.cartTotal = 0.0, // Inicializamos cartTotal con un valor predeterminado.
+    this.cartTotal =
+        0.0, // Inicializamos cartTotal con un valor predeterminado.
   }) {
     _bagProducts = bagProducts;
   }
 
   BagData.fromJson(dynamic json)
-      : cartTotal = 0.0 { // Inicializamos cartTotal con un valor predeterminado.
+      : cartTotal = (json['cart_total'] as num?)?.toDouble() ?? 0.0 {
+    // ✅ Leer cart_total si existe
     // _selectedPayment = json['selected_payment'] != null
     //     ? PaymentData.fromJson(json['selected_payment'])
     //     : null;

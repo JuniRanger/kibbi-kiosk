@@ -56,7 +56,7 @@ class _MainPageState extends ConsumerState<MainPage>
         children: [
           12.horizontalSpace,
           Text(
-            AppHelpers.getAppName() ?? "Kibbi Kiosk",
+            AppHelpers.getRestaurantName() ?? "Kibbi Kiosk",
             style: GoogleFonts.inter(
                 color: Style.black, fontWeight: FontWeight.bold),
           ),

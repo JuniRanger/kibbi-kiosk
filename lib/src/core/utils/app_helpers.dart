@@ -1,18 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/app_style.dart';
+import 'package:kibbi_kiosk/src/repository/repository.dart';
 
-// import 'dart:io';
-// import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../presentation/theme/theme.dart';
-// import '../constants/constants.dart';
-// import 'local_storage.dart';
 
 class AppHelpers {
   AppHelpers._();
@@ -45,14 +42,7 @@ class AppHelpers {
     }
   }
 
-  static String? getAppName() {
-    // final List<SettingsData> settings = LocalStorage.getSettingsList();
-    // for (final setting in settings) {
-
-    //   if (setting.key == 'title') {
-    //     return setting.value;
-    //   }
-    // }
+  static String? getRestaurantName() {
     return 'Kibbi Kiosk';
   }
 

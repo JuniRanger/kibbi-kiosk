@@ -17,9 +17,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   fetchData({required BuildContext context}) {
-    // Borra el carrito siempre que se inicie la función
     LocalStorage.deleteCartProducts();
-
     fetchProducts(context: context, isRefresh: true);
     fetchCategories(context: context);
   }
@@ -67,35 +65,45 @@ class ShopNotifier extends StateNotifier<ShopState> {
     }
   }
 
-  void setProductsQuery(BuildContext context, String query) {
-    if (state.query == query) {
-      return;
-    }
-    state = state.copyWith(query: query.trim());
-    if (state.query.isNotEmpty) {
-      if (_searchProductsTimer?.isActive ?? false) {
-        _searchProductsTimer?.cancel();
-      }
-      _searchProductsTimer = Timer(
-        const Duration(milliseconds: 500),
-        () {
-          state = state.copyWith(products: []);
-          fetchProducts(context: context);
-        },
-      );
-    } else {
-      if (_searchProductsTimer?.isActive ?? false) {
-        _searchProductsTimer?.cancel();
-      }
-      _searchProductsTimer = Timer(
-        const Duration(milliseconds: 500),
-        () {
-          state = state.copyWith( products: []);
-          fetchProducts(context: context);
-        },
-      );
-    }
+void setProductsQuery(BuildContext context, String query) {
+  if (state.query == query) {
+    return;
   }
+
+  state = state.copyWith(query: query.trim());
+
+  if (_searchProductsTimer?.isActive ?? false) {
+    _searchProductsTimer?.cancel();
+  }
+
+  _searchProductsTimer = Timer(
+    const Duration(milliseconds: 500),
+    () async {
+      final response = await productsRepository.getProductsPaginate(); // Fetch async
+      response.when(
+        success: (data) {
+          final allProducts = data; // Obtener lista de productos
+
+          if (state.query.isNotEmpty) {
+            final filteredProducts = allProducts
+                .where((product) => product.name!
+                    .toLowerCase()
+                    .contains(state.query.toLowerCase()))
+                .toList();
+            state = state.copyWith(products: filteredProducts);
+          } else {
+            state = state.copyWith(products: allProducts);
+          }
+        },
+        failure: (error, status) {
+          debugPrint('Error al obtener productos: $error');
+        },
+      );
+    },
+  );
+}
+
+
 
   Future<void> fetchCategories({required BuildContext context}) async {
     final connected = await AppConnectivity.connectivity();

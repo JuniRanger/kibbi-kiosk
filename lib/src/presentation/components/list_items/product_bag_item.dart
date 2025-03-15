@@ -100,7 +100,7 @@ class CartOrderItem extends StatelessWidget {
                                   color: Style.black,
                                 ),
                               ),
-                              8.verticalSpace,
+                              4.verticalSpace, // Reduce el espacio aquí
                               Text(
                                 cart?.description ?? "",
                                 style: GoogleFonts.inter(
@@ -108,7 +108,7 @@ class CartOrderItem extends StatelessWidget {
                                   color: Style.unselectedTab,
                                 ),
                               ),
-                              16.verticalSpace,
+                              12.verticalSpace, // Reduce el espacio aquí
                             ],
                           ),
                         ),
@@ -133,7 +133,7 @@ class CartOrderItem extends StatelessWidget {
                               fontWeight: FontWeight.w700),
                         ),
                       ),
-                      24.horizontalSpace,
+                      16.horizontalSpace, // Reduce el espacio aquí
                       GestureDetector(
                         onTap: remove,
                         child: Container(

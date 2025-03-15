@@ -184,9 +184,9 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         List.from(LocalStorage.getBag()?.bagProducts ?? []);
 
     if (bagProducts.isEmpty) {
-      // Si no hay productos, establecer el total en 0 dentro de la bolsa
+      // Mantener el valor anterior de cartTotal en lugar de resetearlo a 0
       state = state.copyWith(
-        bag: state.bag?.copyWith(cartTotal: 0.0),
+        bag: state.bag?.copyWith(cartTotal: state.bag?.cartTotal),
       );
       return;
     }
@@ -196,7 +196,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
     result.when(
       success: (total) {
-        // Actualizar el cartTotal dentro del estado de la bolsa
+        // Solo actualizar el total si la API responde correctamente
         state = state.copyWith(
           bag: state.bag?.copyWith(cartTotal: total),
         );
