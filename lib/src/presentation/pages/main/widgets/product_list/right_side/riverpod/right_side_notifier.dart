@@ -28,7 +28,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
   RightSideNotifier() : super(const RightSideState());
 
-  // void setSelectedPayment(String? paymentId) {
+  // void yment(String? paymentId) {
   //   final BagData? bag = LocalStorage.getBag();
   //   PaymentData? paymentData;
   //   for (final payment in state.payments) {
@@ -46,17 +46,11 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   // }
 
   void setSelectedOrderType(String? type) {
-    // PaymentData? selectedPayment = state.selectedPayment;
-    // if (state.selectedPayment?.tag != 'cash') {
-    //   final List<PaymentData> payments = List.from(state.payments);
-    //   selectedPayment = payments.firstWhere((e) => e.tag == 'cash',
-    //       orElse: () => PaymentData());
-    //   setSelectedPayment(selectedPayment.id);
-    // }
+    debugPrint('===> Previous orderType: ${state.orderType}');
     state = state.copyWith(
       orderType: type ?? state.orderType,
-      selectPaymentError: null,
     );
+    debugPrint('===> Updated orderType: ${state.orderType}');
   }
 
   Future<void> fetchBag() async {
@@ -215,6 +209,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         // selectedCurrency: bag.MXN,
         // selectedPayment: bag.selectedPayment,
         orderType: state.orderType.isEmpty ? 'Para llevar' : state.orderType);
+    debugPrint('Order type set to: ${state.orderType}');
     fetchCarts(context: context);
   }
 
@@ -451,32 +446,36 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
 
     if (active) {
-      createOrder(
+      // Obtenemos el número de la orden
+      OrderNumberGenerator.generateOrderNumber().then((numOrder) {
+        // Creamos la orden con los datos necesarios
+        createOrder(
           context,
           OrderBodyData(
-            orderType: 'Para llevar',
-            paymentMethod: 'tarjeta',
+            numOrder: numOrder, // Número de orden generado
+            orderType:
+                state.orderType, // O "Comer aquí" dependiendo de la selección
             bagData: state.bag ?? BagData(),
             note: state.comment,
-          ), onSuccess: (o) {
-        fetchBag();
-        context.maybePop();
-        showDialog(
-            context: context,
-            builder: (context) {
-              return LayoutBuilder(builder: (context, constraints) {
-                return AlertDialog(
-                  content: SizedBox(
-                    width: 300.r,
-                    // child: GenerateCheckPage(orderData: o),
-                  ),
-                );
-              });
-            }).whenComplete(() {
-          context.router.popUntilRoot();
-          context.replaceRoute(const MainRoute());
-          invalidateState.call();
-        });
+          ),
+          onSuccess: (o) {
+            fetchBag();
+            context.maybePop();
+            showDialog(
+              context: context,
+              builder: (context) {
+                return LayoutBuilder(builder: (context, constraints) {
+                  return AlertDialog(
+                    content: SizedBox(
+                      width: 300.r,
+                      // child: GenerateCheckPage(orderData: o),
+                    ),
+                  );
+                });
+              },
+            );
+          },
+        );
       });
     }
   }
@@ -498,8 +497,19 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       response.when(
         success: (order) async {
           removeOrderedBag(context);
-          switch (data.bagData.selectedPayment?.tag) {
+          switch (data.bagData.paymentMethod) {
+            // ✅ Se usa el getter que maneja el estado
             case 'cash':
+              // ✅ Aquí puedes implementar la transacción en efectivo después
+              // paymentsRepository.createTransaction(
+              //   orderId: order.data!.id,
+              //   paymentId: data.bagData.selectedPayment?.id,
+              // );
+              state = state.copyWith(isOrderLoading: false);
+              onSuccess?.call(order['data']);
+              break;
+            case 'card':
+              // ✅ Aquí puedes implementar la transacción con tarjeta después
               // paymentsRepository.createTransaction(
               //   orderId: order.data!.id,
               //   paymentId: data.bagData.selectedPayment?.id,
@@ -527,6 +537,17 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       if (context.mounted) {
         AppHelpers.showSnackBar(context, 'Sin conexión a internet');
       }
+    }
+  }
+
+  void setPaymentMethod(String paymentMethod) {
+    // Actualizamos el método de pago en la bolsa
+    BagData? bag = state.bag;
+    if (bag != null) {
+      bag = bag.copyWith(paymentMethod: paymentMethod);
+      LocalStorage.setBag(bag); // Guardamos la bolsa actualizada en el almacenamiento local
+      state = state.copyWith(bag: bag); // Actualizamos el estado
+      debugPrint('Método de pago actualizado: $paymentMethod');
     }
   }
 }

@@ -259,10 +259,9 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   }
 
   Column _price(RightSideState state) {
-    // Calcular subtotal basado en los productos en la bolsa
-    // Esto es un placeholder, necesitarás ajustarlo con los precios reales
-    double subtotal = 0;
-    // Si tienes precios en los productos de la bolsa, calcular aquí
+    num subtotal = 0.0;
+    // Usamos el valor de cartTotal si está disponible de la API
+    subtotal = state.bag?.cartTotal ?? 0.0; // Usamos la API para el total de productos
 
     return Column(
       children: [
@@ -273,19 +272,14 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
           padding: REdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              // Comentar la parte de subtotal, tax y demás
-              _priceItem(
-                title: 'Subtotal',
-                price: state.bag?.cartTotal ?? subtotal,
-                symbol: '\$',
-              ),
-              // Otros ítems de precio comentados...
+              // _priceItem(
+              //   title: 'Subtotal',
+              //   price: subtotal,
+              //   symbol: '\$',
+              // ),
             ],
           ),
         ),
-        // 8.verticalSpace,
-        // const Divider(),
-        // 8.verticalSpace,
         Padding(
           padding: REdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -305,7 +299,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                   Text(
                     NumberFormat.currency(
                       symbol: '\$',
-                    ).format(state.bag?.cartTotal ?? subtotal),
+                    ).format(subtotal),
                     style: GoogleFonts.inter(
                       color: Style.black,
                       fontSize: 22.sp,
@@ -347,7 +341,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    title, // Cambiado de 'Titulo' a title para usar el parámetro correcto
+                    title,
                     style: GoogleFonts.inter(
                       color: isDiscount ? Style.red : Style.black,
                       fontSize: 14.sp,

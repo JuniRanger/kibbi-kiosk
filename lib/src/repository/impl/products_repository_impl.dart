@@ -64,41 +64,42 @@ class ProductsRepository extends ProductsFacade {
   }
 
   @override
-  Future<ApiResult<double>> productsCalculateTotal(
-      {required List<BagProductData> bagProducts}) async {
-        debugPrint('==> productsCalculateTotal CALLED');
-    final List<Map<String, dynamic>> data = bagProducts
-        .map((product) => {
-              "productId": product.productId,
-              "quantity": product.quantity,
-            })
-        .toList();
+ Future<ApiResult<num>> productsCalculateTotal(
+    {required List<BagProductData> bagProducts}) async {
+  debugPrint('==> productsCalculateTotal CALLED');
+  final List<Map<String, dynamic>> data = bagProducts
+      .map((product) => {
+            "productId": product.productId,
+            "quantity": product.quantity,
+          })
+      .toList();
 
-    debugPrint('==> Calculating total sale with data: $data');
+  debugPrint('==> Calculating total sale with data: $data');
 
-    try {
-      final client = dioHttp.client(requireAuth: true);
-      final response = await client.post(
-        '/api/orders/calculateTotalSale',
-        data: data, // Mandamos el array directamente
-      );
+  try {
+    final client = dioHttp.client(requireAuth: true);
+    final response = await client.post(
+      '/api/orders/calculateTotalSale',
+      data: data, // Mandamos el array directamente
+    );
 
-      debugPrint('==> Response status code: ${response.statusCode}');
-      debugPrint('==> Response data: ${response.data}');
+    debugPrint('==> Response status code: ${response.statusCode}');
+    debugPrint('==> Response data: ${response.data}');
 
-      if (response.statusCode == 200 && response.data != null) {
-        final totalSale = response.data['totalSale'];
-        debugPrint('==> Total sale calculated successfully: $totalSale');
-        return ApiResult.success(data: totalSale);
-      } else {
-        debugPrint('==> Error: Unexpected response format or status code');
-        throw Exception("Error al calcular el total del carrito");
-      }
-    } catch (e, s) {
-      debugPrint('==> get cart total failure: $e, $s');
-      return ApiResult.failure(error: AppHelpers.errorHandler(e));
+    if (response.statusCode == 200 && response.data != null) {
+      // Usar directamente como num, sin necesidad de conversión
+      final totalSale = response.data['totalSale'] as num;
+      debugPrint('==> Total sale calculated successfully: $totalSale');
+      return ApiResult.success(data: totalSale);
+    } else {
+      debugPrint('==> Error: Unexpected response format or status code');
+      throw Exception("Error al calcular el total del carrito");
     }
+  } catch (e, s) {
+    debugPrint('==> get cart total failure: $e, $s');
+    return ApiResult.failure(error: AppHelpers.errorHandler(e));
   }
+}
 }
 
 

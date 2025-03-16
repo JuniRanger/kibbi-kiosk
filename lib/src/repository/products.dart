@@ -10,7 +10,7 @@ abstract class ProductsFacade {
     required String categoryId,
   });
 
-  Future<ApiResult<double>> productsCalculateTotal({
+  Future<ApiResult<num>> productsCalculateTotal({
     required List<BagProductData> bagProducts,
   });
 }

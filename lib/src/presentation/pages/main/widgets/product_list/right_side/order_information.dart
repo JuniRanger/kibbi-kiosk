@@ -32,6 +32,7 @@ class OrderInformation extends ConsumerWidget {
     final notifier = ref.read(rightSideProvider.notifier);
     final state = ref.watch(rightSideProvider);
     final BagData? bag = state.bag;
+
     return KeyboardDismisser(
       child: Container(
         width: MediaQuery.sizeOf(context).width / 2,
@@ -61,7 +62,6 @@ class OrderInformation extends ConsumerWidget {
                   )
                 ],
               ),
-              // 8.verticalSpace,
               Row(
                 children: [
                   Expanded(
@@ -98,6 +98,15 @@ class OrderInformation extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Text(
+                        //   'Moneda',
+                        //   style: GoogleFonts.inter(
+                        //     fontWeight: FontWeight.w500,
+                        //     fontSize: 14.sp,
+                        //     color: Style.black,
+                        //   ),
+                        // ),
+                        8.verticalSpace,
                         PopupMenuButton<int>(
                           itemBuilder: (context) {
                             return state.currencies
@@ -149,14 +158,23 @@ class OrderInformation extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Text(
+                        //   'Método de pago',
+                        //   style: GoogleFonts.inter(
+                        //     fontWeight: FontWeight.w500,
+                        //     fontSize: 14.sp,
+                        //     color: Style.black,
+                        //   ),
+                        // ),
+                        8.verticalSpace,
                         PopupMenuButton<String>(
                           itemBuilder: (context) {
-                            return state.payments
+                            return ['Efectivo', 'Tarjeta']
                                 .map(
-                                  (payment) => PopupMenuItem<String>(
-                                    value: payment.id,
+                                  (method) => PopupMenuItem<String>(
+                                    value: method,
                                     child: Text(
-                                      payment.tag ?? '',
+                                      method,
                                       style: GoogleFonts.inter(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14.sp,
@@ -168,14 +186,17 @@ class OrderInformation extends ConsumerWidget {
                                 )
                                 .toList();
                           },
-                          // onSelected: notifier.setSelectedPayment,
+                          onSelected: (String selectedMethod) {
+                            notifier.setPaymentMethod(selectedMethod);
+                          },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           color: Style.white,
                           elevation: 10,
                           child: SelectFromButton(
-                            title: 'Seleccionar pago',
+                            title: state.bag?.paymentMethod ??
+                                'Seleccionar método de pago',
                           ),
                         ),
                         Visibility(
@@ -229,30 +250,30 @@ class OrderInformation extends ConsumerWidget {
                                         color: Style.transparent,
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: state.orderType.toLowerCase() ==
-                                                  e.toString().toLowerCase()
-                                              ? Style.white
-                                              : Style.black,
+                                          color:
+                                              state.orderType.toLowerCase() ==
+                                                      e.toString().toLowerCase()
+                                                  ? Style.white
+                                                  : Style.black,
                                         ),
                                       ),
                                       padding: EdgeInsets.all(6.r),
                                       child: e == 'Para llevar'
-                                          ? Icon(
-                                              FlutterRemix.takeaway_fill,
-                                              size: 18.sp,
+                                          ? SvgPicture.asset(
+                                              "assets/svg/pickup.svg",
                                               color: state.orderType
                                                           .toLowerCase() ==
-                                                      e.toString()
-                                                          .toLowerCase()
+                                                      e.toString().toLowerCase()
                                                   ? Style.white
                                                   : Style.black,
                                             )
                                           : e == 'Comer Aquí'
                                               ? SvgPicture.asset(
-                                                  "assets/svg/pickup.svg",
+                                                  "assets/svg/dine.svg",
                                                   color: state.orderType
                                                               .toLowerCase() ==
-                                                          e.toString()
+                                                          e
+                                                              .toString()
                                                               .toLowerCase()
                                                       ? Style.white
                                                       : Style.black,
@@ -261,7 +282,8 @@ class OrderInformation extends ConsumerWidget {
                                                   "assets/svg/dine.svg",
                                                   color: state.orderType
                                                               .toLowerCase() ==
-                                                          e.toString()
+                                                          e
+                                                              .toString()
                                                               .toLowerCase()
                                                       ? Style.white
                                                       : Style.black,
@@ -323,21 +345,8 @@ class OrderInformation extends ConsumerWidget {
                         '',
                         style: GoogleFonts.inter(
                           color: Style.black,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                      Text(
-                        AppHelpers.numberFormat(
-                          state.bag?.cartTotal,
-                          symbol: '\$',
-                        ),
-                        style: GoogleFonts.inter(
-                          color: Style.black,
-                          fontSize: 30.sp,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.4,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],
@@ -350,38 +359,37 @@ class OrderInformation extends ConsumerWidget {
       ),
     );
   }
-}
 
-Widget _priceInformation({
-  required RightSideState state,
-  required RightSideNotifier notifier,
-  required BagData bag,
-  required BuildContext context,
-}) {
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Precio total',
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.w500,
-              fontSize: 16.sp,
-              color: Style.black,
+  Widget _priceInformation({
+    required RightSideState state,
+    required RightSideNotifier notifier,
+    required BagData bag,
+    required BuildContext context,
+  }) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Precio total',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500,
+                fontSize: 16.sp,
+                color: Style.black,
+              ),
             ),
-          ),
-          Text(
-            AppHelpers.numberFormat(state.bag?.cartTotal,
-                symbol: '\$'),
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.w600,
-              fontSize: 20.sp,
-              color: Style.black,
+            Text(
+              AppHelpers.numberFormat(state.bag?.cartTotal, symbol: '\$'),
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                fontSize: 20.sp,
+                color: Style.black,
+              ),
             ),
-          ),
-        ],
-      ),
-    ],
-  );
+          ],
+        ),
+      ],
+    );
+  }
 }

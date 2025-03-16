@@ -5,20 +5,18 @@ import 'package:kibbi_kiosk/src/models/models.dart';
 
 class BagData {
   BagData({
-    // PaymentData? selectedPayment,
     List<BagProductData>? bagProducts,
-    this.cartTotal =
-        0.0, // Inicializamos cartTotal con un valor predeterminado.
+    this.cartTotal = 0.0,
+    String? paymentMethod,
   }) {
     _bagProducts = bagProducts;
+    _paymentMethod = _validatePaymentMethod(paymentMethod);
   }
 
   BagData.fromJson(dynamic json)
-      : cartTotal = (json['cart_total'] as num?)?.toDouble() ?? 0.0 {
-    // ✅ Leer cart_total si existe
-    // _selectedPayment = json['selected_payment'] != null
-    //     ? PaymentData.fromJson(json['selected_payment'])
-    //     : null;
+      : cartTotal = (json['cart_total'] as num?) ?? 0.0 {
+    _paymentMethod = _validatePaymentMethod(json['payment_method'] as String?);
+
     if (json['bag_products'] != null) {
       _bagProducts = [];
       json['bag_products'].forEach((v) {
@@ -27,46 +25,53 @@ class BagData {
     }
   }
 
-  // PaymentData? _selectedPayment;
   List<BagProductData>? _bagProducts;
-  double cartTotal; // Nuevo campo para el total del carrito.
+  num cartTotal;
+  String? _paymentMethod;
+
+  // Getter para paymentMethod con validación
+  String get paymentMethod => _paymentMethod ?? "Efectivo"; // Default: "Efectivo"
+
+  // Setter para asegurarse de que solo se asignen valores válidos
+  set paymentMethod(String? method) {
+    _paymentMethod = _validatePaymentMethod(method);
+  }
+
+  // Método privado para validar el método de pago
+  String _validatePaymentMethod(String? method) {
+    return (method == "Tarjeta" || method == "Efectivo") ? method! : "Efectivo";
+  }
 
   BagData copyWith({
     List<BagProductData>? bagProducts,
-    // PaymentData? selectedPayment,
-    double? cartTotal,
+    num? cartTotal,
+    String? paymentMethod,
   }) {
     return BagData(
       bagProducts: bagProducts ?? _bagProducts,
-      // selectedPayment: selectedPayment ?? _selectedPayment,
       cartTotal: cartTotal ?? this.cartTotal,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
     );
   }
 
-  // PaymentData? get selectedPayment => _selectedPayment;
-
   List<BagProductData>? get bagProducts => _bagProducts;
-
-  get selectedPayment => null;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    // if (_selectedPayment != null) {
-    //   map['selected_payment'] = _selectedPayment?.toJson();
-    // }
     if (_bagProducts != null) {
       map['bag_products'] = _bagProducts?.map((v) => v.toJsonInsert()).toList();
     }
-    // map['cart_total'] = cartTotal; // Excluir cartTotal de las llamadas API.
+    map['payment_method'] = paymentMethod;
     return map;
   }
 
-  // Sobrescribir toString para ver los valores de la bolsa
   @override
   String toString() {
-    return '_bagProducts: $_bagProducts, cartTotal: $cartTotal}';
+    return '_bagProducts: $_bagProducts, cartTotal: $cartTotal, paymentMethod: $paymentMethod';
   }
 }
+
+
 
 class BagProductData {
   final int? quantity;
