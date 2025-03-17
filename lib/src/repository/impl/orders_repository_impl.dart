@@ -27,11 +27,11 @@ class OrdersRepositoryImpl extends OrdersRepository {
   Future<ApiResult<Map<String, dynamic>>> createOrder(
       OrderBodyData orderBody) async {
     try {
-      final client = dioHttp.client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: true);
       final data = orderBody.toJson();
       debugPrint('==> order create request: ${jsonEncode(data)}');
       final response = await client.post(
-        '/api/v1/rest/orders',
+        '/api/orders/myOrder',
         data: data,
       );
 

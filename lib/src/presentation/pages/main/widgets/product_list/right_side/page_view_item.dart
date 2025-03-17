@@ -33,10 +33,6 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   void initState() {
     super.initState();
     coupon = TextEditingController();
-    debugPrint('PageViewItem initState - bag: ${widget.bag}');
-    debugPrint(
-        'PageViewItem initState - bag products: ${widget.bag?.bagProducts}');
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(rightSideProvider.notifier)
@@ -57,10 +53,6 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
     final products = ref.watch(shopProvider).products;
 
     // Verificación directa de bag para debugging
-    debugPrint('PageViewItem build - bag: ${state.bag}');
-    debugPrint('PageViewItem build - bag products: ${state.bag?.bagProducts}');
-    debugPrint(
-        'PageViewItem build - bag products length: ${state.bag?.bagProducts?.length}');
 
     // Usar directamente los datos de bag
     final hasBagProducts =

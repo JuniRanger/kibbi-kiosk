@@ -50,20 +50,20 @@ class _NoteDialogState extends ConsumerState<NoteDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Añadir comentario',
+            'Añadir nota',
             style:
                 GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 22.r),
           ),
           24.verticalSpace,
           OutlinedBorderTextField(
             textController: controller,
-            label: 'Comentario',
+            label: 'Nota',
           ),
           const Spacer(),
           LoginButton(
             title: 'Guardar',
             onPressed: () {
-              ref.read(rightSideProvider.notifier);
+              ref.read(rightSideProvider.notifier).setNote(controller.text);
               context.router.maybePop();
             },
           )

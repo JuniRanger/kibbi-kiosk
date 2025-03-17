@@ -7,15 +7,15 @@ class BagData {
   BagData({
     List<BagProductData>? bagProducts,
     this.cartTotal = 0.0,
-    String? paymentMethod,
+    // String? paymentMethod,
   }) {
     _bagProducts = bagProducts;
-    _paymentMethod = _validatePaymentMethod(paymentMethod);
+    // _paymentMethod = _validatePaymentMethod(paymentMethod);
   }
 
   BagData.fromJson(dynamic json)
       : cartTotal = (json['cart_total'] as num?) ?? 0.0 {
-    _paymentMethod = _validatePaymentMethod(json['payment_method'] as String?);
+    // _paymentMethod = _validatePaymentMethod(json['payment_method'] as String?);
 
     if (json['bag_products'] != null) {
       _bagProducts = [];
@@ -27,30 +27,30 @@ class BagData {
 
   List<BagProductData>? _bagProducts;
   num cartTotal;
-  String? _paymentMethod;
+  // String? _paymentMethod;
 
   // Getter para paymentMethod con validación
-  String get paymentMethod => _paymentMethod ?? "Efectivo"; // Default: "Efectivo"
+  // String get paymentMethod => _paymentMethod ?? "Efectivo"; // Default: "Efectivo"
 
   // Setter para asegurarse de que solo se asignen valores válidos
-  set paymentMethod(String? method) {
-    _paymentMethod = _validatePaymentMethod(method);
-  }
+  // set paymentMethod(String? method) {
+  //   _paymentMethod = _validatePaymentMethod(method);
+  // }
 
   // Método privado para validar el método de pago
-  String _validatePaymentMethod(String? method) {
-    return (method == "Tarjeta" || method == "Efectivo") ? method! : "Efectivo";
-  }
+  // String _validatePaymentMethod(String? method) {
+  //   return (method == "Tarjeta" || method == "Efectivo") ? method! : "Efectivo";
+  // }
 
   BagData copyWith({
     List<BagProductData>? bagProducts,
     num? cartTotal,
-    String? paymentMethod,
+    // String? paymentMethod,
   }) {
     return BagData(
       bagProducts: bagProducts ?? _bagProducts,
       cartTotal: cartTotal ?? this.cartTotal,
-      paymentMethod: paymentMethod ?? this.paymentMethod,
+      // paymentMethod: paymentMethod ?? this.paymentMethod,
     );
   }
 
@@ -61,17 +61,15 @@ class BagData {
     if (_bagProducts != null) {
       map['bag_products'] = _bagProducts?.map((v) => v.toJsonInsert()).toList();
     }
-    map['payment_method'] = paymentMethod;
+    // map['payment_method'] = paymentMethod;
     return map;
   }
 
   @override
   String toString() {
-    return '_bagProducts: $_bagProducts, cartTotal: $cartTotal, paymentMethod: $paymentMethod';
+    return '_bagProducts: $_bagProducts, cartTotal: $cartTotal'; // , paymentMethod: $paymentMethod';
   }
 }
-
-
 
 class BagProductData {
   final int? quantity;

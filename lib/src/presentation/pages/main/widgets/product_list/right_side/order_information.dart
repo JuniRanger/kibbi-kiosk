@@ -169,25 +169,37 @@ class OrderInformation extends ConsumerWidget {
                         8.verticalSpace,
                         PopupMenuButton<String>(
                           itemBuilder: (context) {
-                            return ['Efectivo', 'Tarjeta']
-                                .map(
-                                  (method) => PopupMenuItem<String>(
-                                    value: method,
-                                    child: Text(
-                                      method,
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14.sp,
-                                        color: Style.black,
-                                        letterSpacing: -14 * 0.02,
-                                      ),
+                            return [
+                              PopupMenuItem<String>(
+                                value: null,
+                                child: Text(
+                                  'Seleccionar método de pago',
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp,
+                                    color: Style.unselectedTab,
+                                  ),
+                                ),
+                              ),
+                              ...['Efectivo', 'Tarjeta'].map(
+                                (method) => PopupMenuItem<String>(
+                                  value: method.toLowerCase(),
+                                  child: Text(
+                                    method,
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: Style.black,
                                     ),
                                   ),
-                                )
-                                .toList();
+                                ),
+                              ),
+                            ];
                           },
-                          onSelected: (String selectedMethod) {
-                            notifier.setPaymentMethod(selectedMethod);
+                          onSelected: (String? selectedMethod) {
+                            if (selectedMethod != null) {
+                              notifier.setPaymentMethod(selectedMethod);
+                            }
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
@@ -195,8 +207,10 @@ class OrderInformation extends ConsumerWidget {
                           color: Style.white,
                           elevation: 10,
                           child: SelectFromButton(
-                            title: state.bag?.paymentMethod ??
-                                'Seleccionar método de pago',
+                            title: state.paymentMethod.isNotEmpty == true
+                                ? state.paymentMethod[0].toUpperCase() +
+                                    state.paymentMethod.substring(1)
+                                : 'Seleccionar método de pago',
                           ),
                         ),
                         Visibility(

@@ -428,7 +428,6 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
   Future<void> placeOrder(
       {required BuildContext context,
-      String? shopId,
       required VoidCallback invalidateState}) async {
     bool active = true;
     if (_name?.isEmpty ?? true) {
@@ -439,7 +438,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       state = state.copyWith(selectCurrencyError: 'Moneda no seleccionada');
       active = false;
     }
-    if (state.selectedPayment == null) {
+    if (state.paymentMethod == null) {
       state =
           state.copyWith(selectPaymentError: 'Metodo de pago no seleccionado');
       active = false;
@@ -454,9 +453,10 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
           OrderBodyData(
             numOrder: numOrder, // Número de orden generado
             orderType:
-                state.orderType, // O "Comer aquí" dependiendo de la selección
+                state.orderType, 
+            paymentMethod: state.paymentMethod.toLowerCase(), // Lo convertimos a minúsculas
             bagData: state.bag ?? BagData(),
-            note: state.comment,
+            notes: state.comment,
           ),
           onSuccess: (o) {
             fetchBag();
@@ -468,7 +468,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
                   return AlertDialog(
                     content: SizedBox(
                       width: 300.r,
-                      // child: GenerateCheckPage(orderData: o),
+                      // child: GenerateCheckPage(order: o),
                     ),
                   );
                 });
@@ -497,9 +497,9 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       response.when(
         success: (order) async {
           removeOrderedBag(context);
-          switch (data.bagData.paymentMethod) {
+          switch (data.paymentMethod) {
             // ✅ Se usa el getter que maneja el estado
-            case 'cash':
+            case 'efectivo':
               // ✅ Aquí puedes implementar la transacción en efectivo después
               // paymentsRepository.createTransaction(
               //   orderId: order.data!.id,
@@ -508,7 +508,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
               state = state.copyWith(isOrderLoading: false);
               onSuccess?.call(order['data']);
               break;
-            case 'card':
+            case 'tarjeta':
               // ✅ Aquí puedes implementar la transacción con tarjeta después
               // paymentsRepository.createTransaction(
               //   orderId: order.data!.id,
@@ -541,13 +541,17 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   }
 
   void setPaymentMethod(String paymentMethod) {
-    // Actualizamos el método de pago en la bolsa
-    BagData? bag = state.bag;
-    if (bag != null) {
-      bag = bag.copyWith(paymentMethod: paymentMethod);
-      LocalStorage.setBag(bag); // Guardamos la bolsa actualizada en el almacenamiento local
-      state = state.copyWith(bag: bag); // Actualizamos el estado
-      debugPrint('Método de pago actualizado: $paymentMethod');
+    debugPrint('=== > Actualizando método de pago: $paymentMethod');
+
+    // Validar que el método de pago no sea nulo o vacío
+    if (paymentMethod.isEmpty) {
+      debugPrint('=== > El método de pago no puede estar vacío');
+      return;
     }
+
+    // Actualizar el estado con el nuevo método de pago
+    state = state.copyWith(paymentMethod: paymentMethod);
+
+    debugPrint('=== > Método de pago actualizado: ${state.paymentMethod}');
   }
 }

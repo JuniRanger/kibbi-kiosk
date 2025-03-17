@@ -26,11 +26,6 @@ class AuthRepository extends AuthFacade {
 
       final loginResponse = LoginResponse.fromJson(response.data);
 
-      // Cambiar funcion para poder guardar el objeto completo en lugar de solo el token
-      if (loginResponse.restaurantId != null) {
-        await LocalStorage.saveRestaurantId(loginResponse.restaurantId!);
-        debugPrint('==> Restaurant ID guardado: ${loginResponse.restaurantId}');
-      }
       return ApiResult.success(data: loginResponse);
     } catch (e) {
       debugPrint('==> login failure: $e');
@@ -42,20 +37,3 @@ class AuthRepository extends AuthFacade {
 
 
 
-  // @override
-  // Future<ApiResult<void>> updateJwtToken(String? token) async {
-  //   final data = {if (token != null) 'jwt_token': token};
-  //   try {
-  //     final client = dioHttp.client(requireAuth: true);
-  //     await client.post(
-  //       '/api/v1/dashboard/user/profile/firebase/token/update',
-  //       data: data,
-  //     );
-  //     return const ApiResult.success(data: null);
-  //   } catch (e) {
-  //     debugPrint('==> update firebase token failure: $e');
-  //     return ApiResult.failure(
-  //       error: AppHelpers.errorHandler(e),
-  //     );
-  //   }
-  // }

@@ -23,16 +23,11 @@ mixin _$RightSideState {
   bool get isButtonLoading => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
   bool get isOrderLoading => throw _privateConstructorUsedError;
-  bool get isPromoCodeLoading => throw _privateConstructorUsedError;
-  bool get isSectionLoading => throw _privateConstructorUsedError;
-  bool get isTableLoading => throw _privateConstructorUsedError;
   BagData? get bag => throw _privateConstructorUsedError;
   List<CurrencyData> get currencies => throw _privateConstructorUsedError;
   List<PaymentData> get payments => throw _privateConstructorUsedError;
   int get selectedBagIndex => throw _privateConstructorUsedError;
   String get orderType => throw _privateConstructorUsedError;
-  String get tableQuery => throw _privateConstructorUsedError;
-  String get sectionQuery => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   String get calculate => throw _privateConstructorUsedError;
   String? get selectNameError => throw _privateConstructorUsedError;
@@ -43,6 +38,7 @@ mixin _$RightSideState {
   String? get selectTableError => throw _privateConstructorUsedError;
   String? get coupon => throw _privateConstructorUsedError;
   KioskData? get selectedUser => throw _privateConstructorUsedError;
+  String get paymentMethod => throw _privateConstructorUsedError;
   CurrencyData? get selectedCurrency => throw _privateConstructorUsedError;
   PaymentData? get selectedPayment => throw _privateConstructorUsedError;
   PriceDate? get paginateResponse => throw _privateConstructorUsedError;
@@ -68,16 +64,11 @@ abstract class $RightSideStateCopyWith<$Res> {
       bool isButtonLoading,
       bool isActive,
       bool isOrderLoading,
-      bool isPromoCodeLoading,
-      bool isSectionLoading,
-      bool isTableLoading,
       BagData? bag,
       List<CurrencyData> currencies,
       List<PaymentData> payments,
       int selectedBagIndex,
       String orderType,
-      String tableQuery,
-      String sectionQuery,
       String comment,
       String calculate,
       String? selectNameError,
@@ -88,6 +79,7 @@ abstract class $RightSideStateCopyWith<$Res> {
       String? selectTableError,
       String? coupon,
       KioskData? selectedUser,
+      String paymentMethod,
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
       PriceDate? paginateResponse});
@@ -115,16 +107,11 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? isButtonLoading = null,
     Object? isActive = null,
     Object? isOrderLoading = null,
-    Object? isPromoCodeLoading = null,
-    Object? isSectionLoading = null,
-    Object? isTableLoading = null,
     Object? bag = freezed,
     Object? currencies = null,
     Object? payments = null,
     Object? selectedBagIndex = null,
     Object? orderType = null,
-    Object? tableQuery = null,
-    Object? sectionQuery = null,
     Object? comment = null,
     Object? calculate = null,
     Object? selectNameError = freezed,
@@ -135,6 +122,7 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? selectTableError = freezed,
     Object? coupon = freezed,
     Object? selectedUser = freezed,
+    Object? paymentMethod = null,
     Object? selectedCurrency = freezed,
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
@@ -168,18 +156,6 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.isOrderLoading
           : isOrderLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      isPromoCodeLoading: null == isPromoCodeLoading
-          ? _value.isPromoCodeLoading
-          : isPromoCodeLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isSectionLoading: null == isSectionLoading
-          ? _value.isSectionLoading
-          : isSectionLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isTableLoading: null == isTableLoading
-          ? _value.isTableLoading
-          : isTableLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
       bag: freezed == bag
           ? _value.bag
           : bag // ignore: cast_nullable_to_non_nullable
@@ -199,14 +175,6 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
       orderType: null == orderType
           ? _value.orderType
           : orderType // ignore: cast_nullable_to_non_nullable
-              as String,
-      tableQuery: null == tableQuery
-          ? _value.tableQuery
-          : tableQuery // ignore: cast_nullable_to_non_nullable
-              as String,
-      sectionQuery: null == sectionQuery
-          ? _value.sectionQuery
-          : sectionQuery // ignore: cast_nullable_to_non_nullable
               as String,
       comment: null == comment
           ? _value.comment
@@ -248,6 +216,10 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
               as KioskData?,
+      paymentMethod: null == paymentMethod
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String,
       selectedCurrency: freezed == selectedCurrency
           ? _value.selectedCurrency
           : selectedCurrency // ignore: cast_nullable_to_non_nullable
@@ -280,16 +252,11 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       bool isButtonLoading,
       bool isActive,
       bool isOrderLoading,
-      bool isPromoCodeLoading,
-      bool isSectionLoading,
-      bool isTableLoading,
       BagData? bag,
       List<CurrencyData> currencies,
       List<PaymentData> payments,
       int selectedBagIndex,
       String orderType,
-      String tableQuery,
-      String sectionQuery,
       String comment,
       String calculate,
       String? selectNameError,
@@ -300,6 +267,7 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       String? selectTableError,
       String? coupon,
       KioskData? selectedUser,
+      String paymentMethod,
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
       PriceDate? paginateResponse});
@@ -325,16 +293,11 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? isButtonLoading = null,
     Object? isActive = null,
     Object? isOrderLoading = null,
-    Object? isPromoCodeLoading = null,
-    Object? isSectionLoading = null,
-    Object? isTableLoading = null,
     Object? bag = freezed,
     Object? currencies = null,
     Object? payments = null,
     Object? selectedBagIndex = null,
     Object? orderType = null,
-    Object? tableQuery = null,
-    Object? sectionQuery = null,
     Object? comment = null,
     Object? calculate = null,
     Object? selectNameError = freezed,
@@ -345,6 +308,7 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? selectTableError = freezed,
     Object? coupon = freezed,
     Object? selectedUser = freezed,
+    Object? paymentMethod = null,
     Object? selectedCurrency = freezed,
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
@@ -378,18 +342,6 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.isOrderLoading
           : isOrderLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      isPromoCodeLoading: null == isPromoCodeLoading
-          ? _value.isPromoCodeLoading
-          : isPromoCodeLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isSectionLoading: null == isSectionLoading
-          ? _value.isSectionLoading
-          : isSectionLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isTableLoading: null == isTableLoading
-          ? _value.isTableLoading
-          : isTableLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
       bag: freezed == bag
           ? _value.bag
           : bag // ignore: cast_nullable_to_non_nullable
@@ -409,14 +361,6 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
       orderType: null == orderType
           ? _value.orderType
           : orderType // ignore: cast_nullable_to_non_nullable
-              as String,
-      tableQuery: null == tableQuery
-          ? _value.tableQuery
-          : tableQuery // ignore: cast_nullable_to_non_nullable
-              as String,
-      sectionQuery: null == sectionQuery
-          ? _value.sectionQuery
-          : sectionQuery // ignore: cast_nullable_to_non_nullable
               as String,
       comment: null == comment
           ? _value.comment
@@ -458,6 +402,10 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
               as KioskData?,
+      paymentMethod: null == paymentMethod
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String,
       selectedCurrency: freezed == selectedCurrency
           ? _value.selectedCurrency
           : selectedCurrency // ignore: cast_nullable_to_non_nullable
@@ -485,16 +433,11 @@ class _$RightSideStateImpl extends _RightSideState {
       this.isButtonLoading = false,
       this.isActive = false,
       this.isOrderLoading = false,
-      this.isPromoCodeLoading = false,
-      this.isSectionLoading = false,
-      this.isTableLoading = false,
       this.bag = null,
       final List<CurrencyData> currencies = const [],
       final List<PaymentData> payments = const [],
       this.selectedBagIndex = 0,
       this.orderType = '',
-      this.tableQuery = '',
-      this.sectionQuery = '',
       this.comment = '',
       this.calculate = '',
       this.selectNameError = null,
@@ -505,6 +448,7 @@ class _$RightSideStateImpl extends _RightSideState {
       this.selectTableError = null,
       this.coupon = null,
       this.selectedUser = null,
+      this.paymentMethod = '',
       this.selectedCurrency,
       this.selectedPayment,
       this.paginateResponse})
@@ -535,15 +479,6 @@ class _$RightSideStateImpl extends _RightSideState {
   final bool isOrderLoading;
   @override
   @JsonKey()
-  final bool isPromoCodeLoading;
-  @override
-  @JsonKey()
-  final bool isSectionLoading;
-  @override
-  @JsonKey()
-  final bool isTableLoading;
-  @override
-  @JsonKey()
   final BagData? bag;
   final List<CurrencyData> _currencies;
   @override
@@ -569,12 +504,6 @@ class _$RightSideStateImpl extends _RightSideState {
   @override
   @JsonKey()
   final String orderType;
-  @override
-  @JsonKey()
-  final String tableQuery;
-  @override
-  @JsonKey()
-  final String sectionQuery;
   @override
   @JsonKey()
   final String comment;
@@ -606,6 +535,9 @@ class _$RightSideStateImpl extends _RightSideState {
   @JsonKey()
   final KioskData? selectedUser;
   @override
+  @JsonKey()
+  final String paymentMethod;
+  @override
   final CurrencyData? selectedCurrency;
   @override
   final PaymentData? selectedPayment;
@@ -614,7 +546,7 @@ class _$RightSideStateImpl extends _RightSideState {
 
   @override
   String toString() {
-    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, isPromoCodeLoading: $isPromoCodeLoading, isSectionLoading: $isSectionLoading, isTableLoading: $isTableLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, tableQuery: $tableQuery, sectionQuery: $sectionQuery, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
+    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, paymentMethod: $paymentMethod, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
   }
 
   @override
@@ -637,12 +569,6 @@ class _$RightSideStateImpl extends _RightSideState {
                 other.isActive == isActive) &&
             (identical(other.isOrderLoading, isOrderLoading) ||
                 other.isOrderLoading == isOrderLoading) &&
-            (identical(other.isPromoCodeLoading, isPromoCodeLoading) ||
-                other.isPromoCodeLoading == isPromoCodeLoading) &&
-            (identical(other.isSectionLoading, isSectionLoading) ||
-                other.isSectionLoading == isSectionLoading) &&
-            (identical(other.isTableLoading, isTableLoading) ||
-                other.isTableLoading == isTableLoading) &&
             (identical(other.bag, bag) || other.bag == bag) &&
             const DeepCollectionEquality()
                 .equals(other._currencies, _currencies) &&
@@ -651,10 +577,6 @@ class _$RightSideStateImpl extends _RightSideState {
                 other.selectedBagIndex == selectedBagIndex) &&
             (identical(other.orderType, orderType) ||
                 other.orderType == orderType) &&
-            (identical(other.tableQuery, tableQuery) ||
-                other.tableQuery == tableQuery) &&
-            (identical(other.sectionQuery, sectionQuery) ||
-                other.sectionQuery == sectionQuery) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             (identical(other.calculate, calculate) ||
                 other.calculate == calculate) &&
@@ -673,6 +595,8 @@ class _$RightSideStateImpl extends _RightSideState {
             (identical(other.coupon, coupon) || other.coupon == coupon) &&
             (identical(other.selectedUser, selectedUser) ||
                 other.selectedUser == selectedUser) &&
+            (identical(other.paymentMethod, paymentMethod) ||
+                other.paymentMethod == paymentMethod) &&
             (identical(other.selectedCurrency, selectedCurrency) ||
                 other.selectedCurrency == selectedCurrency) &&
             (identical(other.selectedPayment, selectedPayment) ||
@@ -691,16 +615,11 @@ class _$RightSideStateImpl extends _RightSideState {
         isButtonLoading,
         isActive,
         isOrderLoading,
-        isPromoCodeLoading,
-        isSectionLoading,
-        isTableLoading,
         bag,
         const DeepCollectionEquality().hash(_currencies),
         const DeepCollectionEquality().hash(_payments),
         selectedBagIndex,
         orderType,
-        tableQuery,
-        sectionQuery,
         comment,
         calculate,
         selectNameError,
@@ -711,6 +630,7 @@ class _$RightSideStateImpl extends _RightSideState {
         selectTableError,
         coupon,
         selectedUser,
+        paymentMethod,
         selectedCurrency,
         selectedPayment,
         paginateResponse
@@ -735,16 +655,11 @@ abstract class _RightSideState extends RightSideState {
       final bool isButtonLoading,
       final bool isActive,
       final bool isOrderLoading,
-      final bool isPromoCodeLoading,
-      final bool isSectionLoading,
-      final bool isTableLoading,
       final BagData? bag,
       final List<CurrencyData> currencies,
       final List<PaymentData> payments,
       final int selectedBagIndex,
       final String orderType,
-      final String tableQuery,
-      final String sectionQuery,
       final String comment,
       final String calculate,
       final String? selectNameError,
@@ -755,6 +670,7 @@ abstract class _RightSideState extends RightSideState {
       final String? selectTableError,
       final String? coupon,
       final KioskData? selectedUser,
+      final String paymentMethod,
       final CurrencyData? selectedCurrency,
       final PaymentData? selectedPayment,
       final PriceDate? paginateResponse}) = _$RightSideStateImpl;
@@ -775,12 +691,6 @@ abstract class _RightSideState extends RightSideState {
   @override
   bool get isOrderLoading;
   @override
-  bool get isPromoCodeLoading;
-  @override
-  bool get isSectionLoading;
-  @override
-  bool get isTableLoading;
-  @override
   BagData? get bag;
   @override
   List<CurrencyData> get currencies;
@@ -790,10 +700,6 @@ abstract class _RightSideState extends RightSideState {
   int get selectedBagIndex;
   @override
   String get orderType;
-  @override
-  String get tableQuery;
-  @override
-  String get sectionQuery;
   @override
   String get comment;
   @override
@@ -814,6 +720,8 @@ abstract class _RightSideState extends RightSideState {
   String? get coupon;
   @override
   KioskData? get selectedUser;
+  @override
+  String get paymentMethod;
   @override
   CurrencyData? get selectedCurrency;
   @override
