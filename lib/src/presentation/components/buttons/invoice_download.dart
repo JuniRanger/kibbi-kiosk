@@ -1,5 +1,7 @@
 import 'package:kibbi_kiosk/generated/assets.dart';
+import 'package:kibbi_kiosk/src/models/data/order_body_data.dart';
 import 'package:kibbi_kiosk/src/models/data/order_data.dart';
+import 'package:kibbi_kiosk/src/presentation/pages/main/widgets/printer/generate_check.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +13,7 @@ import '../../../core/utils/app_helpers.dart';
 import 'animation_button_effect.dart';
 
 class InvoiceDownload extends StatelessWidget {
-  final OrderData? orderData;
+  final OrderBodyData? orderData;
 
   const InvoiceDownload({super.key, required this.orderData});
 
@@ -20,19 +22,19 @@ class InvoiceDownload extends StatelessWidget {
     return AnimationButtonEffect(
       child: GestureDetector(
         onTap: () {
-          // showDialog(
-          //     context: context,
-          //     builder: (context) {
-          //       return LayoutBuilder(builder: (context, constraints) {
-          //         return SimpleDialog(
-          //           title: SizedBox(
-          //             height: constraints.maxHeight * 0.7,
-          //             width: 300.r,
-          //             child: GenerateCheckPage(orderData: orderData),
-          //           ),
-          //         );
-          //       });
-          //     });
+          showDialog(
+              context: context,
+              builder: (context) {
+                return LayoutBuilder(builder: (context, constraints) {
+                  return SimpleDialog(
+                    title: SizedBox(
+                      height: constraints.maxHeight * 0.7,
+                      width: 300.r,
+                      child: GenerateCheckPage(orderData: orderData),
+                    ),
+                  );
+                });
+              });
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10.r, horizontal: 18.r),

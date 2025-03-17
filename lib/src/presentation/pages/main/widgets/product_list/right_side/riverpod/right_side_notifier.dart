@@ -8,6 +8,7 @@ import 'package:kibbi_kiosk/src/core/routes/app_router.dart';
 import 'package:kibbi_kiosk/src/core/utils/utils.dart';
 import 'package:kibbi_kiosk/src/models/data/order_data.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
+import 'package:kibbi_kiosk/src/presentation/pages/main/widgets/printer/generate_check.dart';
 import 'package:kibbi_kiosk/src/repository/orders.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
 
@@ -426,39 +427,40 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  Future<void> placeOrder(
-      {required BuildContext context,
-      required VoidCallback invalidateState}) async {
+  Future<void> placeOrder({
+    required BuildContext context,
+    required VoidCallback invalidateState,
+  }) async {
     bool active = true;
     if (_name?.isEmpty ?? true) {
-      state = state.copyWith(selectNameError: 'Nombre vacio');
+      state = state.copyWith(selectNameError: 'Nombre vacío');
       active = false;
     }
     if (state.selectedCurrency == null) {
       state = state.copyWith(selectCurrencyError: 'Moneda no seleccionada');
       active = false;
     }
-    if (state.paymentMethod == null) {
-      state =
-          state.copyWith(selectPaymentError: 'Metodo de pago no seleccionado');
+    if (state.paymentMethod.isEmpty) {
+      state = state.copyWith(selectPaymentError: 'Método de pago no seleccionado');
       active = false;
     }
 
     if (active) {
-      // Obtenemos el número de la orden
+      // Generate the order number
       OrderNumberGenerator.generateOrderNumber().then((numOrder) {
-        // Creamos la orden con los datos necesarios
+        // Create the order using OrderBodyData
+        final orderBodyData = OrderBodyData(
+          numOrder: numOrder, // Generated order number
+          orderType: state.orderType,
+          paymentMethod: state.paymentMethod.toLowerCase(), // Convert to lowercase
+          bagData: state.bag ?? BagData(),
+          notes: state.comment,
+        );
+
         createOrder(
           context,
-          OrderBodyData(
-            numOrder: numOrder, // Número de orden generado
-            orderType:
-                state.orderType, 
-            paymentMethod: state.paymentMethod.toLowerCase(), // Lo convertimos a minúsculas
-            bagData: state.bag ?? BagData(),
-            notes: state.comment,
-          ),
-          onSuccess: (o) {
+          orderBodyData,
+          onSuccess: (orderBodyData) {
             fetchBag();
             context.maybePop();
             showDialog(
@@ -468,7 +470,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
                   return AlertDialog(
                     content: SizedBox(
                       width: 300.r,
-                      // child: GenerateCheckPage(order: o),
+                      child: GenerateCheckPage(orderData: orderBodyData),
                     ),
                   );
                 });
@@ -480,14 +482,10 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  setNote(String note) {
-    state = state.copyWith(comment: note);
-  }
-
-  Future createOrder(
+  Future<void> createOrder(
     BuildContext context,
     OrderBodyData data, {
-    ValueChanged<OrderData?>? onSuccess,
+    ValueChanged<OrderBodyData?>? onSuccess,
     VoidCallback? onFailure,
   }) async {
     final connected = await AppConnectivity.connectivity();
@@ -497,31 +495,8 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       response.when(
         success: (order) async {
           removeOrderedBag(context);
-          switch (data.paymentMethod) {
-            // ✅ Se usa el getter que maneja el estado
-            case 'efectivo':
-              // ✅ Aquí puedes implementar la transacción en efectivo después
-              // paymentsRepository.createTransaction(
-              //   orderId: order.data!.id,
-              //   paymentId: data.bagData.selectedPayment?.id,
-              // );
-              state = state.copyWith(isOrderLoading: false);
-              onSuccess?.call(order['data']);
-              break;
-            case 'tarjeta':
-              // ✅ Aquí puedes implementar la transacción con tarjeta después
-              // paymentsRepository.createTransaction(
-              //   orderId: order.data!.id,
-              //   paymentId: data.bagData.selectedPayment?.id,
-              // );
-              state = state.copyWith(isOrderLoading: false);
-              onSuccess?.call(order['data']);
-              break;
-            default:
-              state = state.copyWith(isOrderLoading: false);
-              onSuccess?.call(order['data']);
-              break;
-          }
+          state = state.copyWith(isOrderLoading: false);
+          onSuccess?.call(data); // Pass OrderBodyData instead of OrderData
         },
         failure: (failure, status) {
           state = state.copyWith(isOrderLoading: false);
@@ -531,6 +506,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
               'Error al procesar la solicitud',
             );
           }
+          onFailure?.call();
         },
       );
     } else {
@@ -538,6 +514,10 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         AppHelpers.showSnackBar(context, 'Sin conexión a internet');
       }
     }
+  }
+
+  void setNote(String note) {
+    state = state.copyWith(comment: note);
   }
 
   void setPaymentMethod(String paymentMethod) {
