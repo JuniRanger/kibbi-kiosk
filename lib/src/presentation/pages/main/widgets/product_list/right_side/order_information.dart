@@ -72,7 +72,7 @@ class OrderInformation extends ConsumerWidget {
                         CustomTextField(
                           inputType: TextInputType.text,
                           validator: AppValidators.emptyCheck,
-                          onChanged: notifier.setFirstName,
+                          onChanged: notifier.setFirstName, // Capture input in customerName
                           label: 'Nombre',
                         ),
                         Visibility(

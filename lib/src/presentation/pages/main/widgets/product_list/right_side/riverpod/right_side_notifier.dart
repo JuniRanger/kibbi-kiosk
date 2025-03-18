@@ -216,6 +216,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
   void setFirstName(String value) {
     _name = value.trim();
+    state = state.copyWith(customerName: _name); // Update customerName in state
     if (state.selectNameError != null) {
       state = state.copyWith(selectNameError: null);
     }
@@ -450,6 +451,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       OrderNumberGenerator.generateOrderNumber().then((numOrder) {
         // Create the order using OrderBodyData
         final orderBodyData = OrderBodyData(
+          customerName: state.customerName,
           numOrder: numOrder, // Generated order number
           orderType: state.orderType,
           paymentMethod: state.paymentMethod.toLowerCase(), // Convert to lowercase

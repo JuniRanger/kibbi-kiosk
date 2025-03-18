@@ -29,6 +29,7 @@ class RightSideState with _$RightSideState {
     @Default(null) String? coupon,
     @Default(null) KioskData? selectedUser,
     @Default('') String paymentMethod,
+    @Default('') String? customerName,
     CurrencyData? selectedCurrency,
     PaymentData? selectedPayment,
     PriceDate? paginateResponse,

@@ -39,6 +39,7 @@ mixin _$RightSideState {
   String? get coupon => throw _privateConstructorUsedError;
   KioskData? get selectedUser => throw _privateConstructorUsedError;
   String get paymentMethod => throw _privateConstructorUsedError;
+  String? get customerName => throw _privateConstructorUsedError;
   CurrencyData? get selectedCurrency => throw _privateConstructorUsedError;
   PaymentData? get selectedPayment => throw _privateConstructorUsedError;
   PriceDate? get paginateResponse => throw _privateConstructorUsedError;
@@ -80,6 +81,7 @@ abstract class $RightSideStateCopyWith<$Res> {
       String? coupon,
       KioskData? selectedUser,
       String paymentMethod,
+      String? customerName,
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
       PriceDate? paginateResponse});
@@ -123,6 +125,7 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? coupon = freezed,
     Object? selectedUser = freezed,
     Object? paymentMethod = null,
+    Object? customerName = freezed,
     Object? selectedCurrency = freezed,
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
@@ -220,6 +223,10 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
       selectedCurrency: freezed == selectedCurrency
           ? _value.selectedCurrency
           : selectedCurrency // ignore: cast_nullable_to_non_nullable
@@ -268,6 +275,7 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       String? coupon,
       KioskData? selectedUser,
       String paymentMethod,
+      String? customerName,
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
       PriceDate? paginateResponse});
@@ -309,6 +317,7 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? coupon = freezed,
     Object? selectedUser = freezed,
     Object? paymentMethod = null,
+    Object? customerName = freezed,
     Object? selectedCurrency = freezed,
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
@@ -406,6 +415,10 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
       selectedCurrency: freezed == selectedCurrency
           ? _value.selectedCurrency
           : selectedCurrency // ignore: cast_nullable_to_non_nullable
@@ -449,6 +462,7 @@ class _$RightSideStateImpl extends _RightSideState {
       this.coupon = null,
       this.selectedUser = null,
       this.paymentMethod = '',
+      this.customerName = '',
       this.selectedCurrency,
       this.selectedPayment,
       this.paginateResponse})
@@ -538,6 +552,9 @@ class _$RightSideStateImpl extends _RightSideState {
   @JsonKey()
   final String paymentMethod;
   @override
+  @JsonKey()
+  final String? customerName;
+  @override
   final CurrencyData? selectedCurrency;
   @override
   final PaymentData? selectedPayment;
@@ -546,7 +563,7 @@ class _$RightSideStateImpl extends _RightSideState {
 
   @override
   String toString() {
-    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, paymentMethod: $paymentMethod, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
+    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, paymentMethod: $paymentMethod, customerName: $customerName, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
   }
 
   @override
@@ -597,6 +614,8 @@ class _$RightSideStateImpl extends _RightSideState {
                 other.selectedUser == selectedUser) &&
             (identical(other.paymentMethod, paymentMethod) ||
                 other.paymentMethod == paymentMethod) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
             (identical(other.selectedCurrency, selectedCurrency) ||
                 other.selectedCurrency == selectedCurrency) &&
             (identical(other.selectedPayment, selectedPayment) ||
@@ -631,6 +650,7 @@ class _$RightSideStateImpl extends _RightSideState {
         coupon,
         selectedUser,
         paymentMethod,
+        customerName,
         selectedCurrency,
         selectedPayment,
         paginateResponse
@@ -671,6 +691,7 @@ abstract class _RightSideState extends RightSideState {
       final String? coupon,
       final KioskData? selectedUser,
       final String paymentMethod,
+      final String? customerName,
       final CurrencyData? selectedCurrency,
       final PaymentData? selectedPayment,
       final PriceDate? paginateResponse}) = _$RightSideStateImpl;
@@ -722,6 +743,8 @@ abstract class _RightSideState extends RightSideState {
   KioskData? get selectedUser;
   @override
   String get paymentMethod;
+  @override
+  String? get customerName;
   @override
   CurrencyData? get selectedCurrency;
   @override

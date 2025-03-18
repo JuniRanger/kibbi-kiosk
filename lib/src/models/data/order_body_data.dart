@@ -5,6 +5,7 @@ class OrderBodyData {
   final BagData bagData;
   final String orderType; // "llevar" o "comer Aquí"
   final int numOrder; // Número de orden generado dinámicamente
+  final String? customerName; // Nombre del cliente (puede ser null)
   String? _paymentMethod;  // Propio de OrderBodyData, no depende de BagData
 
   OrderBodyData({
@@ -12,6 +13,7 @@ class OrderBodyData {
     required this.bagData,
     required this.orderType,
     required this.numOrder,
+    this.customerName, // Ahora es opcional
     String? paymentMethod,  // Recibe paymentMethod, se valida en el setter
   }) {
     _paymentMethod = _validatePaymentMethod(paymentMethod ?? 'efectivo'); // Por defecto "Efectivo"
@@ -38,6 +40,7 @@ class OrderBodyData {
     newMap['numOrder'] = numOrder;
     newMap['orderType'] = orderType;
     newMap['paymentMethod'] = paymentMethod; // Solo el campo directo
+    if (customerName != null) newMap['customerName'] = customerName; // Agregar customerName si no es null
     if (notes?.isNotEmpty ?? false) newMap["notes"] = notes;
 
     newMap['products'] = bagData.bagProducts?.map((stock) {
@@ -50,12 +53,13 @@ class OrderBodyData {
     return newMap;
   }
 
-  // Método copyWith sin el getter y setter
+  // Método copyWith actualizado para incluir customerName
   OrderBodyData copyWith({
     String? notes,
     BagData? bagData,
     String? orderType,
     int? numOrder,
+    String? customerName,
     String? paymentMethod,
   }) {
     return OrderBodyData(
@@ -63,6 +67,7 @@ class OrderBodyData {
       bagData: bagData ?? this.bagData,
       orderType: orderType ?? this.orderType,
       numOrder: numOrder ?? this.numOrder,
+      customerName: customerName ?? this.customerName,
       paymentMethod: paymentMethod ?? this.paymentMethod,  // Solo se pasa como campo
     );
   }
