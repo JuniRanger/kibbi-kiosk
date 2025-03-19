@@ -1,6 +1,6 @@
 import 'package:kibbi_kiosk/generated/assets.dart';
 import 'package:kibbi_kiosk/src/core/constants/constants.dart';
-import 'package:kibbi_kiosk/src/core/utils/utils.dart';
+import 'package:kibbi_kiosk/src/core/utils/product_service.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
 import 'package:kibbi_kiosk/src/presentation/components/components.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/theme.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kibbi_kiosk/src/core/utils/app_helpers.dart';
 
 import 'note_dialog.dart';
 import 'order_information.dart';
@@ -50,11 +51,9 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
   Widget build(BuildContext context) {
     final notifier = ref.read(rightSideProvider.notifier);
     final state = ref.watch(rightSideProvider);
-    final products = ref.watch(shopProvider).products;
+    final shopState = ref.watch(shopProvider);
+    final productsService = ProductService(shopState);
 
-    // Verificación directa de bag para debugging
-
-    // Usar directamente los datos de bag
     final hasBagProducts =
         state.bag?.bagProducts != null && state.bag!.bagProducts!.isNotEmpty;
 
@@ -71,7 +70,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.75, // Reducir la altura del carrito
+                  height: MediaQuery.of(context).size.height * 0.75,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
                     color: Style.white,
@@ -119,13 +118,13 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                 itemBuilder: (context, index) {
                                   final bagProduct =
                                       state.bag?.bagProducts?[index];
-                                  final productName =
-                                      bagProduct?.getProductName(products) ??
-                                          "Producto ${index + 1}";
-                                  final productSalePrice =
-                                      bagProduct?.getProductSalePrice(products) ??
-                                          0.0;
-                                  // Crear un ProductData temporal basado en BagProductData
+                                  final productName = productsService
+                                      .getProductName(
+                                          bagProduct?.productId ?? '');
+                                  final productSalePrice = productsService
+                                      .getProductSalePrice(
+                                          bagProduct?.productId ?? '');
+
                                   final product = ProductData(
                                     id: bagProduct?.productId,
                                     quantity: bagProduct?.quantity,
@@ -202,7 +201,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             28.verticalSpace,
                           ],
                         )
-                      : Center( // Centrar el contenido
+                      : Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -252,26 +251,13 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
 
   Column _price(RightSideState state) {
     num subtotal = 0.0;
-    // Usamos el valor de cartTotal si está disponible de la API
-    subtotal = state.bag?.cartTotal ?? 0.0; // Usamos la API para el total de productos
+    subtotal = state.bag?.cartTotal ?? 0.0;
 
     return Column(
       children: [
         8.verticalSpace,
         const Divider(),
         8.verticalSpace,
-        Padding(
-          padding: REdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              // _priceItem(
-              //   title: 'Subtotal',
-              //   price: subtotal,
-              //   symbol: '\$',
-              // ),
-            ],
-          ),
-        ),
         Padding(
           padding: REdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -318,44 +304,5 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
         ),
       ],
     );
-  }
-
-  _priceItem({
-    required String title,
-    required num? price,
-    required String? symbol,
-    bool isDiscount = false,
-  }) {
-    return (price ?? 0) != 0
-        ? Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.inter(
-                      color: isDiscount ? Style.red : Style.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                  Text(
-                    (isDiscount ? "-" : '') +
-                        AppHelpers.numberFormat(price, symbol: symbol),
-                    style: GoogleFonts.inter(
-                      color: isDiscount ? Style.red : Style.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                ],
-              ),
-              12.verticalSpace,
-            ],
-          )
-        : const SizedBox.shrink();
   }
 }

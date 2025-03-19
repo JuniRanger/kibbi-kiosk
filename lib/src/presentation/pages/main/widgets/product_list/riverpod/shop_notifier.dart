@@ -27,93 +27,104 @@ class ShopNotifier extends StateNotifier<ShopState> {
     bool? isRefresh,
   }) async {
     final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      state = state.copyWith(isProductsLoading: true, products: []);
+    if (!connected) {
+      AppHelpers.showSnackBar(context, 'Revisa tu conexión');
+      return;
+    }
 
-      try {
-        final response = state.selectedCategory?.id != null
-            ? await productsRepository.getProductsByCategoryId(
-                categoryId: state.selectedCategory!.id!,
-              )
-            : await productsRepository.getProductsPaginate(
-                query: state.query.isEmpty ? null : state.query,
-              );
+    state = state.copyWith(isProductsLoading: true, products: []);
 
-        response.when(
-          success: (data) {
-            state = state.copyWith(
-              products: data,
-              isProductsLoading: false,
+    try {
+      final response = state.selectedCategory?.id != null
+          ? await productsRepository.getProductsByCategoryId(
+              categoryId: state.selectedCategory!.id!,
+            )
+          : await productsRepository.getProductsPaginate(
+              query: state.query.isEmpty ? null : state.query,
             );
-          },
-          failure: (failure, status) {
-            state = state.copyWith(isProductsLoading: false);
-            debugPrint('==> get products failure: $failure');
-            AppHelpers.showSnackBar(context, failure);
-          },
-        );
-      } catch (e) {
-        state = state.copyWith(isProductsLoading: false);
-        debugPrint('==> fetch products failure: $e');
-        AppHelpers.showSnackBar(context, 'Error al cargar los productos');
-      }
-    } else {
-      AppHelpers.showSnackBar(
-        context,
-        'Revisa tu conexión',
+
+      response.when(
+        success: (data) {
+          final updatedAllProducts = [...state.allProducts];
+
+          for (var product in data) {
+            if (!updatedAllProducts.any((p) => p.id == product.id)) {
+              updatedAllProducts.add(product);
+            }
+          }
+
+          state = state.copyWith(
+            products: data, // Productos de la categoría actual
+            allProducts:
+                updatedAllProducts, // Todos los productos sin duplicados
+            isProductsLoading: false,
+          );
+        },
+        failure: (failure, status) {
+          state = state.copyWith(isProductsLoading: false);
+          debugPrint('==> get products failure: $failure');
+          AppHelpers.showSnackBar(context, failure);
+        },
       );
+    } catch (e) {
+      state = state.copyWith(isProductsLoading: false);
+      debugPrint('==> fetch products failure: $e');
+      AppHelpers.showSnackBar(context, 'Error al cargar los productos');
     }
   }
 
-void setProductsQuery(BuildContext context, String query) {
-  if (state.query == query) {
-    return;
+  void setProductsQuery(BuildContext context, String query) {
+    if (state.query == query) {
+      return;
+    }
+
+    state = state.copyWith(query: query.trim());
+
+    if (_searchProductsTimer?.isActive ?? false) {
+      _searchProductsTimer?.cancel();
+    }
+
+    _searchProductsTimer = Timer(
+      const Duration(milliseconds: 500),
+      () async {
+        // Obtener todos los productos y categorías
+        final productResponse = await productsRepository.getProductsPaginate();
+        final categoryResponse = await categoriesRepository.searchCategories();
+
+        productResponse.when(
+          success: (allProducts) {
+            categoryResponse.when(
+              success: (categoriesData) {
+                // Crear un mapa {categoryId: categoryName}
+                final categoryMap = {
+                  for (var c in categoriesData) c.id: c.name!.toLowerCase()
+                };
+
+                // Filtrar productos por nombre o categoría
+                final filteredProducts = allProducts.where((product) {
+                  final matchesName = product.name!
+                      .toLowerCase()
+                      .contains(state.query.toLowerCase());
+                  final matchesCategory = categoryMap[product.category]
+                          ?.contains(state.query.toLowerCase()) ??
+                      false;
+                  return matchesName || matchesCategory;
+                }).toList();
+
+                state = state.copyWith(products: filteredProducts);
+              },
+              failure: (error, status) {
+                debugPrint('Error al obtener categorías: $error');
+              },
+            );
+          },
+          failure: (error, status) {
+            debugPrint('Error al obtener productos: $error');
+          },
+        );
+      },
+    );
   }
-
-  state = state.copyWith(query: query.trim());
-
-  if (_searchProductsTimer?.isActive ?? false) {
-    _searchProductsTimer?.cancel();
-  }
-
-  _searchProductsTimer = Timer(
-    const Duration(milliseconds: 500),
-    () async {
-      // Obtener todos los productos y categorías
-      final productResponse = await productsRepository.getProductsPaginate();
-      final categoryResponse = await categoriesRepository.searchCategories();
-
-      productResponse.when(
-        success: (allProducts) {
-          categoryResponse.when(
-            success: (categoriesData) {
-              // Crear un mapa {categoryId: categoryName}
-              final categoryMap = {for (var c in categoriesData) c.id: c.name!.toLowerCase()};
-
-              // Filtrar productos por nombre o categoría
-              final filteredProducts = allProducts.where((product) {
-                final matchesName = product.name!.toLowerCase().contains(state.query.toLowerCase());
-                final matchesCategory = categoryMap[product.category]?.contains(state.query.toLowerCase()) ?? false;
-                return matchesName || matchesCategory;
-              }).toList();
-
-              state = state.copyWith(products: filteredProducts);
-            },
-            failure: (error, status) {
-              debugPrint('Error al obtener categorías: $error');
-            },
-          );
-        },
-        failure: (error, status) {
-          debugPrint('Error al obtener productos: $error');
-        },
-      );
-    },
-  );
-}
-
-
-
 
   Future<void> fetchCategories({required BuildContext context}) async {
     final connected = await AppConnectivity.connectivity();

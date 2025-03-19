@@ -21,15 +21,12 @@ import 'package:kibbi_kiosk/src/models/data/order_body_data.dart';
 import 'right_side_state.dart';
 
 class RightSideNotifier extends StateNotifier<RightSideState> {
-  String? _phone;
   String? _name;
   Timer? timer;
-  Timer? _searchSectionTimer;
-  Timer? _searchTableTimer;
 
   RightSideNotifier() : super(const RightSideState());
 
-  // void yment(String? paymentId) {
+  // void Payment(String? paymentId) {
   //   final BagData? bag = LocalStorage.getBag();
   //   PaymentData? paymentData;
   //   for (final payment in state.payments) {
@@ -236,7 +233,6 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     // Obtenemos el objeto de la bolsa (bag) desde LocalStorage
     BagData? bag = LocalStorage.getBag();
 
-    // Verificamos que la bolsa no sea nula antes de modificarla
     if (bag != null) {
       // Copiamos la bolsa y le asignamos una lista vacía de productos
       bag = bag.copyWith(bagProducts: []);

@@ -12,7 +12,8 @@ class ShopState with _$ShopState {
     @Default(false) bool isBrandsLoading,
     @Default(false) bool isCategoriesLoading,
     @Default(true) bool hasMore,
-    @Default([]) List<ProductData> products,
+    @Default([]) List<ProductData> products, 
+    @Default([]) List<ProductData> allProducts, // Todos los productos cargados
     @Default([]) List<CategoryData> categories,
     @Default([]) List<DropDownItemData> dropDownCategories,
     @Default([]) List<DropDownItemData> dropDownBrands,

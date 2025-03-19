@@ -22,6 +22,8 @@ mixin _$ShopState {
   bool get isCategoriesLoading => throw _privateConstructorUsedError;
   bool get hasMore => throw _privateConstructorUsedError;
   List<ProductData> get products => throw _privateConstructorUsedError;
+  List<ProductData> get allProducts =>
+      throw _privateConstructorUsedError; // Todos los productos cargados
   List<CategoryData> get categories => throw _privateConstructorUsedError;
   List<DropDownItemData> get dropDownCategories =>
       throw _privateConstructorUsedError;
@@ -51,6 +53,7 @@ abstract class $ShopStateCopyWith<$Res> {
       bool isCategoriesLoading,
       bool hasMore,
       List<ProductData> products,
+      List<ProductData> allProducts,
       List<CategoryData> categories,
       List<DropDownItemData> dropDownCategories,
       List<DropDownItemData> dropDownBrands,
@@ -81,6 +84,7 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
     Object? isCategoriesLoading = null,
     Object? hasMore = null,
     Object? products = null,
+    Object? allProducts = null,
     Object? categories = null,
     Object? dropDownCategories = null,
     Object? dropDownBrands = null,
@@ -113,6 +117,10 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
       products: null == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
+              as List<ProductData>,
+      allProducts: null == allProducts
+          ? _value.allProducts
+          : allProducts // ignore: cast_nullable_to_non_nullable
               as List<ProductData>,
       categories: null == categories
           ? _value.categories
@@ -161,6 +169,7 @@ abstract class _$$ShopStateImplCopyWith<$Res>
       bool isCategoriesLoading,
       bool hasMore,
       List<ProductData> products,
+      List<ProductData> allProducts,
       List<CategoryData> categories,
       List<DropDownItemData> dropDownCategories,
       List<DropDownItemData> dropDownBrands,
@@ -189,6 +198,7 @@ class __$$ShopStateImplCopyWithImpl<$Res>
     Object? isCategoriesLoading = null,
     Object? hasMore = null,
     Object? products = null,
+    Object? allProducts = null,
     Object? categories = null,
     Object? dropDownCategories = null,
     Object? dropDownBrands = null,
@@ -221,6 +231,10 @@ class __$$ShopStateImplCopyWithImpl<$Res>
       products: null == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
+              as List<ProductData>,
+      allProducts: null == allProducts
+          ? _value._allProducts
+          : allProducts // ignore: cast_nullable_to_non_nullable
               as List<ProductData>,
       categories: null == categories
           ? _value._categories
@@ -264,6 +278,7 @@ class _$ShopStateImpl extends _ShopState {
       this.isCategoriesLoading = false,
       this.hasMore = true,
       final List<ProductData> products = const [],
+      final List<ProductData> allProducts = const [],
       final List<CategoryData> categories = const [],
       final List<DropDownItemData> dropDownCategories = const [],
       final List<DropDownItemData> dropDownBrands = const [],
@@ -272,6 +287,7 @@ class _$ShopStateImpl extends _ShopState {
       this.selectedCategory,
       this.selectedOrder})
       : _products = products,
+        _allProducts = allProducts,
         _categories = categories,
         _dropDownCategories = dropDownCategories,
         _dropDownBrands = dropDownBrands,
@@ -301,7 +317,18 @@ class _$ShopStateImpl extends _ShopState {
     return EqualUnmodifiableListView(_products);
   }
 
+  final List<ProductData> _allProducts;
+  @override
+  @JsonKey()
+  List<ProductData> get allProducts {
+    if (_allProducts is EqualUnmodifiableListView) return _allProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allProducts);
+  }
+
+// Todos los productos cargados
   final List<CategoryData> _categories;
+// Todos los productos cargados
   @override
   @JsonKey()
   List<CategoryData> get categories {
@@ -342,7 +369,7 @@ class _$ShopStateImpl extends _ShopState {
 
   @override
   String toString() {
-    return 'ShopState(isProductsLoading: $isProductsLoading, isMoreProductsLoading: $isMoreProductsLoading, isBrandsLoading: $isBrandsLoading, isCategoriesLoading: $isCategoriesLoading, hasMore: $hasMore, products: $products, categories: $categories, dropDownCategories: $dropDownCategories, dropDownBrands: $dropDownBrands, query: $query, categoryQuery: $categoryQuery, selectedCategory: $selectedCategory, selectedOrder: $selectedOrder)';
+    return 'ShopState(isProductsLoading: $isProductsLoading, isMoreProductsLoading: $isMoreProductsLoading, isBrandsLoading: $isBrandsLoading, isCategoriesLoading: $isCategoriesLoading, hasMore: $hasMore, products: $products, allProducts: $allProducts, categories: $categories, dropDownCategories: $dropDownCategories, dropDownBrands: $dropDownBrands, query: $query, categoryQuery: $categoryQuery, selectedCategory: $selectedCategory, selectedOrder: $selectedOrder)';
   }
 
   @override
@@ -360,6 +387,8 @@ class _$ShopStateImpl extends _ShopState {
                 other.isCategoriesLoading == isCategoriesLoading) &&
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
+            const DeepCollectionEquality()
+                .equals(other._allProducts, _allProducts) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             const DeepCollectionEquality()
@@ -384,6 +413,7 @@ class _$ShopStateImpl extends _ShopState {
       isCategoriesLoading,
       hasMore,
       const DeepCollectionEquality().hash(_products),
+      const DeepCollectionEquality().hash(_allProducts),
       const DeepCollectionEquality().hash(_categories),
       const DeepCollectionEquality().hash(_dropDownCategories),
       const DeepCollectionEquality().hash(_dropDownBrands),
@@ -409,6 +439,7 @@ abstract class _ShopState extends ShopState {
       final bool isCategoriesLoading,
       final bool hasMore,
       final List<ProductData> products,
+      final List<ProductData> allProducts,
       final List<CategoryData> categories,
       final List<DropDownItemData> dropDownCategories,
       final List<DropDownItemData> dropDownBrands,
@@ -430,6 +461,8 @@ abstract class _ShopState extends ShopState {
   bool get hasMore;
   @override
   List<ProductData> get products;
+  @override
+  List<ProductData> get allProducts; // Todos los productos cargados
   @override
   List<CategoryData> get categories;
   @override
