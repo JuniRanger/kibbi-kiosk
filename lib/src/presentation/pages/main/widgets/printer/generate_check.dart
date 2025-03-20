@@ -2,35 +2,24 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import '../product_list/right_side/riverpod/right_side_state.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:kibbi_kiosk/src/core/constants/constants.dart';
 import 'package:kibbi_kiosk/src/core/routes/app_router.dart';
 import 'package:kibbi_kiosk/src/core/utils/app_helpers.dart';
-import 'package:kibbi_kiosk/src/core/utils/time_service.dart';
-import 'package:kibbi_kiosk/src/models/data/bag_data.dart';
-import 'package:kibbi_kiosk/src/models/data/order_body_data.dart';
-import 'package:kibbi_kiosk/src/models/data/order_data.dart';
+import 'package:kibbi_kiosk/src/models/response/order_response.dart';
 import 'package:kibbi_kiosk/src/presentation/components/components.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/app_style.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../product_list/right_side/riverpod/right_side_provider.dart';
 
 import 'print_page.dart';
 
-class GenerateCheckPage extends ConsumerWidget {
-  final OrderBodyData? orderData;
+class GenerateCheckPage extends StatelessWidget {
+  final OrderResponse orderResponse;
 
-  const GenerateCheckPage({super.key, required this.orderData});
+  const GenerateCheckPage({super.key, required this.orderResponse});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final rightSideState = ref.watch(rightSideProvider);
-    final bagData = rightSideState.bag;
-    num subTotal = bagData?.cartTotal ?? 0; // Use cartTotal from BagData
-
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Style.white,
@@ -49,7 +38,7 @@ class GenerateCheckPage extends ConsumerWidget {
             ),
             8.verticalSpace,
             Text(
-              "Orden #${orderData?.numOrder}",
+              "Orden #${orderResponse.numOrder}",
               style: GoogleFonts.inter(
                   fontSize: 16.sp, fontWeight: FontWeight.w500),
             ),
@@ -65,87 +54,30 @@ class GenerateCheckPage extends ConsumerWidget {
                       )),
             ),
             12.verticalSpace,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 100.w,
-                  child: Text(
-                    'Restaurante',
-                    style: GoogleFonts.inter(
-                        fontSize: 14.sp, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Text(
-                  "Restaurante",
-                  style: GoogleFonts.inter(
-                      fontSize: 14.sp, fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
-            8.verticalSpace,
-            // Commented out the username check and display logic
-            /*
-            if (orderData?.username?.isNotEmpty ?? false)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 100.w,
-                        child: Text(
-                          'Cliente',
-                          style: GoogleFonts.inter(
-                              fontSize: 14.sp, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Text(
-                        orderData?.username ?? "Cliente",
-                        style: GoogleFonts.inter(
-                            fontSize: 14.sp, fontWeight: FontWeight.w400),
-                      )
-                    ],
-                  ),
-                  8.verticalSpace,
-                ],
-              ),
-            */
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 80.w,
-                  child: Text(
-                    'Fecha',
-                    style: GoogleFonts.inter(
-                        fontSize: 14.sp, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                // Text(
-                //   TimeService.dateFormatYMDHm(orderData?.createdAt),
-                //   style: GoogleFonts.inter(
-                //       fontSize: 12.sp, fontWeight: FontWeight.w400),
-                // )
-              ],
-            ),
+            _infoRow('Restaurante', orderResponse.restaurantName),
+            _infoRow('Cliente', orderResponse.customerName),
+            _infoRow(
+                'Fecha', DateFormat.yMMMd().add_jm().format(orderResponse.createdAt)),
+            _infoRow('Método de pago', orderResponse.paymentMethod),
+            _infoRow('Moneda', orderResponse.currency),
+            _infoRow('Tipo de orden', orderResponse.orderType),
+            if (orderResponse.notes != null && orderResponse.notes!.isNotEmpty)
+              _infoRow('Notas', orderResponse.notes!),
             10.verticalSpace,
-            Divider(
-              thickness: 2.r,
-            ),
+            Divider(thickness: 2.r),
             ListView.builder(
-                padding: EdgeInsets.only(top: 16.r),
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: bagData?.bagProducts?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final product = bagData?.bagProducts?[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.r),
-                    child: _productItem(product),
-                  );
-                }),
+              padding: EdgeInsets.only(top: 16.r),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: orderResponse.products.length,
+              itemBuilder: (context, index) {
+                final product = orderResponse.products[index];
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.r),
+                  child: _productItem(product),
+                );
+              },
+            ),
             Row(
               children: List.generate(
                   20,
@@ -157,21 +89,7 @@ class GenerateCheckPage extends ConsumerWidget {
                       )),
             ),
             20.verticalSpace,
-            Row(
-              children: [
-                Text(
-                  'Precio total',
-                  style: GoogleFonts.inter(
-                      fontSize: 14.sp, fontWeight: FontWeight.w700),
-                ),
-                const Spacer(),
-                Text(
-                  AppHelpers.numberFormat(subTotal),
-                  style: GoogleFonts.inter(
-                      fontSize: 14.sp, fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
+            _priceRow('Precio total', orderResponse.totalSale),
             10.verticalSpace,
             Row(
               children: List.generate(
@@ -192,11 +110,12 @@ class GenerateCheckPage extends ConsumerWidget {
             24.verticalSpace,
             LoginButton(
                 title: 'Imprimir',
+                titleColor: Style.white,
                 onPressed: () async {
                   if (context.mounted) {
                     AppHelpers.showAlertDialog(
                         context: context,
-                        child: PrintPage(orderData: orderData));
+                        child: PrintPage(orderData: null)); // Adjust as needed
                   }
                 }),
             12.verticalSpace,
@@ -213,7 +132,28 @@ class GenerateCheckPage extends ConsumerWidget {
     );
   }
 
-  _productItem(BagProductData? product) {
+  Widget _infoRow(String title, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.r),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.inter(
+                fontSize: 14.sp, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.inter(
+                fontSize: 14.sp, fontWeight: FontWeight.w400),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _productItem(Product product) {
     return Column(
       children: [
         Row(
@@ -225,15 +165,29 @@ class GenerateCheckPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${product?.productId ?? ""} x ${product?.quantity ?? ""}",
+                    "${product.name} x ${product.quantity}",
                     style: GoogleFonts.inter(
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
                         color: Style.black),
                   ),
                   6.verticalSpace,
+                  Text(
+                    "Precio unitario: ${AppHelpers.numberFormat(product.salePrice)}",
+                    style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp,
+                        color: Style.unselectedTab),
+                  ),
                 ],
               ),
+            ),
+            Text(
+              AppHelpers.numberFormat(product.salePrice * product.quantity),
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                  color: Style.black),
             ),
           ],
         ),
@@ -252,42 +206,21 @@ class GenerateCheckPage extends ConsumerWidget {
     );
   }
 
-  _priceItem({
-    required String title,
-    required num? price,
-    String? symbol,
-    bool isDiscount = false,
-  }) {
-    return (price ?? 0) != 0
-        ? Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.inter(
-                      color: isDiscount ? Style.red : Style.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                  Text(
-                    (isDiscount ? "-" : '') +
-                        AppHelpers.numberFormat(price, symbol: symbol),
-                    style: GoogleFonts.inter(
-                      color: isDiscount ? Style.red : Style.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                ],
-              ),
-              12.verticalSpace,
-            ],
-          )
-        : const SizedBox.shrink();
+  Widget _priceRow(String title, num value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.inter(
+              fontSize: 14.sp, fontWeight: FontWeight.w700),
+        ),
+        Text(
+          AppHelpers.numberFormat(value),
+          style: GoogleFonts.inter(
+              fontSize: 14.sp, fontWeight: FontWeight.w400),
+        ),
+      ],
+    );
   }
 }

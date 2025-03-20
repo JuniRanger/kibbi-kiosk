@@ -1,6 +1,5 @@
 import 'package:kibbi_kiosk/generated/assets.dart';
-import 'package:kibbi_kiosk/src/models/data/order_body_data.dart';
-import 'package:kibbi_kiosk/src/models/data/order_data.dart';
+import 'package:kibbi_kiosk/src/models/response/order_response.dart';
 import 'package:kibbi_kiosk/src/presentation/pages/main/widgets/printer/generate_check.dart';
 import 'package:kibbi_kiosk/src/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +12,9 @@ import '../../../core/utils/app_helpers.dart';
 import 'animation_button_effect.dart';
 
 class InvoiceDownload extends StatelessWidget {
-  final OrderBodyData? orderData;
+  final OrderResponse orderResponse;
 
-  const InvoiceDownload({super.key, required this.orderData});
+  const InvoiceDownload({super.key, required this.orderResponse});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class InvoiceDownload extends StatelessWidget {
                     title: SizedBox(
                       height: constraints.maxHeight * 0.7,
                       width: 300.r,
-                      child: GenerateCheckPage(orderData: orderData),
+                      child: GenerateCheckPage(orderResponse: orderResponse),
                     ),
                   );
                 });

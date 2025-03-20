@@ -11,6 +11,7 @@ import 'package:kibbi_kiosk/src/models/models.dart';
 import 'package:kibbi_kiosk/src/presentation/pages/main/widgets/printer/generate_check.dart';
 import 'package:kibbi_kiosk/src/repository/orders.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
+import 'package:kibbi_kiosk/src/models/response/order_response.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -458,7 +459,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         createOrder(
           context,
           orderBodyData,
-          onSuccess: (orderBodyData) {
+          onSuccess: (orderResponse) {
             fetchBag();
             context.maybePop();
             showDialog(
@@ -468,7 +469,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
                   return AlertDialog(
                     content: SizedBox(
                       width: 300.r,
-                      child: GenerateCheckPage(orderData: orderBodyData),
+                      child: GenerateCheckPage(orderResponse: orderResponse!),
                     ),
                   );
                 });
@@ -483,7 +484,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   Future<void> createOrder(
     BuildContext context,
     OrderBodyData data, {
-    ValueChanged<OrderBodyData?>? onSuccess,
+    ValueChanged<OrderResponse?>? onSuccess,
     VoidCallback? onFailure,
   }) async {
     final connected = await AppConnectivity.connectivity();
@@ -494,7 +495,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         success: (order) async {
           removeOrderedBag(context);
           state = state.copyWith(isOrderLoading: false);
-          onSuccess?.call(data); // Pass OrderBodyData instead of OrderData
+          onSuccess?.call(order); // Pass OrderResponse instead of OrderBodyData
         },
         failure: (failure, status) {
           state = state.copyWith(isOrderLoading: false);

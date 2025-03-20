@@ -1,5 +1,6 @@
 export './response/login_response.dart';
 export './response/payments_response.dart';
+export './response/order_response.dart';
 export './data/kiosk_data.dart';
 export './data/currency_data.dart';
 export './data/pricedate_data.dart';
