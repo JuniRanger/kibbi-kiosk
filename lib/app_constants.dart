@@ -5,8 +5,8 @@ abstract class AppConstants {
 
   static const String baseUrl = "https://orderandout.onrender.com"; //reemplazarlo con el link de order and out 
 
-  static const String demoKioskLogin = '67cdda2a071b9b151b44ae61';
-  static const String demoKioskPassword = '123456789';
+  static const String demoKioskLogin = '67db9b46c47a0afb5eb9386c';
+  static const String demoKioskPassword = '12hVas123333';
 
 
   static const Duration refreshTime = Duration(seconds: 30);

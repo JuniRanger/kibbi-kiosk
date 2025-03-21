@@ -71,9 +71,29 @@ class OrderInformation extends ConsumerWidget {
                       children: [
                         CustomTextField(
                           inputType: TextInputType.text,
-                          validator: AppValidators.emptyCheck,
-                          onChanged: notifier.setFirstName, // Capture input in customerName
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(15),
+                          ],
+                          validator: (value) {
+                            final emptyCheck = AppValidators.emptyCheck(value);
+                            if (emptyCheck != null) return emptyCheck;
+                            return AppValidators.maxLengthCheck(value, 15);
+                          },
+                          onChanged: (value) {
+                            notifier.setFirstName(value);
+                          },
                           label: 'Nombre',
+                        ),
+                        4.verticalSpace,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '${state.customerName?.length ?? 0}/15',
+                            style: GoogleFonts.inter(
+                              fontSize: 12.sp,
+                              color: Style.unselectedTab,
+                            ),
+                          ),
                         ),
                         Visibility(
                           visible: state.selectNameError != null,

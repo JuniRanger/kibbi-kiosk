@@ -20,6 +20,8 @@ class GenerateCheckPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final order = orderResponse.order;
+
     return Container(
       decoration: BoxDecoration(
         color: Style.white,
@@ -38,7 +40,7 @@ class GenerateCheckPage extends StatelessWidget {
             ),
             8.verticalSpace,
             Text(
-              "Orden #${orderResponse.numOrder}",
+              "Orden #${order.numOrder}",
               style: GoogleFonts.inter(
                   fontSize: 16.sp, fontWeight: FontWeight.w500),
             ),
@@ -54,24 +56,24 @@ class GenerateCheckPage extends StatelessWidget {
                       )),
             ),
             12.verticalSpace,
-            _infoRow('Restaurante', orderResponse.restaurantName),
-            _infoRow('Cliente', orderResponse.customerName),
+            _infoRow('Restaurante', order.restaurantName),
+            _infoRow('Cliente', order.customerName),
             _infoRow(
-                'Fecha', DateFormat.yMMMd().add_jm().format(orderResponse.createdAt)),
-            _infoRow('Método de pago', orderResponse.paymentMethod),
-            _infoRow('Moneda', orderResponse.currency),
-            _infoRow('Tipo de orden', orderResponse.orderType),
-            if (orderResponse.notes != null && orderResponse.notes!.isNotEmpty)
-              _infoRow('Notas', orderResponse.notes!),
+                'Fecha', DateFormat.yMMMd().add_jm().format(order.createdAt)),
+            _infoRow('Método de pago', order.paymentMethod),
+            _infoRow('Moneda', order.currency),
+            _infoRow('Tipo de orden', order.orderType),
+            if (order.notes != null && order.notes!.isNotEmpty)
+              _infoRow('Notas', order.notes!),
             10.verticalSpace,
             Divider(thickness: 2.r),
             ListView.builder(
               padding: EdgeInsets.only(top: 16.r),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: orderResponse.products.length,
+              itemCount: order.products.length,
               itemBuilder: (context, index) {
-                final product = orderResponse.products[index];
+                final product = order.products[index];
                 return Padding(
                   padding: EdgeInsets.only(bottom: 16.r),
                   child: _productItem(product),
@@ -89,7 +91,7 @@ class GenerateCheckPage extends StatelessWidget {
                       )),
             ),
             20.verticalSpace,
-            _priceRow('Precio total', orderResponse.totalSale),
+            _priceRow('Venta total', order.totalSale),
             10.verticalSpace,
             Row(
               children: List.generate(

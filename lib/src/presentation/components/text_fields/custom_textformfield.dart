@@ -5,6 +5,8 @@ import 'package:kibbi_kiosk/src/core/utils/app_helpers.dart';
 
 import '../../theme/theme.dart';
 
+import 'package:flutter/services.dart'; // <-- IMPORTANTE: Importar esto para los formatters
+
 class CustomTextField extends StatelessWidget {
   final String? label;
   final Widget? suffixIcon;
@@ -22,6 +24,7 @@ class CustomTextField extends StatelessWidget {
   final bool isSuccess;
   final String? Function(String? value)? validator;
   final TextCapitalization? textCapitalization;
+  final List<TextInputFormatter>? inputFormatters; // <-- Nuevo parámetro agregado
 
   const CustomTextField({
     super.key,
@@ -41,6 +44,7 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.hintText,
     this.validator,
+    this.inputFormatters, // <-- Inicializado aquí
   });
 
   @override
@@ -70,11 +74,11 @@ class CustomTextField extends StatelessWidget {
           readOnly: readOnly,
           textCapitalization:
               textCapitalization ?? TextCapitalization.sentences,
+          inputFormatters: inputFormatters, // <-- Se pasa aquí
           decoration: InputDecoration(
             hintText: hintText,
             suffixIcon: suffixIcon,
-            labelText:
-                label,
+            labelText: label,
             floatingLabelStyle: GoogleFonts.inter(
               fontWeight: FontWeight.w400,
               fontSize: 14.sp,

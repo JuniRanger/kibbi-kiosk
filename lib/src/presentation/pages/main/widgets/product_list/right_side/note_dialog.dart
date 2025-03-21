@@ -17,16 +17,23 @@ class NoteDialog extends ConsumerStatefulWidget {
 
 class _NoteDialogState extends ConsumerState<NoteDialog> {
   late TextEditingController controller;
+  int charCount = 0;
 
   @override
   void initState() {
     controller = TextEditingController();
+    controller.addListener(() {
+      setState(() {
+        charCount = controller.text.length;
+      });
+    });
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     controller.text = ref.watch(rightSideProvider).comment;
+    charCount = controller.text.length;
     super.didChangeDependencies();
   }
 
@@ -40,7 +47,7 @@ class _NoteDialogState extends ConsumerState<NoteDialog> {
   Widget build(BuildContext context) {
     return Container(
       width: 300.w,
-      height: 240.w,
+      height: 260.w,
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: Style.white,
@@ -58,10 +65,22 @@ class _NoteDialogState extends ConsumerState<NoteDialog> {
           OutlinedBorderTextField(
             textController: controller,
             label: 'Nota',
+            maxLength: 30, // Limita el texto a 30 caracteres
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              '$charCount/30',
+              style: GoogleFonts.inter(
+                fontSize: 12.r,
+                color: Style.black,
+              ),
+            ),
           ),
           const Spacer(),
           LoginButton(
             title: 'Guardar',
+            titleColor: Style.white,
             onPressed: () {
               ref.read(rightSideProvider.notifier).setNote(controller.text);
               context.router.maybePop();

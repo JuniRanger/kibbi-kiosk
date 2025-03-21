@@ -1,10 +1,27 @@
 class OrderResponse {
+  final Order order;
+  final String? paymentUrl; // Hacer paymentUrl opcional
+
+  OrderResponse({
+    required this.order,
+    this.paymentUrl, // Ahora es opcional
+  });
+
+  factory OrderResponse.fromJson(Map<String, dynamic> json) {
+    return OrderResponse(
+      order: Order.fromJson(json['order']),
+      paymentUrl: json['paymentUrl'], // Si no está presente, será null
+    );
+  }
+}
+
+class Order {
   final String numOrder;
   final List<Product> products;
-  final double totalCost;
-  final double totalSale;
+  final num totalCost; // Cambiado a num
+  final num totalSale; // Cambiado a num
   final String status;
-  final String? notes;
+  final String? notes; // Hacer notes opcional
   final String createdById;
   final String createdByName;
   final String createdByType;
@@ -14,20 +31,20 @@ class OrderResponse {
   final String paymentMethod;
   final String currency;
   final String orderType;
-  final String? paymentStatus; // Hacerlo opcional
+  final String? paymentStatus; // Hacer paymentStatus opcional
   final String id;
   final DateTime createdAt;
   final DateTime updatedAt;
   final int v;
-  final String? stripePaymentUrl; // Descomentado y ahora puede ser nulo
+  final String? stripePaymentUrl; // Hacer stripePaymentUrl opcional
 
-  OrderResponse({
+  Order({
     required this.numOrder,
     required this.products,
     required this.totalCost,
     required this.totalSale,
     required this.status,
-    this.notes,
+    this.notes, // Ahora es opcional
     required this.createdById,
     required this.createdByName,
     required this.createdByType,
@@ -45,15 +62,16 @@ class OrderResponse {
     this.stripePaymentUrl, // Ahora es opcional
   });
 
-  factory OrderResponse.fromJson(Map<String, dynamic> json) {
-    return OrderResponse(
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
       numOrder: json['numOrder'].toString(), // Convertir a String si es necesario
-      products: List<Product>.from(
-          json['products'].map((x) => Product.fromJson(x))),
-      totalCost: (json['totalCost'] as num).toDouble(),
-      totalSale: (json['totalSale'] as num).toDouble(),
+      products: json['products'] != null
+          ? List<Product>.from(json['products'].map((x) => Product.fromJson(x)))
+          : [], // Si es null, usa una lista vacía
+      totalCost: json['totalCost'], // Mantener como num
+      totalSale: json['totalSale'], // Mantener como num
       status: json['status'],
-      notes: json['notes'],
+      notes: json['notes'], // Puede ser null
       createdById: json['createdById'],
       createdByName: json['createdByName'],
       createdByType: json['createdByType'],
@@ -77,8 +95,8 @@ class Product {
   final String productId;
   final String name;
   final int quantity;
-  final double costPrice;
-  final double salePrice;
+  final num costPrice; // Cambiado a num
+  final num salePrice; // Cambiado a num
   final Category category;
   final String id;
 
@@ -97,8 +115,8 @@ class Product {
       productId: json['productId'],
       name: json['name'],
       quantity: json['quantity'],
-      costPrice: (json['costPrice'] as num).toDouble(),
-      salePrice: (json['salePrice'] as num).toDouble(),
+      costPrice: json['costPrice'], // Mantener como num
+      salePrice: json['salePrice'], // Mantener como num
       category: Category.fromJson(json['category']),
       id: json['_id'],
     );
