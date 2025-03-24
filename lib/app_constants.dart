@@ -5,6 +5,9 @@ abstract class AppConstants {
 
   static const String baseUrl = "https://orderandout.onrender.com"; //reemplazarlo con el link de order and out 
 
+
+  // static const String baseUrl = "http://localhost:3000"; 
+
   static const String demoKioskLogin = '67db9b46c47a0afb5eb9386c';
   static const String demoKioskPassword = '12hVas123333';
 
