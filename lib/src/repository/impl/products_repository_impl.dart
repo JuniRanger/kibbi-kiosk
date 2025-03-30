@@ -64,81 +64,87 @@ class ProductsRepository extends ProductsFacade {
   }
 
   @override
- Future<ApiResult<num>> productsCalculateTotal(
-    {required List<BagProductData> bagProducts}) async {
-  debugPrint('==> productsCalculateTotal CALLED');
-  final List<Map<String, dynamic>> data = bagProducts
-      .map((product) => {
-            "productId": product.productId,
-            "quantity": product.quantity,
-          })
-      .toList();
+  Future<ApiResult<num>> productsCalculateTotal(
+      {required List<BagProductData> bagProducts}) async {
+    debugPrint('==> productsCalculateTotal CALLED');
+    final List<Map<String, dynamic>> data = bagProducts
+        .map((product) => {
+              "productId": product.productId,
+              "quantity": product.quantity,
+            })
+        .toList();
 
-  debugPrint('==> Calculating total sale with data: $data');
+    debugPrint('==> Calculating total sale with data: $data');
 
-  try {
-    final client = dioHttp.client(requireAuth: true);
-    final response = await client.post(
-      '/api/orders/calculateTotalSale',
-      data: data, // Mandamos el array directamente
-    );
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      final response = await client.post(
+        '/api/orders/calculateTotalSale',
+        data: data, // Mandamos el array directamente
+      );
 
-    debugPrint('==> Response status code: ${response.statusCode}');
-    debugPrint('==> Response data: ${response.data}');
+      debugPrint('==> Response status code: ${response.statusCode}');
+      debugPrint('==> Response data: ${response.data}');
 
-    if (response.statusCode == 200 && response.data != null) {
-      // Usar directamente como num, sin necesidad de conversión
-      final totalSale = response.data['totalSale'] as num;
-      debugPrint('==> Total sale calculated successfully: $totalSale');
-      return ApiResult.success(data: totalSale);
-    } else {
-      debugPrint('==> Error: Unexpected response format or status code');
-      throw Exception("Error al calcular el total del carrito");
+      if (response.statusCode == 200 && response.data != null) {
+        // Usar directamente como num, sin necesidad de conversión
+        final totalSale = response.data['totalSale'] as num;
+        debugPrint('==> Total sale calculated successfully: $totalSale');
+        return ApiResult.success(data: totalSale);
+      } else {
+        debugPrint('==> Error: Unexpected response format or status code');
+        throw Exception("Error al calcular el total del carrito");
+      }
+    } catch (e, s) {
+      debugPrint('==> get cart total failure: $e, $s');
+      return ApiResult.failure(error: AppHelpers.errorHandler(e));
     }
-  } catch (e, s) {
-    debugPrint('==> get cart total failure: $e, $s');
-    return ApiResult.failure(error: AppHelpers.errorHandler(e));
+  }
+
+  @override
+  Future<ApiResult<Map<String, dynamic>>> fetchCouponAndDiscount({
+    required String coupon,
+    required num totalSale,
+  }) async {
+    final data = {
+      'subtotal': totalSale,
+    };
+
+    debugPrint('==> Sending data for discount calculation: $data');
+
+    try {
+      final client = dioHttp.client(requireAuth: true);
+
+      // Ejecutar ambas llamadas en paralelo
+      final results = await Future.wait([
+        client.get(
+            '/api/coupons/myCoupon/code/$coupon'), // Obtener info del cupón
+        client.post('/api/coupons/myCoupon/discount/$coupon',
+            data: data), // Obtener descuento
+      ]);
+
+      final couponResponse = results[0]; // Respuesta del GET
+      final discountResponse = results[1]; // Respuesta del POST
+
+      debugPrint('==> Coupon response: ${couponResponse.data}');
+      debugPrint('==> Discount response: ${discountResponse.data}');
+
+      if (couponResponse.statusCode == 200 &&
+          discountResponse.statusCode == 200 &&
+          discountResponse.data != null) {
+        final couponInfo = couponResponse.data; // Información del cupón
+        final discount = discountResponse.data['discount'] as num; // Descuento
+
+        return ApiResult.success(data: {
+          'couponInfo': couponInfo,
+          'discount': discount,
+        });
+      } else {
+        throw Exception("Error al obtener los datos del cupón y el descuento");
+      }
+    } catch (e, s) {
+      debugPrint('==> Fetch coupon and discount failure: $e, $s');
+      return ApiResult.failure(error: AppHelpers.errorHandler(e));
+    }
   }
 }
-}
-
-
-  // @override
-  // Future<ApiResult<ProductCalculateResponse>> getAllCalculations(
-  //   List<BagProductData> bagProducts,
-  //   String type,
-  //   String? shopId, {
-  //   String? coupon,
-  // }) async {
-  //   final data = {
-  //     'currency_id': LocalStorage.getSelectedCurrency().id,
-  //     'lang': LocalStorage.getLanguage()?.locale,
-  //     'shop_id': shopId,
-  //     'type': type.isEmpty ? TrKeys.kiosk : type,
-  //     if (coupon != null) "coupon": coupon,
-  //   };
-  //   for (int i = 0; i < (bagProducts.length); i++) {
-  //     data['products[$i][stock_id]'] = bagProducts[i].stockId;
-  //     data['products[$i][quantity]'] = bagProducts[i].quantity;
-  //     for (int j = 0; j < (bagProducts[i].carts?.length ?? 0); j++) {
-  //       data['products[$i][addons][$j][stock_id]'] =
-  //           bagProducts[i].carts?[j].stockId;
-  //       data['products[$i][addons][$j][quantity]'] =
-  //           bagProducts[i].carts?[j].quantity;
-  //     }
-  //   }
-
-  //   try {
-  //     final client = dioHttp.client(requireAuth: true);
-  //     final response = await client.get(
-  //       '/api/v1/rest/order/products/calculate',
-  //       queryParameters: data,
-  //     );
-  //     return ApiResult.success(
-  //       data: ProductCalculateResponse.fromJson(response.data),
-  //     );
-  //   } catch (e, s) {
-  //     debugPrint('==> get all calculations failure: $e, $s');
-  //     return ApiResult.failure(error: AppHelpers.errorHandler(e));
-  //   }
-  // }

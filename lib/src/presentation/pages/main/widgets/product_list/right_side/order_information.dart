@@ -118,14 +118,6 @@ class OrderInformation extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text(
-                        //   'Moneda',
-                        //   style: GoogleFonts.inter(
-                        //     fontWeight: FontWeight.w500,
-                        //     fontSize: 14.sp,
-                        //     color: Style.black,
-                        //   ),
-                        // ),
                         8.verticalSpace,
                         PopupMenuButton<int>(
                           itemBuilder: (context) {
@@ -178,14 +170,6 @@ class OrderInformation extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text(
-                        //   'Método de pago',
-                        //   style: GoogleFonts.inter(
-                        //     fontWeight: FontWeight.w500,
-                        //     fontSize: 14.sp,
-                        //     color: Style.black,
-                        //   ),
-                        // ),
                         8.verticalSpace,
                         PopupMenuButton<String>(
                           itemBuilder: (context) {
@@ -249,6 +233,78 @@ class OrderInformation extends ConsumerWidget {
                   ),
                 ],
               ),
+              8.verticalSpace,
+              const Divider(),
+              8.verticalSpace,
+
+              /// Código de descuento
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextField(
+                          inputType: TextInputType.text,
+                          label: 'Código de descuento',
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(13), // Limit to 13 characters
+                            FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')), // Allow alphanumeric characters
+                          ],
+                          onChanged: (value) {
+                            notifier.setCoupon(value); // Save the coupon
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'El código no puede estar vacío';
+                            }
+                            if (value.length != 13) {
+                              return 'El código debe tener 13 caracteres';
+                            }
+                            return null;
+                          },
+                        ),
+                        4.verticalSpace,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '${state.coupon?.length ?? 0}/13',
+                            style: GoogleFonts.inter(
+                              fontSize: 12.sp,
+                              color: Style.unselectedTab,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  8.horizontalSpace,
+                  Expanded(
+                    flex: 1,
+                    child: LoginButton(
+                      title: 'Redimir',
+                      titleColor: Style.white,
+                      bgColor: Style.primary,
+                      onPressed: () {
+                        if (state.coupon != null && state.coupon!.length == 13) {
+                          notifier.setDiscount(context); // Apply discount
+                        } else {
+                          AppHelpers.showSnackBar(
+                            context,
+                            'El código debe tener 13 caracteres',
+                          );
+                        }
+                      },
+                      textStyle: GoogleFonts.inter(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700, // Make text bolder
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
               4.verticalSpace,
               const Divider(),
               4.verticalSpace,
@@ -400,8 +456,58 @@ class OrderInformation extends ConsumerWidget {
     required BagData bag,
     required BuildContext context,
   }) {
+    final subtotal = state.bag?.cartTotal ?? 0.0;
+    final discount = state.discount; // Use the discount from the state
+    final total = discount != null ? subtotal - discount : subtotal;
+
     return Column(
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Subtotal',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w400, // Smaller weight
+                fontSize: 14.sp, // Smaller font size
+                color: Style.unselectedTab, // Softer color
+              ),
+            ),
+            Text(
+              AppHelpers.numberFormat(subtotal, symbol: '\$'),
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500, // Slightly bold
+                fontSize: 14.sp, // Smaller font size
+                color: Style.unselectedTab, // Softer color
+              ),
+            ),
+          ],
+        ),
+        if (state.discount != null) ...[
+          4.verticalSpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Descuento',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w400, // Smaller weight
+                  fontSize: 14.sp, // Smaller font size
+                  color: Style.red, // Highlight discount in red
+                ),
+              ),
+              Text(
+                '-${AppHelpers.numberFormat(discount, symbol: '\$')}',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w500, // Slightly bold
+                  fontSize: 14.sp, // Smaller font size
+                  color: Style.red, // Highlight discount in red
+                ),
+              ),
+            ],
+          ),
+        ],
+        4.verticalSpace, // Add some spacing between Subtotal/Discount and Total
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -414,7 +520,7 @@ class OrderInformation extends ConsumerWidget {
               ),
             ),
             Text(
-              AppHelpers.numberFormat(state.bag?.cartTotal, symbol: '\$'),
+              AppHelpers.numberFormat(total, symbol: '\$'),
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
                 fontSize: 20.sp,

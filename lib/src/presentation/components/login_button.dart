@@ -21,7 +21,7 @@ class LoginButton extends StatelessWidget {
     this.isLoading = false,
     this.isActive = true,
     this.bgColor = Style.primary,
-    this.titleColor = Style.black,
+    this.titleColor = Style.black, TextStyle? textStyle,
   });
 
   @override

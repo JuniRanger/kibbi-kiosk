@@ -82,7 +82,22 @@ class GenerateCheckPage extends StatelessWidget {
                             )),
                   ),
                   20.verticalSpace,
-                  _priceRow('Venta total', order.totalSale),
+
+                  /// Add Subtotal and Discount if applicable
+                  _priceRow('Subtotal', order.subtotal ?? 0,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Style.unselectedTab),
+                  if (order.discount != null && order.discount! > 0)
+                    _priceRow('Descuento', -order.discount!,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Style.red),
+
+                  _priceRow('Venta total', order.totalSale,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Style.black),
                   12.verticalSpace,
                   Divider(thickness: 2.r), // Straight line divider
                   20.verticalSpace,
@@ -235,19 +250,22 @@ class GenerateCheckPage extends StatelessWidget {
     );
   }
 
-  Widget _priceRow(String title, num value) {
+  Widget _priceRow(String title, num value,
+      {required double fontSize,
+      required FontWeight fontWeight,
+      required Color color}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
           style: GoogleFonts.inter(
-              fontSize: 14.sp, fontWeight: FontWeight.w700),
+              fontSize: fontSize, fontWeight: fontWeight, color: color),
         ),
         Text(
           AppHelpers.numberFormat(value),
           style: GoogleFonts.inter(
-              fontSize: 14.sp, fontWeight: FontWeight.w400),
+              fontSize: fontSize, fontWeight: fontWeight, color: color),
         ),
       ],
     );

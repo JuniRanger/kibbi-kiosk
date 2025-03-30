@@ -97,7 +97,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      notifier.clearBag(context);
+                                      notifier.clearBag();
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.all(8.r),

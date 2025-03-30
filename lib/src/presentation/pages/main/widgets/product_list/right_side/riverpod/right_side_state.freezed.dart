@@ -37,12 +37,14 @@ mixin _$RightSideState {
   String? get selectSectionError => throw _privateConstructorUsedError;
   String? get selectTableError => throw _privateConstructorUsedError;
   String? get coupon => throw _privateConstructorUsedError;
+  String? get couponId => throw _privateConstructorUsedError;
   KioskData? get selectedUser => throw _privateConstructorUsedError;
   String get paymentMethod => throw _privateConstructorUsedError;
   String? get customerName => throw _privateConstructorUsedError;
   CurrencyData? get selectedCurrency => throw _privateConstructorUsedError;
   PaymentData? get selectedPayment => throw _privateConstructorUsedError;
   PriceDate? get paginateResponse => throw _privateConstructorUsedError;
+  num? get discount => throw _privateConstructorUsedError;
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.
@@ -79,12 +81,14 @@ abstract class $RightSideStateCopyWith<$Res> {
       String? selectSectionError,
       String? selectTableError,
       String? coupon,
+      String? couponId,
       KioskData? selectedUser,
       String paymentMethod,
       String? customerName,
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
-      PriceDate? paginateResponse});
+      PriceDate? paginateResponse,
+      num? discount});
 }
 
 /// @nodoc
@@ -123,12 +127,14 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? selectSectionError = freezed,
     Object? selectTableError = freezed,
     Object? coupon = freezed,
+    Object? couponId = freezed,
     Object? selectedUser = freezed,
     Object? paymentMethod = null,
     Object? customerName = freezed,
     Object? selectedCurrency = freezed,
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
+    Object? discount = freezed,
   }) {
     return _then(_value.copyWith(
       isBagsLoading: null == isBagsLoading
@@ -215,6 +221,10 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.coupon
           : coupon // ignore: cast_nullable_to_non_nullable
               as String?,
+      couponId: freezed == couponId
+          ? _value.couponId
+          : couponId // ignore: cast_nullable_to_non_nullable
+              as String?,
       selectedUser: freezed == selectedUser
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
@@ -239,6 +249,10 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.paginateResponse
           : paginateResponse // ignore: cast_nullable_to_non_nullable
               as PriceDate?,
+      discount: freezed == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as num?,
     ) as $Val);
   }
 }
@@ -273,12 +287,14 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       String? selectSectionError,
       String? selectTableError,
       String? coupon,
+      String? couponId,
       KioskData? selectedUser,
       String paymentMethod,
       String? customerName,
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
-      PriceDate? paginateResponse});
+      PriceDate? paginateResponse,
+      num? discount});
 }
 
 /// @nodoc
@@ -315,12 +331,14 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? selectSectionError = freezed,
     Object? selectTableError = freezed,
     Object? coupon = freezed,
+    Object? couponId = freezed,
     Object? selectedUser = freezed,
     Object? paymentMethod = null,
     Object? customerName = freezed,
     Object? selectedCurrency = freezed,
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
+    Object? discount = freezed,
   }) {
     return _then(_$RightSideStateImpl(
       isBagsLoading: null == isBagsLoading
@@ -407,6 +425,10 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.coupon
           : coupon // ignore: cast_nullable_to_non_nullable
               as String?,
+      couponId: freezed == couponId
+          ? _value.couponId
+          : couponId // ignore: cast_nullable_to_non_nullable
+              as String?,
       selectedUser: freezed == selectedUser
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
@@ -431,6 +453,10 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.paginateResponse
           : paginateResponse // ignore: cast_nullable_to_non_nullable
               as PriceDate?,
+      discount: freezed == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -460,12 +486,14 @@ class _$RightSideStateImpl extends _RightSideState {
       this.selectSectionError = null,
       this.selectTableError = null,
       this.coupon = null,
+      this.couponId = '',
       this.selectedUser = null,
       this.paymentMethod = '',
       this.customerName = '',
       this.selectedCurrency,
       this.selectedPayment,
-      this.paginateResponse})
+      this.paginateResponse,
+      this.discount = null})
       : _currencies = currencies,
         _payments = payments,
         super._();
@@ -547,6 +575,9 @@ class _$RightSideStateImpl extends _RightSideState {
   final String? coupon;
   @override
   @JsonKey()
+  final String? couponId;
+  @override
+  @JsonKey()
   final KioskData? selectedUser;
   @override
   @JsonKey()
@@ -560,10 +591,13 @@ class _$RightSideStateImpl extends _RightSideState {
   final PaymentData? selectedPayment;
   @override
   final PriceDate? paginateResponse;
+  @override
+  @JsonKey()
+  final num? discount;
 
   @override
   String toString() {
-    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, selectedUser: $selectedUser, paymentMethod: $paymentMethod, customerName: $customerName, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse)';
+    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, couponId: $couponId, selectedUser: $selectedUser, paymentMethod: $paymentMethod, customerName: $customerName, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse, discount: $discount)';
   }
 
   @override
@@ -610,6 +644,8 @@ class _$RightSideStateImpl extends _RightSideState {
             (identical(other.selectTableError, selectTableError) ||
                 other.selectTableError == selectTableError) &&
             (identical(other.coupon, coupon) || other.coupon == coupon) &&
+            (identical(other.couponId, couponId) ||
+                other.couponId == couponId) &&
             (identical(other.selectedUser, selectedUser) ||
                 other.selectedUser == selectedUser) &&
             (identical(other.paymentMethod, paymentMethod) ||
@@ -621,7 +657,9 @@ class _$RightSideStateImpl extends _RightSideState {
             (identical(other.selectedPayment, selectedPayment) ||
                 other.selectedPayment == selectedPayment) &&
             (identical(other.paginateResponse, paginateResponse) ||
-                other.paginateResponse == paginateResponse));
+                other.paginateResponse == paginateResponse) &&
+            (identical(other.discount, discount) ||
+                other.discount == discount));
   }
 
   @override
@@ -648,12 +686,14 @@ class _$RightSideStateImpl extends _RightSideState {
         selectSectionError,
         selectTableError,
         coupon,
+        couponId,
         selectedUser,
         paymentMethod,
         customerName,
         selectedCurrency,
         selectedPayment,
-        paginateResponse
+        paginateResponse,
+        discount
       ]);
 
   /// Create a copy of RightSideState
@@ -689,12 +729,14 @@ abstract class _RightSideState extends RightSideState {
       final String? selectSectionError,
       final String? selectTableError,
       final String? coupon,
+      final String? couponId,
       final KioskData? selectedUser,
       final String paymentMethod,
       final String? customerName,
       final CurrencyData? selectedCurrency,
       final PaymentData? selectedPayment,
-      final PriceDate? paginateResponse}) = _$RightSideStateImpl;
+      final PriceDate? paginateResponse,
+      final num? discount}) = _$RightSideStateImpl;
   const _RightSideState._() : super._();
 
   @override
@@ -740,6 +782,8 @@ abstract class _RightSideState extends RightSideState {
   @override
   String? get coupon;
   @override
+  String? get couponId;
+  @override
   KioskData? get selectedUser;
   @override
   String get paymentMethod;
@@ -751,6 +795,8 @@ abstract class _RightSideState extends RightSideState {
   PaymentData? get selectedPayment;
   @override
   PriceDate? get paginateResponse;
+  @override
+  num? get discount;
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.

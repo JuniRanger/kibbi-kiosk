@@ -37,6 +37,10 @@ class Order {
   final DateTime updatedAt;
   final int v;
   final String? stripePaymentUrl; // Hacer stripePaymentUrl opcional
+  final String? coupon; // Puede ser null
+  final String? couponId; // Puede ser null
+  final num? discount; // Puede ser null
+  final num? subtotal; // Puede ser null
 
   Order({
     required this.numOrder,
@@ -60,6 +64,10 @@ class Order {
     required this.updatedAt,
     required this.v,
     this.stripePaymentUrl, // Ahora es opcional
+    this.coupon, // Puede ser null
+    this.couponId, // Puede ser null
+    this.discount, // Puede ser null
+    this.subtotal, // Puede ser null
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
@@ -87,6 +95,10 @@ class Order {
       updatedAt: DateTime.parse(json['updatedAt']),
       v: json['__v'],
       stripePaymentUrl: json['stripePaymentUrl'], // Puede ser null
+      coupon: json['coupon'], // Puede ser null
+      couponId: json['couponId'], // Puede ser null
+      discount: json['discount'], // Puede ser null
+      subtotal: json['subtotal'], // Puede ser null
     );
   }
 }

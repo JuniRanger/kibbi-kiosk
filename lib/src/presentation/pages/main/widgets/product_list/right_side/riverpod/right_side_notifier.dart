@@ -172,7 +172,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  void calculateCartTotal() async {
+  Future<void> calculateCartTotal() async {
     final List<BagProductData> bagProducts =
         List.from(LocalStorage.getBag()?.bagProducts ?? []);
 
@@ -202,6 +202,53 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     );
   }
 
+  Future<void> setDiscount(BuildContext context) async {
+    final totalSale = state.bag?.cartTotal;
+    final coupon = state.coupon;
+
+    if (totalSale == null || coupon == null || coupon.isEmpty) {
+      debugPrint(
+          '==> No se puede aplicar descuento: totalSale o coupon es nulo');
+      return;
+    }
+
+    final result = await productsRepository.fetchCouponAndDiscount(
+      coupon: coupon,
+      totalSale: totalSale,
+    );
+
+    result.when(
+      success: (data) {
+        // Extraer la info del cupón y el descuento de la respuesta
+        final couponInfo = data['couponInfo'] as Map<String, dynamic>? ?? {};
+        final discount = data['discount'] as num? ?? 0;
+
+        // Obtener el ID del cupón si existe
+        final couponId = couponInfo['_id']?.toString() ?? '';
+
+        // Guardar en el estado
+        state = state.copyWith(
+          discount: discount,
+          couponId: couponId.isNotEmpty
+              ? couponId
+              : null, // Evitar guardar string vacío
+        );
+
+        debugPrint('==> Descuento aplicado: \$$discount');
+        debugPrint(
+            '==> Coupon ID guardado: ${couponId.isNotEmpty ? couponId : "Ninguno"}');
+      },
+      failure: (error, status) {
+        debugPrint('Error al aplicar descuento: $error, Status: $status');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al aplicar el descuento')),
+        );
+      },
+    );
+  }
+
+  void applyDiscount() async {}
+
   void setInitialBagData(BuildContext context, BagData bag) {
     state = state.copyWith(
         // selectedUser: bag.selectedUser,
@@ -220,38 +267,17 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     }
   }
 
-  void clearBag(BuildContext context) {
-    // Limpiamos los productos de la bolsa en el estado
+  void clearBag({BuildContext? context}) {
+    // Clear the bag in the state and LocalStorage
     BagData emptyBag = BagData(bagProducts: []);
     state = state.copyWith(bag: emptyBag);
+    LocalStorage.setBag(emptyBag);
 
-    // También limpiamos paginateResponse por si acaso todavía se usa en alguna parte
-    if (state.paginateResponse != null) {
-      var newPagination = state.paginateResponse!.copyWith(stocks: []);
-      state = state.copyWith(paginateResponse: newPagination);
-    }
-
-    // Obtenemos el objeto de la bolsa (bag) desde LocalStorage
-    BagData? bag = LocalStorage.getBag();
-
-    if (bag != null) {
-      // Copiamos la bolsa y le asignamos una lista vacía de productos
-      bag = bag.copyWith(bagProducts: []);
-
-      // Guardamos la bolsa actualizada en el almacenamiento local
-      LocalStorage.setBag(bag);
-
-      debugPrint("Bolsa limpiada correctamente.");
-    } else {
-      // Si no hay datos en el almacenamiento local, creamos una bolsa vacía
-      LocalStorage.setBag(emptyBag);
-      debugPrint("No había datos en la bolsa. Se ha creado una bolsa vacía.");
-    }
-
-    // Notificar a la UI que la bolsa ha sido vaciada
-    if (context.mounted) {
+    if (context != null && context.mounted) {
       AppHelpers.showSnackBar(context, 'Carrito vaciado correctamente');
     }
+
+    debugPrint('Carrito vaciado.');
   }
 
   void deleteProductFromBag(BuildContext context, BagProductData bagProduct) {
@@ -272,20 +298,40 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
   }
 
   void deleteProductCount({required int productIndex}) {
-    List<ProductData> listOfProduct =
-        List.from(state.paginateResponse?.stocks ?? []);
-    listOfProduct.removeAt(productIndex);
-    PriceDate? data = state.paginateResponse;
-    PriceDate? newData = data?.copyWith(stocks: listOfProduct);
-    state = state.copyWith(paginateResponse: newData);
-    BagData? bag = LocalStorage.getBag();
+    // Cancel any existing timer
+    timer?.cancel();
 
-    List<BagProductData>? bagProducts = bag?.bagProducts;
-    bagProducts?.removeAt(productIndex);
+    // Get the current bag and its products
+    BagData? bag = LocalStorage.getBag();
+    final List<BagProductData> bagProducts = List.from(bag?.bagProducts ?? []);
+
+    // Validate the product index
+    if (productIndex >= bagProducts.length) {
+      debugPrint('Índice fuera de rango al intentar eliminar un producto.');
+      return;
+    }
+
+    // Remove the product from the bag
+    bagProducts.removeAt(productIndex);
+
+    // Update the bag in LocalStorage
     bag = bag!.copyWith(bagProducts: bagProducts);
     LocalStorage.setBag(bag);
 
-    fetchCarts(isNotLoading: true);
+    // If the bag is empty, clear it completely
+    if (bagProducts.isEmpty) {
+      clearBag(context: null); // Call clearBag to handle the empty state
+    } else {
+      // Update the state with the new bag
+      state = state.copyWith(
+        bag: bag,
+      );
+
+      // Recalculate the cart total
+      calculateCartTotal();
+    }
+
+    debugPrint('Producto eliminado del carrito. Nuevo estado: $state');
   }
 
   void increaseProductCount({required int productIndex}) {
@@ -405,7 +451,7 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
       // Si el carrito queda vacío, lo limpiamos completamente
       if (bagProducts.isEmpty) {
-        clearBag(context);
+        clearBag();
       } else {
         // Actualizamos el estado y LocalStorage
         bag = bag!.copyWith(bagProducts: bagProducts);
@@ -439,7 +485,8 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       active = false;
     }
     if (state.paymentMethod.isEmpty) {
-      state = state.copyWith(selectPaymentError: 'Método de pago no seleccionado');
+      state =
+          state.copyWith(selectPaymentError: 'Método de pago no seleccionado');
       active = false;
     }
 
@@ -451,9 +498,11 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
           customerName: state.customerName,
           numOrder: numOrder, // Generated order number
           orderType: state.orderType,
-          paymentMethod: state.paymentMethod.toLowerCase(), // Convert to lowercase
+          paymentMethod:
+              state.paymentMethod.toLowerCase(), // Convert to lowercase
           bagData: state.bag ?? BagData(),
           notes: state.comment,
+          coupon: state.coupon,
         );
 
         createOrder(
@@ -532,5 +581,9 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     state = state.copyWith(paymentMethod: paymentMethod);
 
     debugPrint('=== > Método de pago actualizado: ${state.paymentMethod}');
+  }
+
+  void setCoupon(String coupon) {
+    state = state.copyWith(coupon: coupon);
   }
 }

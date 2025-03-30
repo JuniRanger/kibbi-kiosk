@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:kibbi_kiosk/src/models/models.dart';
 part 'right_side_state.freezed.dart';
@@ -27,12 +26,14 @@ class RightSideState with _$RightSideState {
     @Default(null) String? selectSectionError,
     @Default(null) String? selectTableError,
     @Default(null) String? coupon,
+    @Default('') String? couponId,
     @Default(null) KioskData? selectedUser,
     @Default('') String paymentMethod,
     @Default('') String? customerName,
     CurrencyData? selectedCurrency,
     PaymentData? selectedPayment,
     PriceDate? paginateResponse,
+    @Default(null) num? discount, // Estado modificado para permitir nulos
   }) = _RightSideState;
 
   const RightSideState._();
