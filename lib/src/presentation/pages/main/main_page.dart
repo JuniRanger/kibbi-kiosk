@@ -14,6 +14,7 @@ import 'package:kibbi_kiosk/src/presentation/theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './widgets/product_list/riverpod/shop_notifier.dart';
 import './widgets/menu/menu.dart';
+import 'package:flutter/services.dart';
 
 @RoutePage()
 class MainPage extends ConsumerStatefulWidget {
@@ -63,10 +64,14 @@ class _MainPageState extends ConsumerState<MainPage>
           const VerticalDivider(),
           Expanded(
             child: TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(30)
+              ],
               onChanged: (value) {
                 shopNotifier.setProductsQuery(context, value.trim());
               },
               cursorColor: Style.black,
+              
               decoration: InputDecoration(
                 hintText: 'Buscar Productos',
                 hintStyle: GoogleFonts.inter(

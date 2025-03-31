@@ -25,7 +25,7 @@ class AppValidators {
     return null;
   }
 
-    static String? maxLengthCheck(String? text, int maxLength) {
+  static String? maxLengthCheck(String? text, int maxLength) {
     if (text == null || text.trim().isEmpty) {
       return 'No puede estar vacío';
     }

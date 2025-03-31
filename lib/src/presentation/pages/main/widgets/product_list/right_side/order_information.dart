@@ -72,15 +72,16 @@ class OrderInformation extends ConsumerWidget {
                         CustomTextField(
                           inputType: TextInputType.text,
                           inputFormatters: [
-                            LengthLimitingTextInputFormatter(15),
+                          LengthLimitingTextInputFormatter(15),
+                          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')), // Allow only letters and spaces
                           ],
                           validator: (value) {
-                            final emptyCheck = AppValidators.emptyCheck(value);
-                            if (emptyCheck != null) return emptyCheck;
-                            return AppValidators.maxLengthCheck(value, 15);
+                          final emptyCheck = AppValidators.emptyCheck(value);
+                          if (emptyCheck != null) return emptyCheck;
+                          return AppValidators.maxLengthCheck(value, 15);
                           },
                           onChanged: (value) {
-                            notifier.setFirstName(value);
+                          notifier.setFirstName(value);
                           },
                           label: 'Nombre',
                         ),
