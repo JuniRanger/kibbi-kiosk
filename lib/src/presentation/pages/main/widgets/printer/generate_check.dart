@@ -92,8 +92,7 @@ class GenerateCheckPage extends StatelessWidget {
                     _priceRow('Descuento', -order.discount!,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
-                        color: Style.red),
-
+                        color: Style.unselectedTab),
                   _priceRow('Venta total', order.totalSale,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

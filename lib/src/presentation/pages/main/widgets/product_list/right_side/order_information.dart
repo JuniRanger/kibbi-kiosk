@@ -239,6 +239,7 @@ class OrderInformation extends ConsumerWidget {
 
               /// Código de descuento
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start, // Align top
                 children: [
                   Expanded(
                     flex: 3,
@@ -250,19 +251,9 @@ class OrderInformation extends ConsumerWidget {
                           label: 'Código de descuento',
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(13), // Limit to 13 characters
-                            FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')), // Allow alphanumeric characters
                           ],
                           onChanged: (value) {
                             notifier.setCoupon(value); // Save the coupon
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'El código no puede estar vacío';
-                            }
-                            if (value.length != 13) {
-                              return 'El código debe tener 13 caracteres';
-                            }
-                            return null;
                           },
                         ),
                         4.verticalSpace,
@@ -276,29 +267,42 @@ class OrderInformation extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        if (state.errorMessage != null) ...[
+                          4.verticalSpace,
+                          Text(
+                            state.errorMessage!,
+                            style: GoogleFonts.inter(
+                              fontSize: 12.sp,
+                              color: Style.red,
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
                   8.horizontalSpace,
                   Expanded(
                     flex: 1,
-                    child: LoginButton(
-                      title: 'Redimir',
-                      titleColor: Style.white,
-                      bgColor: Style.primary,
-                      onPressed: () {
-                        if (state.coupon != null && state.coupon!.length == 13) {
-                          notifier.setDiscount(context); // Apply discount
-                        } else {
-                          AppHelpers.showSnackBar(
-                            context,
-                            'El código debe tener 13 caracteres',
-                          );
-                        }
-                      },
-                      textStyle: GoogleFonts.inter(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w700, // Make text bolder
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 2.r), // Align with text field
+                      child: LoginButton(
+                        title: 'Redimir',
+                        titleColor: Style.white,
+                        bgColor: Style.primary,
+                        onPressed: () {
+                          if (state.coupon != null && state.coupon!.length <= 13) {
+                            notifier.setDiscount(context); // Apply discount
+                          } else {
+                            AppHelpers.showSnackBar(
+                              context,
+                              'El código debe tener 13 caracteres',
+                            );
+                          }
+                        },
+                        textStyle: GoogleFonts.inter(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700, // Make text bolder
+                        ),
                       ),
                     ),
                   ),

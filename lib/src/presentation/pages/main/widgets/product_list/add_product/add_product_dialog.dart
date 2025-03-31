@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kibbi_kiosk/src/core/utils/utils.dart';
 
 import '../right_side/riverpod/right_side_provider.dart';
 import 'riverpod/add_product_provider.dart';
@@ -22,6 +23,8 @@ class AddProductDialog extends ConsumerStatefulWidget {
 }
 
 class _AddProductDialogState extends ConsumerState<AddProductDialog> {
+  static const int maxCartProducts = 30; // Maximum allowed products in the cart
+
   @override
   void initState() {
     super.initState();
@@ -81,7 +84,8 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: () => notifier.decreaseStockCount(),
+                                  onPressed: () =>
+                                      notifier.decreaseStockCount(),
                                   icon: const Icon(FlutterRemix.subtract_line),
                                 ),
                                 13.horizontalSpace,
@@ -96,7 +100,8 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                                 ),
                                 12.horizontalSpace,
                                 IconButton(
-                                  onPressed: () => notifier.increaseStockCount(),
+                                  onPressed: () =>
+                                      notifier.increaseStockCount(),
                                   icon: const Icon(FlutterRemix.add_line),
                                 ),
                               ],
@@ -141,7 +146,8 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                               width: MediaQuery.sizeOf(context).width / 1.6 -
                                   370.w,
                               child: Divider(
-                                color: Style.black.withAlpha((0.2 * 255).toInt()),
+                                color:
+                                    Style.black.withAlpha((0.2 * 255).toInt()),
                               ),
                             ),
                           ],
@@ -161,6 +167,43 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                           title: 'Agregar',
                           titleColor: Style.white,
                           onPressed: () {
+                            final totalQuantity = rightSideNotifier
+                                    .state.bag?.bagProducts
+                                    ?.fold<int>(
+                                        0,
+                                        (sum, product) =>
+                                            sum + (product.quantity ?? 0)) ??
+                                0;
+
+                            if (totalQuantity + state.stockCount >
+                                maxCartProducts) {
+                              AppHelpers.showAlertDialog(
+                                context: context,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      'Límite alcanzado',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(
+                                        'Solo puedes tener 30 productos en el carrito.'),
+                                    const SizedBox(height: 20),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: const Text('Aceptar'),
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              return;
+                            }
+
                             notifier.addProductToBag(
                               context,
                               rightSideNotifier,
@@ -216,4 +259,3 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
     );
   }
 }
-

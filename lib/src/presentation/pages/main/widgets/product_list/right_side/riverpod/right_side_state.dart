@@ -34,6 +34,7 @@ class RightSideState with _$RightSideState {
     PaymentData? selectedPayment,
     PriceDate? paginateResponse,
     @Default(null) num? discount, // Estado modificado para permitir nulos
+    @Default(null) String? errorMessage, // Add errorMessage parameter
   }) = _RightSideState;
 
   const RightSideState._();

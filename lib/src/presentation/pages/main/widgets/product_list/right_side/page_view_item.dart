@@ -30,6 +30,10 @@ class PageViewItem extends ConsumerStatefulWidget {
 class _PageViewItemState extends ConsumerState<PageViewItem> {
   late TextEditingController coupon;
 
+  static const int maxCartProducts = 30; // Maximum allowed products in the cart
+  static const int maxProductQuantity =
+      30; // Maximum allowed quantity per product
+
   @override
   void initState() {
     super.initState();
@@ -118,11 +122,11 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                 itemBuilder: (context, index) {
                                   final bagProduct =
                                       state.bag?.bagProducts?[index];
-                                  final productName = productsService
-                                      .getProductName(
+                                  final productName =
+                                      productsService.getProductName(
                                           bagProduct?.productId ?? '');
-                                  final productSalePrice = productsService
-                                      .getProductSalePrice(
+                                  final productSalePrice =
+                                      productsService.getProductSalePrice(
                                           bagProduct?.productId ?? '');
 
                                   final product = ProductData(
@@ -135,8 +139,77 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                                   return CartOrderItem(
                                     symbol: '\$',
                                     add: () {
+                                      final totalQuantity =
+                                          state.bag?.bagProducts?.fold<int>(
+                                                  0,
+                                                  (sum, product) =>
+                                                      sum +
+                                                      (product.quantity ??
+                                                          0)) ??
+                                              0;
+
+                                      if (totalQuantity >= maxCartProducts) {
+                                        AppHelpers.showAlertDialog(
+                                          context: context,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text(
+                                                'Límite alcanzado',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                  'Solo puedes tener 30 productos en el carrito.'),
+                                              const SizedBox(height: 20),
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: const Text('Aceptar'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        return;
+                                      }
+
+                                      if ((bagProduct?.quantity ?? 0) >=
+                                          maxProductQuantity) {
+                                        AppHelpers.showAlertDialog(
+                                          context: context,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text(
+                                                'Límite alcanzado',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                  'Solo puedes tener 30 productos en el carrito.'),
+                                              const SizedBox(height: 20),
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: const Text('Aceptar'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        return;
+                                      }
+
                                       notifier.increaseProductCount(
-                                          productIndex: index);
+                                          productIndex: index,
+                                          context: context);
                                     },
                                     remove: () {
                                       notifier.decreaseProductCount(

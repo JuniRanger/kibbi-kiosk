@@ -44,7 +44,9 @@ mixin _$RightSideState {
   CurrencyData? get selectedCurrency => throw _privateConstructorUsedError;
   PaymentData? get selectedPayment => throw _privateConstructorUsedError;
   PriceDate? get paginateResponse => throw _privateConstructorUsedError;
-  num? get discount => throw _privateConstructorUsedError;
+  num? get discount =>
+      throw _privateConstructorUsedError; // Estado modificado para permitir nulos
+  String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.
@@ -88,7 +90,8 @@ abstract class $RightSideStateCopyWith<$Res> {
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
       PriceDate? paginateResponse,
-      num? discount});
+      num? discount,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -135,6 +138,7 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
     Object? discount = freezed,
+    Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
       isBagsLoading: null == isBagsLoading
@@ -253,6 +257,10 @@ class _$RightSideStateCopyWithImpl<$Res, $Val extends RightSideState>
           ? _value.discount
           : discount // ignore: cast_nullable_to_non_nullable
               as num?,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -294,7 +302,8 @@ abstract class _$$RightSideStateImplCopyWith<$Res>
       CurrencyData? selectedCurrency,
       PaymentData? selectedPayment,
       PriceDate? paginateResponse,
-      num? discount});
+      num? discount,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -339,6 +348,7 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
     Object? selectedPayment = freezed,
     Object? paginateResponse = freezed,
     Object? discount = freezed,
+    Object? errorMessage = freezed,
   }) {
     return _then(_$RightSideStateImpl(
       isBagsLoading: null == isBagsLoading
@@ -457,6 +467,10 @@ class __$$RightSideStateImplCopyWithImpl<$Res>
           ? _value.discount
           : discount // ignore: cast_nullable_to_non_nullable
               as num?,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -493,7 +507,8 @@ class _$RightSideStateImpl extends _RightSideState {
       this.selectedCurrency,
       this.selectedPayment,
       this.paginateResponse,
-      this.discount = null})
+      this.discount = null,
+      this.errorMessage = null})
       : _currencies = currencies,
         _payments = payments,
         super._();
@@ -594,10 +609,14 @@ class _$RightSideStateImpl extends _RightSideState {
   @override
   @JsonKey()
   final num? discount;
+// Estado modificado para permitir nulos
+  @override
+  @JsonKey()
+  final String? errorMessage;
 
   @override
   String toString() {
-    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, couponId: $couponId, selectedUser: $selectedUser, paymentMethod: $paymentMethod, customerName: $customerName, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse, discount: $discount)';
+    return 'RightSideState(isBagsLoading: $isBagsLoading, isCurrenciesLoading: $isCurrenciesLoading, isPaymentsLoading: $isPaymentsLoading, isProductCalculateLoading: $isProductCalculateLoading, isButtonLoading: $isButtonLoading, isActive: $isActive, isOrderLoading: $isOrderLoading, bag: $bag, currencies: $currencies, payments: $payments, selectedBagIndex: $selectedBagIndex, orderType: $orderType, comment: $comment, calculate: $calculate, selectNameError: $selectNameError, selectPhoneError: $selectPhoneError, selectCurrencyError: $selectCurrencyError, selectPaymentError: $selectPaymentError, selectSectionError: $selectSectionError, selectTableError: $selectTableError, coupon: $coupon, couponId: $couponId, selectedUser: $selectedUser, paymentMethod: $paymentMethod, customerName: $customerName, selectedCurrency: $selectedCurrency, selectedPayment: $selectedPayment, paginateResponse: $paginateResponse, discount: $discount, errorMessage: $errorMessage)';
   }
 
   @override
@@ -659,7 +678,9 @@ class _$RightSideStateImpl extends _RightSideState {
             (identical(other.paginateResponse, paginateResponse) ||
                 other.paginateResponse == paginateResponse) &&
             (identical(other.discount, discount) ||
-                other.discount == discount));
+                other.discount == discount) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
@@ -693,7 +714,8 @@ class _$RightSideStateImpl extends _RightSideState {
         selectedCurrency,
         selectedPayment,
         paginateResponse,
-        discount
+        discount,
+        errorMessage
       ]);
 
   /// Create a copy of RightSideState
@@ -736,7 +758,8 @@ abstract class _RightSideState extends RightSideState {
       final CurrencyData? selectedCurrency,
       final PaymentData? selectedPayment,
       final PriceDate? paginateResponse,
-      final num? discount}) = _$RightSideStateImpl;
+      final num? discount,
+      final String? errorMessage}) = _$RightSideStateImpl;
   const _RightSideState._() : super._();
 
   @override
@@ -796,7 +819,9 @@ abstract class _RightSideState extends RightSideState {
   @override
   PriceDate? get paginateResponse;
   @override
-  num? get discount;
+  num? get discount; // Estado modificado para permitir nulos
+  @override
+  String? get errorMessage;
 
   /// Create a copy of RightSideState
   /// with the given fields replaced by the non-null parameter values.

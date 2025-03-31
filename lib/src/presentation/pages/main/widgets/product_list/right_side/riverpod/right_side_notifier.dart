@@ -22,6 +22,7 @@ import 'package:kibbi_kiosk/src/models/data/order_body_data.dart';
 import 'right_side_state.dart';
 
 class RightSideNotifier extends StateNotifier<RightSideState> {
+  static const int maxCartProducts = 30; // Maximum allowed products in the cart
   String? _name;
   Timer? timer;
 
@@ -219,19 +220,20 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
 
     result.when(
       success: (data) {
-        // Extraer la info del cupón y el descuento de la respuesta
+        // Extract coupon info and discount from the response
         final couponInfo = data['couponInfo'] as Map<String, dynamic>? ?? {};
         final discount = data['discount'] as num? ?? 0;
 
-        // Obtener el ID del cupón si existe
+        // Get the coupon ID if it exists
         final couponId = couponInfo['_id']?.toString() ?? '';
 
-        // Guardar en el estado
+        // Save in the state
         state = state.copyWith(
           discount: discount,
           couponId: couponId.isNotEmpty
               ? couponId
-              : null, // Evitar guardar string vacío
+              : null, // Avoid saving an empty string
+          errorMessage: null, // Clear any previous error
         );
 
         debugPrint('==> Descuento aplicado: \$$discount');
@@ -240,20 +242,17 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       },
       failure: (error, status) {
         debugPrint('Error al aplicar descuento: $error, Status: $status');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al aplicar el descuento')),
-        );
+
+        // Handle 400 error and extract the message
+        String errorMessage = error.toString();
+        // Save the error message in the state
+        state = state.copyWith(errorMessage: errorMessage);
       },
     );
   }
 
-  void applyDiscount() async {}
-
   void setInitialBagData(BuildContext context, BagData bag) {
     state = state.copyWith(
-        // selectedUser: bag.selectedUser,
-        // selectedCurrency: bag.MXN,
-        // selectedPayment: bag.selectedPayment,
         orderType: state.orderType.isEmpty ? 'Para llevar' : state.orderType);
     debugPrint('Order type set to: ${state.orderType}');
     fetchCarts(context: context);
@@ -334,48 +333,81 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     debugPrint('Producto eliminado del carrito. Nuevo estado: $state');
   }
 
-  void increaseProductCount({required int productIndex}) {
-    // Cancelamos el timer existente si hay uno
+  void increaseProductCount(
+      {required int productIndex, required BuildContext context}) {
+    // Cancel any existing timer
     timer?.cancel();
 
-    // Obtenemos el producto actual
+    // Get the current bag and its products
+    BagData? bag = LocalStorage.getBag();
+    final List<BagProductData> bagProducts = List.from(bag?.bagProducts ?? []);
+
+    // Check if the total quantity exceeds the limit
+    final totalQuantity = bagProducts.fold<int>(
+      0,
+      (sum, product) => sum + (product.quantity ?? 0),
+    );
+
+    if (totalQuantity >= maxCartProducts) {
+      // Show popup if the limit is exceeded
+      AppHelpers.showAlertDialog(
+        context: context,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Límite alcanzado',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text('Solo puedes tener  en el carrito.'),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+
+      return;
+    }
+
+    // Get the current product
     ProductData? product = state.paginateResponse?.stocks?[productIndex];
 
-    // Creamos un nuevo producto con cantidad incrementada
+    // Create a new product with incremented quantity
     ProductData? newProduct = product?.copyWith(
         quantity: ((product.quantity ?? 0) + 1), discount: product.discount);
 
-    // Actualizamos la lista de productos
+    // Update the list of products
     List<ProductData> listOfProduct =
         List.from(state.paginateResponse?.stocks ?? []);
     if (productIndex < listOfProduct.length) {
       listOfProduct[productIndex] = newProduct ?? ProductData();
     }
 
-    // Actualizamos el estado con la nueva lista
+    // Update the state with the new list
     PriceDate? data = state.paginateResponse;
     PriceDate? newData = data?.copyWith(stocks: listOfProduct);
 
-    // Actualizamos la lista de productos en el carrito
-    final List<BagProductData> bagProducts =
-        List.from(LocalStorage.getBag()?.bagProducts ?? []);
+    // Update the list of products in the cart
     if (productIndex < bagProducts.length) {
       BagProductData newProductData = bagProducts[productIndex]
           .copyWith(quantity: (bagProducts[productIndex].quantity ?? 0) + 1);
       bagProducts[productIndex] = newProductData;
 
-      // Actualizamos el carrito en LocalStorage
-      BagData? bag = LocalStorage.getBag();
+      // Update the cart in LocalStorage
       bag = bag!.copyWith(bagProducts: bagProducts);
       LocalStorage.setBag(bag);
 
-      // Actualizamos el estado directamente sin esperar
+      // Update the state directly without waiting
       state = state.copyWith(
         paginateResponse: newData,
         bag: bag,
       );
 
-      // Calculamos el total inmediatamente
+      // Recalculate the total immediately
       calculateCartTotal();
     }
   }
